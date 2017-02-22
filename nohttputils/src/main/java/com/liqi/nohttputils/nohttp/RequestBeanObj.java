@@ -159,11 +159,11 @@ class RequestBeanObj<T> extends RestRequest<T> {
 
     @Override
     public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Throwable {
+        String response = StringRequest.parseResponseString(responseHeaders, responseBody);
         if (null != clazz) {
             Logger.e("parseResponse是否执行了>>>>>" + clazz.getName());
             //不是bitmap和byte[]进入
             if (clazz != Bitmap.class && clazz != byte[].class) {
-                String response = StringRequest.parseResponseString(responseHeaders, responseBody);
                 //不是JSONObject和JSONArray类型进入
                 if (clazz != JSONObject.class && clazz != JSONArray.class) {
                     if (clazz == String.class) {
@@ -189,7 +189,7 @@ class RequestBeanObj<T> extends RestRequest<T> {
                 }
             }
         }
-        return (T) responseBody;
+        return (T) response;
     }
 
     /**

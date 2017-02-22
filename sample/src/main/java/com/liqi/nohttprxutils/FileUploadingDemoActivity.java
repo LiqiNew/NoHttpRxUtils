@@ -18,7 +18,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
- * 文件上传请求演示界面（文件上传也请参考次界面请求）
+ * 文件上传请求演示界面（文件上传也请参考此界面请求）
  * Created by LiQi on 2016/12/30.
  */
 public class FileUploadingDemoActivity extends BaseActivity<String> implements View.OnClickListener, OnUploadListener {

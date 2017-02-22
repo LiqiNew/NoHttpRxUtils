@@ -38,7 +38,8 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements Reque
 
         //请求参数不为空，就断定是Post请求，
         if (null != mapParame && !mapParame.isEmpty())
-            RxRequestUtils.getRxRequestUtils().createRequest(url, RequestMethod.POST).setRequestParameterMap(mapParame).setMapHeader(mapHeader).requestRxNoHttp(tClass, this, this);
+            RxRequestUtils.getRxRequestUtils().createRequest(url, RequestMethod.POST).setRequestParameterMap(mapParame).setMapHeader(mapHeader)
+                    .requestRxNoHttp(tClass, this, this);
 
             //请求参数为空，就断定是Get请求，
         else

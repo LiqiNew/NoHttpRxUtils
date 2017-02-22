@@ -120,61 +120,49 @@ public class RxRequestUtils {
         return rxRequestUtils;
     }
 
-    /**
-     * 设置是否开启debug打印模式
-     *
-     * @param why       是否开启
-     * @param debugName debug名字
-     */
-    public RxRequestUtils setDebug(boolean why, String debugName) {
-        Logger.setDebug(why);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
-        Logger.setTag(debugName);// 设置NoHttp打印Log的tag。
-        return rxRequestUtils;
-    }
 
     /**
-     * 初始化nohttp
+     * 自定义初始化nohttp
      *
-     * @param context           上下文
-     * @param rxRequestUtilsWhy 用那种方式请求nohttp，默认是OkHttp方式。 URLCONNECTION
-     * @param daWhy             是否允许数据缓存数据库
-     * @param cookieWhy         是否维护cookie
      * @return
      */
-    public RxRequestUtils init(Context context, int rxRequestUtilsWhy, boolean daWhy, boolean cookieWhy) {
+    void init(RxUtilsConfig rxUtilsConfig) {
         // nohttp默认设置的初始化
         //NoHttp.initialize(context);
-
-        NetworkExecutor networkExecutor = null;
-        switch (rxRequestUtilsWhy) {
-            case URLCONNECTION:
-                networkExecutor = new URLConnectionNetworkExecutor();
-                break;
-            case OKHTTP:
-                networkExecutor = new OkHttpNetworkExecutor();
-                break;
-            default:
-                networkExecutor = new OkHttpNetworkExecutor();
-                break;
+        if (null != rxUtilsConfig) {
+            Context context = rxUtilsConfig.getContext();
+            NetworkExecutor networkExecutor = null;
+            switch (rxUtilsConfig.getRxRequestUtilsWhy()) {
+                case URLCONNECTION:
+                    networkExecutor = new URLConnectionNetworkExecutor();
+                    break;
+                case OKHTTP:
+                    networkExecutor = new OkHttpNetworkExecutor();
+                    break;
+                default:
+                    networkExecutor = new OkHttpNetworkExecutor();
+                    break;
+            }
+            // 自定义配置初始化：
+            NoHttp.initialize(context, new NoHttp.Config()
+                    // 设置全局连接超时时间，单位毫秒，默认10s。
+                    .setConnectTimeout(rxUtilsConfig.getConnectTimeout())
+                    // 设置全局服务器响应超时时间，单位毫秒，默认10s。
+                    .setReadTimeout(rxUtilsConfig.getReadTimeout())
+                    // 配置缓存，默认保存数据库DBCacheStore，保存到SD卡使用DiskCacheStore。
+                    .setCacheStore(
+                            new DBCacheStore(context).setEnable(rxUtilsConfig.isDbEnable()) // 如果不使用缓存，设置false禁用。
+                    )
+                    // 配置Cookie，默认保存数据库DBCookieStore，开发者可以自己实现。
+                    .setCookieStore(
+                            new DBCookieStore(context).setEnable(rxUtilsConfig.isCookieEnable()) // 如果不维护cookie，设置false禁用。
+                    )
+                    // 配置网络层，默认使用URLConnection，如果想用OkHttp：OkHttpNetworkExecutor。
+                    .setNetworkExecutor(networkExecutor)
+            );
+            Logger.setDebug(rxUtilsConfig.isDebug());// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
+            Logger.setTag(rxUtilsConfig.getDebugName());// 设置NoHttp打印Log的tag。
         }
-        // 自定义配置初始化：
-        NoHttp.initialize(context, new NoHttp.Config()
-                // 设置全局连接超时时间，单位毫秒，默认10s。
-                .setConnectTimeout(30 * 1000)
-                // 设置全局服务器响应超时时间，单位毫秒，默认10s。
-                .setReadTimeout(30 * 1000)
-                // 配置缓存，默认保存数据库DBCacheStore，保存到SD卡使用DiskCacheStore。
-                .setCacheStore(
-                        new DBCacheStore(context).setEnable(daWhy) // 如果不使用缓存，设置false禁用。
-                )
-                // 配置Cookie，默认保存数据库DBCookieStore，开发者可以自己实现。
-                .setCookieStore(
-                        new DBCookieStore(context).setEnable(cookieWhy) // 如果不维护cookie，设置false禁用。
-                )
-                // 配置网络层，默认使用URLConnection，如果想用OkHttp：OkHttpNetworkExecutor。
-                .setNetworkExecutor(networkExecutor)
-        );
-        return rxRequestUtils;
     }
 
     /**
