@@ -7,12 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.liqi.nohttprxutils.download.DownloadFileActivity;
+
 /**
  * 首页面，此页面用的是最LOW的方法实现的。请勿吐槽
  * Created by LiQi on 2016/12/30.
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button button, button1, button2, button3;
+    private Button button, button1, button2, button3,button4;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button2.setOnClickListener(this);
         button3 = (Button) findViewById(R.id.button3);
         button3.setOnClickListener(this);
+        button4= (Button) findViewById(R.id.button4);
+        button4.setOnClickListener(this);
     }
 
     @Override
@@ -46,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Https协议演示
             case R.id.button3:
                 startActivity(new Intent(this, HttpsDemoActivity.class));
+                break;
+            //文件下载演示
+            case R.id.button4:
+                startActivity(new Intent(this, DownloadFileActivity.class));
                 break;
 
         }

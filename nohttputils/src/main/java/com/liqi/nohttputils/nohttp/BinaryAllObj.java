@@ -3,10 +3,10 @@ package com.liqi.nohttputils.nohttp;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.yolanda.nohttp.BasicBinary;
-import com.yolanda.nohttp.Binary;
-import com.yolanda.nohttp.Logger;
-import com.yolanda.nohttp.tools.IOUtils;
+
+import com.yanzhenjie.nohttp.BasicBinary;
+import com.yanzhenjie.nohttp.Logger;
+import com.yanzhenjie.nohttp.tools.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,7 +27,7 @@ import java.io.InputStream;
     /*==========inputStream形式传入==========*/
 
     /**
-     * An input stream {@link Binary}.
+     * An input stream
      *
      * @param inputStream must be {@link FileInputStream}, {@link ByteArrayInputStream}.
      * @param fileName    file name. Had better pass this value, unless the server tube don't care about the file name.
@@ -37,7 +37,7 @@ import java.io.InputStream;
     }
 
     /**
-     * An input stream {@link Binary}.
+     * An input stream .
      *
      * @param inputStream must be {@link FileInputStream}, {@link ByteArrayInputStream}.
      * @param fileName    file name. Had better pass this value, unless the server tube don't care about the file name.

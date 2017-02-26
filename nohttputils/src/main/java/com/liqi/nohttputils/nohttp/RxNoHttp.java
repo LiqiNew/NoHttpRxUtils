@@ -7,15 +7,14 @@ import android.widget.Toast;
 import com.liqi.nohttputils.R;
 import com.liqi.nohttputils.interfa.DialogGetInterfa;
 import com.liqi.nohttputils.interfa.RequestOkAndNo;
-import com.yolanda.nohttp.NoHttp;
-import com.yolanda.nohttp.error.NetworkError;
-import com.yolanda.nohttp.error.NotFoundCacheError;
-import com.yolanda.nohttp.error.ParseError;
-import com.yolanda.nohttp.error.TimeoutError;
-import com.yolanda.nohttp.error.URLError;
-import com.yolanda.nohttp.error.UnKnownHostError;
-import com.yolanda.nohttp.rest.IParserRequest;
-import com.yolanda.nohttp.rest.Response;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.error.NetworkError;
+import com.yanzhenjie.nohttp.error.NotFoundCacheError;
+import com.yanzhenjie.nohttp.error.TimeoutError;
+import com.yanzhenjie.nohttp.error.URLError;
+import com.yanzhenjie.nohttp.error.UnKnownHostError;
+import com.yanzhenjie.nohttp.rest.IProtocolRequest;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.net.ProtocolException;
 
@@ -47,7 +46,7 @@ class RxNoHttp {
      * @param mDialogGetInterfa dialog获取接口
      * @param responseInterfa   请求成功或者失败回调对象
      */
-    <T> void request(final IParserRequest<T> request, DialogGetInterfa mDialogGetInterfa, final RequestOkAndNo<T> responseInterfa) {
+    <T> void request(final IProtocolRequest<T> request, DialogGetInterfa mDialogGetInterfa, final RequestOkAndNo<T> responseInterfa) {
         if (null != mDialogGetInterfa)
             dialog = mDialogGetInterfa.getDialog();
 
@@ -99,8 +98,6 @@ class RxNoHttp {
                                 show(R.string.error_not_found_cache);
                             } else if (e instanceof ProtocolException) {
                                 show(R.string.error_system_unsupport_method);
-                            } else if (e instanceof ParseError) {
-                                show(R.string.error_parse_data_error);
                             } else {
                                 show(R.string.error_unknow);
                             }

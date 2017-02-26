@@ -1,4 +1,4 @@
-package com.liqi.nohttputils.gsonutils;
+package com.liqi.nohttputils.nohttp.gsonutils;
 
 import android.util.Log;
 

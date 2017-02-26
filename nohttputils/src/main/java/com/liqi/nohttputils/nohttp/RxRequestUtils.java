@@ -6,16 +6,16 @@ import android.widget.ImageView;
 
 import com.liqi.nohttputils.interfa.DialogGetInterfa;
 import com.liqi.nohttputils.interfa.RequestOkAndNo;
+import com.yanzhenjie.nohttp.Binary;
+import com.yanzhenjie.nohttp.Logger;
+import com.yanzhenjie.nohttp.NetworkExecutor;
+import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
-import com.yolanda.nohttp.Binary;
-import com.yolanda.nohttp.Logger;
-import com.yolanda.nohttp.NetworkExecutor;
-import com.yolanda.nohttp.NoHttp;
-import com.yolanda.nohttp.RequestMethod;
-import com.yolanda.nohttp.URLConnectionNetworkExecutor;
-import com.yolanda.nohttp.cache.DBCacheStore;
-import com.yolanda.nohttp.cookie.DBCookieStore;
-import com.yolanda.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
+import com.yanzhenjie.nohttp.cache.DBCacheStore;
+import com.yanzhenjie.nohttp.cookie.DBCookieStore;
+import com.yanzhenjie.nohttp.rest.RestRequest;
 
 import java.io.File;
 import java.io.InputStream;

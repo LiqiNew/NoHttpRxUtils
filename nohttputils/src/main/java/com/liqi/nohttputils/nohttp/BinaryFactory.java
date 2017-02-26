@@ -2,7 +2,8 @@ package com.liqi.nohttputils.nohttp;
 
 import android.graphics.Bitmap;
 
-import com.yolanda.nohttp.BasicBinary;
+
+import com.yanzhenjie.nohttp.BasicBinary;
 
 import java.io.File;
 import java.io.InputStream;

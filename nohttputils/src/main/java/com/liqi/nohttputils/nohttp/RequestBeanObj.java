@@ -19,12 +19,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
-import com.liqi.nohttputils.gsonutils.JsonUtil;
-import com.yolanda.nohttp.Headers;
-import com.yolanda.nohttp.Logger;
-import com.yolanda.nohttp.RequestMethod;
-import com.yolanda.nohttp.rest.RestRequest;
-import com.yolanda.nohttp.rest.StringRequest;
+import com.liqi.nohttputils.nohttp.gsonutils.JsonUtil;
+import com.yanzhenjie.nohttp.Headers;
+import com.yanzhenjie.nohttp.Logger;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -158,7 +158,7 @@ class RequestBeanObj<T> extends RestRequest<T> {
     }
 
     @Override
-    public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Throwable {
+    public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
         String response = StringRequest.parseResponseString(responseHeaders, responseBody);
         if (null != clazz) {
             Logger.e("parseResponse是否执行了>>>>>" + clazz.getName());

@@ -4,9 +4,9 @@ import com.liqi.nohttprxutils.FileUploadingDemoActivity;
 import com.liqi.nohttprxutils.interfa.RequestHttpInterfa;
 import com.liqi.nohttputils.nohttp.BinaryFactory;
 import com.liqi.nohttputils.nohttp.RxRequestUtils;
-import com.yolanda.nohttp.BasicBinary;
-import com.yolanda.nohttp.Binary;
-import com.yolanda.nohttp.OnUploadListener;
+import com.yanzhenjie.nohttp.BasicBinary;
+import com.yanzhenjie.nohttp.Binary;
+import com.yanzhenjie.nohttp.OnUploadListener;
 
 import java.io.File;
 import java.io.InputStream;

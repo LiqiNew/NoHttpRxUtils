@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.liqi.nohttprxutils.base.BaseActivity;
 import com.liqi.nohttprxutils.presenter.DemoHttpPresenter;
 import com.liqi.nohttprxutils.utils.FileUtil;
-import com.yolanda.nohttp.OnUploadListener;
-import com.yolanda.nohttp.tools.IOUtils;
+import com.yanzhenjie.nohttp.OnUploadListener;
+import com.yanzhenjie.nohttp.tools.IOUtils;
 
 import java.io.File;
 import java.io.InputStream;

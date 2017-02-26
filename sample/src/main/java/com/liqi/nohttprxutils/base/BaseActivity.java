@@ -13,7 +13,7 @@ import com.liqi.nohttprxutils.interfa.RequestHttpInterfa;
 import com.liqi.nohttputils.interfa.DialogGetInterfa;
 import com.liqi.nohttputils.interfa.RequestOkAndNo;
 import com.liqi.nohttputils.nohttp.RxRequestUtils;
-import com.yolanda.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.RequestMethod;
 
 import java.util.Map;
 
