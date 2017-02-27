@@ -2,20 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@mipmap/timg"
               android:orientation="vertical">
 
     <Button
         android:id="@+id/https_yes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        style="@style/button_style"
         android:text="Https-带证书请求"/>
 
     <Button
         android:id="@+id/https_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        style="@style/button_style"
         android:text="Https-无证书请求"/>
 
     <ScrollView

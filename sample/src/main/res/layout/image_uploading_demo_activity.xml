@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#f2f2f2"
+              android:background="@mipmap/timg"
               android:orientation="vertical">
 
     <Button
         android:id="@+id/uploading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        style="@style/button_style"
         android:text="图片上传"/>
 
     <ProgressBar

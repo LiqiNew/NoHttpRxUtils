@@ -123,10 +123,10 @@ public class NohttpDownloadService extends Service implements DownloadListener {
      */
     public void startRequest(String downloadUrl) {
         if (null != mDownloadRequests && mDownloadRequests.size() > 0) {
-            if(mWhats.containsKey(downloadUrl)) {
+            if (mWhats.containsKey(downloadUrl)) {
                 int what = mWhats.get(downloadUrl);
                 DownloadRequest downloadRequest = mDownloadRequests.get(what);
-                if (null!=downloadRequest) {
+                if (null != downloadRequest) {
                     if (downloadRequest.isCanceled()) {
                         downloadRequest = NoHttp.createDownloadRequest(
                                 downloadRequest.url(), downloadRequest.getFileDir(),
@@ -143,9 +143,9 @@ public class NohttpDownloadService extends Service implements DownloadListener {
 
 
     /**
-     * 取消当前所有正在下载的任务
+     * 暂停当前所有正在下载的任务
      */
-    public void cancel() {
+    public void cancelAll() {
         if (null != mDownloadRequests && mDownloadRequests.size() > 0) {
             for (int i = 0; i < mDownloadRequests.size(); i++) {
                 DownloadRequest downloadRequest = mDownloadRequests.valueAt(i);
@@ -156,7 +156,7 @@ public class NohttpDownloadService extends Service implements DownloadListener {
     }
 
     /**
-     * 取消指定下载的任务
+     * 暂停指定下载的任务
      */
     public void cancel(String downloadUrl) {
         if (null != mDownloadRequests && mDownloadRequests.size() > 0) {

@@ -94,15 +94,15 @@ class NohttpDownload implements NohttpDownloadService.DownloadServiceFinishListe
     }
 
     /**
-     * 取消当前正在下载的任务
+     * 暂停当前正在下载的任务
      */
-    void cancel() {
+    void cancelAll() {
         if (null != mBindService)
-            mBindService.cancel();
+            mBindService.cancelAll();
     }
 
     /**
-     * 取消当前指定下载的任务
+     * 暂停当前指定下载的任务
      *
      * @param downloadUrl 下载地址
      */
@@ -175,7 +175,7 @@ class NohttpDownload implements NohttpDownloadService.DownloadServiceFinishListe
 
     @Override
     public void onFinish() {
-        mBindService.cancel();
+        mBindService.cancelAll();
         mContext.unbindService(mServiceConnection);
         mBindService = null;
         mContext = null;

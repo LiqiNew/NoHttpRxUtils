@@ -22,14 +22,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(this);
+        button.setAlpha(0.6f);
         button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(this);
+        button1.setAlpha(0.6f);
         button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(this);
+        button2.setAlpha(0.6f);
         button3 = (Button) findViewById(R.id.button3);
         button3.setOnClickListener(this);
+        button3.setAlpha(0.6f);
         button4= (Button) findViewById(R.id.button4);
         button4.setOnClickListener(this);
+        button4.setAlpha(0.6f);
     }
 
     @Override

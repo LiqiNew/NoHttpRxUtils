@@ -20,8 +20,10 @@ public class GetPostDemoActivity extends BaseActivity<String> implements View.On
         setContentView(R.layout.get_post_demo_activity);
         mGet = find(R.id.get);
         mGet.setOnClickListener(this);
+        mGet.setAlpha(0.6f);
         mPost = find(R.id.post);
         mPost.setOnClickListener(this);
+        mPost.setAlpha(0.6f);
         mContent = find(R.id.content);
         mStringGetPostDemoPresenter=new DemoHttpPresenter<>(this,String.class);
     }

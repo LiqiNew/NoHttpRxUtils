@@ -41,12 +41,12 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
     private String DOWNLOAD_FILE01 = "http://api.nohttp.net/download/1.apk",
             DOWNLOAD_FILE02 = "http://api.nohttp.net/download/2.apk",
             DOWNLOAD_FILE03 = "http://api.nohttp.net/download/3.apk";
-    private ProgressBar download_single_progress;
-    private TextView download_single_hint;
-    private Button download_single_button;
-    private ProgressBar download_multi_progress01, download_multi_progress02;
-    private TextView download_multi_hint01, download_multi_hint02;
-    private Button download_multi_button;
+    private ProgressBar mDownloadSingleProgress;
+    private TextView mDownloadSingleHint;
+    private Button mDownloadSingleButton;
+    private ProgressBar mDownloadMultiProgress01, mDownloadMultiProgress02;
+    private TextView mDownloadMultiHint01, mDownloadMultiHint02;
+    private Button mDownloadMultiButton;
     //单个下载标识
     private boolean mSingleDownloadTag = true;
     private int mSingleInit = -1;
@@ -58,16 +58,18 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.download_file_activity);
-        download_single_progress = (ProgressBar) findViewById(R.id.download_single_progress);
-        download_single_hint = (TextView) findViewById(R.id.download_single_hint);
-        download_single_button = (Button) findViewById(R.id.download_single_button);
-        download_single_button.setOnClickListener(this);
-        download_multi_progress01 = (ProgressBar) findViewById(R.id.download_multi_progress01);
-        download_multi_progress02 = (ProgressBar) findViewById(R.id.download_multi_progress02);
-        download_multi_hint01 = (TextView) findViewById(R.id.download_multi_hint01);
-        download_multi_hint02 = (TextView) findViewById(R.id.download_multi_hint02);
-        download_multi_button = (Button) findViewById(R.id.download_multi_button);
-        download_multi_button.setOnClickListener(this);
+        mDownloadSingleProgress = (ProgressBar) findViewById(R.id.download_single_progress);
+        mDownloadSingleHint = (TextView) findViewById(R.id.download_single_hint);
+        mDownloadSingleButton = (Button) findViewById(R.id.download_single_button);
+        mDownloadSingleButton.setOnClickListener(this);
+        mDownloadSingleButton.setAlpha(0.6f);
+        mDownloadMultiProgress01 = (ProgressBar) findViewById(R.id.download_multi_progress01);
+        mDownloadMultiProgress02 = (ProgressBar) findViewById(R.id.download_multi_progress02);
+        mDownloadMultiHint01 = (TextView) findViewById(R.id.download_multi_hint01);
+        mDownloadMultiHint02 = (TextView) findViewById(R.id.download_multi_hint02);
+        mDownloadMultiButton = (Button) findViewById(R.id.download_multi_button);
+        mDownloadMultiButton.setOnClickListener(this);
+        mDownloadMultiButton.setAlpha(0.6f);
         FileUtil.initDirectory(FILEPATH);
     }
 
@@ -94,13 +96,13 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
                     else {
                         NohttpDownloadUtils.startRequest(DOWNLOAD_FILE01);
                     }
-                    download_single_button.setText("暂停下载");
+                    mDownloadSingleButton.setText("暂停下载");
                 }
                 //暂停
                 else {
                     mSingleDownloadTag = true;
                     NohttpDownloadUtils.cancel(DOWNLOAD_FILE01);
-                    download_single_button.setText("开始下载");
+                    mDownloadSingleButton.setText("开始下载");
                 }
                 break;
             case R.id.download_multi_button:
@@ -125,13 +127,13 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
                         NohttpDownloadUtils.startAllRequest();
                     }
 
-                    download_multi_button.setText("暂停批量下载");
+                    mDownloadMultiButton.setText("暂停批量下载");
                 }
                 //批量暂停
                 else {
                     mMultiDownloadTag = true;
-                    NohttpDownloadUtils.cancel();
-                    download_multi_button.setText("开始批量下载");
+                    NohttpDownloadUtils.cancelAll();
+                    mDownloadMultiButton.setText("开始批量下载");
                 }
                 break;
         }
@@ -202,36 +204,36 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
      */
     private void downloadHint(int what, String hint, boolean tag) {
         if (what == NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE01)) {
-            download_single_hint.setText(hint);
+            mDownloadSingleHint.setText(hint);
             if (tag) {
-                download_single_button.setText("完成下载");
-                download_single_button.setEnabled(false);
+                mDownloadSingleButton.setText("完成下载");
+                mDownloadSingleButton.setEnabled(false);
             }
         } else if (what == NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE02)) {
-            download_multi_hint01.setText(hint);
+            mDownloadMultiHint01.setText(hint);
             if (tag) {
-                download_multi_button.setText("完成下载");
-                download_multi_button.setEnabled(false);
+                mDownloadMultiButton.setText("完成下载");
+                mDownloadMultiButton.setEnabled(false);
             }
         } else if (what == NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE03)) {
-            download_multi_hint02.setText(hint);
+            mDownloadMultiHint02.setText(hint);
             if (tag) {
-                download_multi_button.setText("完成下载");
-                download_multi_button.setEnabled(false);
+                mDownloadMultiButton.setText("完成下载");
+                mDownloadMultiButton.setEnabled(false);
             }
         }
     }
 
     private void setProgress(int what, int progress, long speed) {
         if (what == NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE01)) {
-            download_single_progress.setProgress(progress);
-            updateProgress(download_single_hint, progress, speed);
+            mDownloadSingleProgress.setProgress(progress);
+            updateProgress(mDownloadSingleHint, progress, speed);
         } else if (what == NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE02)) {
-            download_multi_progress01.setProgress(progress);
-            updateProgress(download_multi_hint01, progress, speed);
+            mDownloadMultiProgress01.setProgress(progress);
+            updateProgress(mDownloadMultiHint01, progress, speed);
         } else if (what == NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE03)) {
-            download_multi_progress02.setProgress(progress);
-            updateProgress(download_multi_hint02, progress, speed);
+            mDownloadMultiProgress02.setProgress(progress);
+            updateProgress(mDownloadMultiHint02, progress, speed);
         }
     }
 

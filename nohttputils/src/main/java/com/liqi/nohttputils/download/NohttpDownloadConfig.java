@@ -79,9 +79,9 @@ public class NohttpDownloadConfig {
         }
 
         /**
-         * 设置线程池数量
+         * 设置线程池并发数量
          *
-         * @param threadPoolSize 线程池数量
+         * @param threadPoolSize 线程池并发数量
          * @return
          */
         public Build setThreadPoolSize(int threadPoolSize) {

@@ -2,6 +2,7 @@ package com.liqi.nohttprxutils;
 
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.liqi.nohttprxutils.base.BaseActivity;
@@ -19,7 +20,10 @@ public class ImageDownloadDemoActivity extends BaseActivity<Bitmap> implements V
     protected void onCreate() {
         setContentView(R.layout.image_download_demo_activity);
         mImageView = find(R.id.imageView);
-        find(R.id.image_button).setOnClickListener(this);
+        Button imageButton = find(R.id.image_button);
+        imageButton.setOnClickListener(this);
+        imageButton.setAlpha(0.6f);
+        mImageView.setAlpha(0.6f);
         mBitmapDemoHttpPresenter = new DemoHttpPresenter<>(this, Bitmap.class);
     }
 

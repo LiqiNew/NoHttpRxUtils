@@ -3,6 +3,7 @@ package com.liqi.nohttprxutils;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,7 +84,9 @@ public class FileUploadingDemoActivity extends BaseActivity<String> implements V
         getDialog("文件写入中,请稍后...").show();
         //如果你的要上传的文件已经在本地存在，那么就不需要执行此方法
         startRun(saveFileThread);
-        find(R.id.uploading).setOnClickListener(this);
+        Button uploading=find(R.id.uploading);
+        uploading.setOnClickListener(this);
+        uploading.setAlpha(0.6f);
         mPbProgress01 = find(R.id.pb_progress01);
         mPbProgress02 = find(R.id.pb_progress02);
         mPbProgress03 = find(R.id.pb_progress03);

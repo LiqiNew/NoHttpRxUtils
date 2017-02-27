@@ -2,6 +2,9 @@ package com.liqi.nohttputils.download;
 
 /**
  * 文件下载工具代理对象
+ *
+ * 个人QQ:543945827
+ * NoHttp作者群号：46523908
  * Created by LiQi on 2017/2/24.
  */
 
@@ -16,14 +19,14 @@ public class NohttpDownloadUtils {
     }
 
     /**
-     * 取消全部下载
+     * 暂停全部下载
      */
-    public static void cancel() {
-        NohttpDownload.getNohttpDownload().cancel();
+    public static void cancelAll() {
+        NohttpDownload.getNohttpDownload().cancelAll();
     }
 
     /**
-     * 取消指定下载
+     * 暂停指定下载
      *
      * @param downloadUrl 下载地址
      */
@@ -76,9 +79,8 @@ public class NohttpDownloadUtils {
     /**
      * 移除全部下载What
      *
-     * @param downloadUrl
      */
-    public static void removeWhatAll(String downloadUrl) {
+    public static void removeWhatAll() {
         NohttpDownload.getNohttpDownload().removeWhatAll();
     }
 }

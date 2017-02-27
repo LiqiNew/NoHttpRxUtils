@@ -1,6 +1,7 @@
 package com.liqi.nohttprxutils;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.liqi.nohttprxutils.base.BaseActivity;
@@ -20,8 +21,12 @@ public class HttpsDemoActivity extends BaseActivity<String> implements View.OnCl
     protected void onCreate() {
         setContentView(R.layout.https_demo_activity);
         textView2 = find(R.id.textView2);
-        find(R.id.https_yes).setOnClickListener(this);
-        find(R.id.https_no).setOnClickListener(this);
+        Button httpsYes = find(R.id.https_yes);
+        httpsYes.setOnClickListener(this);
+        httpsYes.setAlpha(0.6f);
+        Button httpsNo=find(R.id.https_no);
+        httpsNo.setOnClickListener(this);
+        httpsNo.setAlpha(0.6f);
         mDemoHttpPresenter=new DemoHttpPresenter<>(this,String.class);
     }
 
