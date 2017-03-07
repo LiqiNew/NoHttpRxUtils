@@ -1,5 +1,5 @@
 # NohttpRxUtils
-NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行MVP模式封装。<br>
+NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行"Builder模式"链式调用封装。<br>
 NohttpRxUtils数据下载方面：针对Nohttp数据下载进行Service捆绑封装。
 ### NohttpRxUtils数据下载方面
 ##### 下载开启(链式调用)
