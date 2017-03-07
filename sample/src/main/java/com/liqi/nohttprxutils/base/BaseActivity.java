@@ -2,53 +2,27 @@ package com.liqi.nohttprxutils.base;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
-import com.liqi.nohttprxutils.interfa.RequestHttpInterfa;
-import com.liqi.nohttputils.interfa.DialogGetInterfa;
-import com.liqi.nohttputils.interfa.RequestOkAndNo;
-import com.liqi.nohttputils.nohttp.RxRequestUtils;
-import com.yanzhenjie.nohttp.RequestMethod;
+import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnIsRequestListener;
 
-import java.util.Map;
 
 /**
- * 带网络请求的BaseActivity
+ * 所有Activity的基类BaseActivity
  * 个人QQ:543945827
- * NoHttp作者群号：46523908
  * Created by LiQi on 2016/12/30.
  */
-public abstract class BaseActivity<T> extends AppCompatActivity implements RequestHttpInterfa<T>, DialogGetInterfa, RequestOkAndNo<T> {
+public abstract class BaseActivity<T> extends AppCompatActivity implements DialogGetListener, OnIsRequestListener<T> {
     protected ProgressDialog mDialog;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreate();
-    }
-
-    @Override
-    public void request(String url, Map<String, Object> mapParame, Map<String, String> mapHeader, Class<T> tClass) {
-        //请大家按照自己需求去修改
-
-        //请求参数不为空，就断定是Post请求，
-        if (null != mapParame && !mapParame.isEmpty())
-            RxRequestUtils.getRxRequestUtils().createRequest(url, RequestMethod.POST).setRequestParameterMap(mapParame).setMapHeader(mapHeader)
-                    .requestRxNoHttp(tClass, this, this);
-
-            //请求参数为空，就断定是Get请求，
-        else
-            RxRequestUtils.getRxRequestUtils().createRequest(url).setMapHeader(mapHeader).requestRxNoHttp(tClass, this, this);
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
     }
 
     @Override
@@ -60,7 +34,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements Reque
     }
 
     /**
-     * 获取进度条框
+     * 获取加载框
      *
      * @param content
      * @return
@@ -105,7 +79,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements Reque
     /**
      * 替代findviewById方法
      */
-    protected <T extends View> T find(int id) {
+    protected <T extends View> T $(int id) {
         return (T) findViewById(id);
     }
     protected  abstract void onCreate();

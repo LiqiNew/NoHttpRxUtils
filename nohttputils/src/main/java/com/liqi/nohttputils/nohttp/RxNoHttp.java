@@ -5,8 +5,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.liqi.nohttputils.R;
-import com.liqi.nohttputils.interfa.DialogGetInterfa;
-import com.liqi.nohttputils.interfa.RequestOkAndNo;
+import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.error.NotFoundCacheError;
@@ -43,12 +43,12 @@ class RxNoHttp {
     /**
      * 通过nohttp去请求
      *
-     * @param mDialogGetInterfa dialog获取接口
+     * @param mDialogGetListener dialog获取接口
      * @param responseInterfa   请求成功或者失败回调对象
      */
-    <T> void request(final IProtocolRequest<T> request, DialogGetInterfa mDialogGetInterfa, final RequestOkAndNo<T> responseInterfa) {
-        if (null != mDialogGetInterfa)
-            dialog = mDialogGetInterfa.getDialog();
+    <T> void request(final IProtocolRequest<T> request, DialogGetListener mDialogGetListener, final OnIsRequestListener<T> responseInterfa) {
+        if (null != mDialogGetListener)
+            dialog = mDialogGetListener.getDialog();
 
         if (null != dialog)
             dialog.show();

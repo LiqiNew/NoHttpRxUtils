@@ -6,7 +6,7 @@ import android.app.Dialog;
  * 获取dialog
  * Created by LiQi on 2016/12/8.
  */
-public interface DialogGetInterfa {
+public interface DialogGetListener {
     /**
      * 获取dialog
      * @return

@@ -3,7 +3,6 @@ package com.liqi.nohttputils.nohttp;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-
 import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.tools.IOUtils;
@@ -20,7 +19,7 @@ import java.io.InputStream;
  * 上传文件对象
  * Created by LiQi on 2016/12/9.
  */
- class BinaryAllObj extends BasicBinary {
+class BinaryAllObj extends BasicBinary {
 
     protected InputStream inputStream;
 
@@ -32,7 +31,7 @@ import java.io.InputStream;
      * @param inputStream must be {@link FileInputStream}, {@link ByteArrayInputStream}.
      * @param fileName    file name. Had better pass this value, unless the server tube don't care about the file name.
      */
-     BinaryAllObj(InputStream inputStream, String fileName) {
+    BinaryAllObj(InputStream inputStream, String fileName) {
         this(inputStream, fileName, null);
     }
 
@@ -43,7 +42,7 @@ import java.io.InputStream;
      * @param fileName    file name. Had better pass this value, unless the server tube don't care about the file name.
      * @param mimeType    content type.
      */
-     BinaryAllObj(InputStream inputStream, String fileName, String mimeType) {
+    BinaryAllObj(InputStream inputStream, String fileName, String mimeType) {
         super(fileName, mimeType);
         this.inputStream = inputStream;
         if (!(inputStream instanceof FileInputStream) && !(inputStream instanceof ByteArrayInputStream)) {
@@ -60,7 +59,7 @@ import java.io.InputStream;
      *
      * @param file a file.
      */
-     BinaryAllObj(File file) {
+    BinaryAllObj(File file) {
         this(file, file.getName(), null);
     }
 
@@ -70,7 +69,7 @@ import java.io.InputStream;
      * @param file     a file.
      * @param fileName file name.
      */
-     BinaryAllObj(File file, String fileName) {
+    BinaryAllObj(File file, String fileName) {
         this(file, fileName, null);
     }
 
@@ -81,7 +80,7 @@ import java.io.InputStream;
      * @param fileName file name.
      * @param mimeType content type.
      */
-     BinaryAllObj(File file, String fileName, String mimeType) {
+    BinaryAllObj(File file, String fileName, String mimeType) {
         super(fileName, mimeType);
         try {
             this.inputStream = new FileInputStream(file);
@@ -100,7 +99,7 @@ import java.io.InputStream;
      * @param bitmap   image.
      * @param fileName file name. Had better pass this value, unless the server tube don't care about the file name.
      */
-     BinaryAllObj(Bitmap bitmap, String fileName) {
+    BinaryAllObj(Bitmap bitmap, String fileName) {
         this(bitmap, fileName, null);
     }
 
@@ -111,18 +110,21 @@ import java.io.InputStream;
      * @param fileName file name. Had better pass this value, unless the server tube don't care about the file name.
      * @param mimeType such as: image/png.
      */
-     BinaryAllObj(Bitmap bitmap, String fileName, String mimeType) {
+    BinaryAllObj(Bitmap bitmap, String fileName, String mimeType) {
         super(fileName, mimeType);
+        if (bitmap == null)
+            throw new IllegalArgumentException("Bitmap is null: " + fileName);
+        if (bitmap.isRecycled())
+            throw new IllegalArgumentException("Bitmap is recycled: " + fileName + ", bitmap must be not recycled.");
+        inputStream = new ByteArrayInputStream(bitmap2ByteArray(bitmap));
 
-        if (bitmap != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            IOUtils.closeQuietly(outputStream);
-            inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-        } else {
-            Log.e("Binary", "Binary was cancelled, because the Bitmap is null or bitmap is recycled.");
-            super.cancel();
-        }
+    }
+
+    private byte[] bitmap2ByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        IOUtils.closeQuietly(outputStream);
+        return outputStream.toByteArray();
     }
 
     @Override

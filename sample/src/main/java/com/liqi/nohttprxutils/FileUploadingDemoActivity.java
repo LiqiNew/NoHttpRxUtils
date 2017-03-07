@@ -9,14 +9,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.liqi.nohttprxutils.base.BaseActivity;
-import com.liqi.nohttprxutils.presenter.DemoHttpPresenter;
 import com.liqi.nohttprxutils.utils.FileUtil;
+import com.liqi.nohttputils.nohttp.BinaryFactory;
+import com.liqi.nohttputils.nohttp.RxNoHttpUtils;
+import com.yanzhenjie.nohttp.BasicBinary;
+import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.OnUploadListener;
 import com.yanzhenjie.nohttp.tools.IOUtils;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文件上传请求演示界面（文件上传也请参考此界面请求）
@@ -38,7 +42,6 @@ public class FileUploadingDemoActivity extends BaseActivity<String> implements V
 
     private ProgressBar mPbProgress01, mPbProgress02, mPbProgress03;
     private TextView textView;
-    private DemoHttpPresenter<String> mStringDemoHttpPresenter;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -84,14 +87,13 @@ public class FileUploadingDemoActivity extends BaseActivity<String> implements V
         getDialog("文件写入中,请稍后...").show();
         //如果你的要上传的文件已经在本地存在，那么就不需要执行此方法
         startRun(saveFileThread);
-        Button uploading=find(R.id.uploading);
+        Button uploading= $(R.id.uploading);
         uploading.setOnClickListener(this);
         uploading.setAlpha(0.6f);
-        mPbProgress01 = find(R.id.pb_progress01);
-        mPbProgress02 = find(R.id.pb_progress02);
-        mPbProgress03 = find(R.id.pb_progress03);
-        textView = find(R.id.textView);
-        mStringDemoHttpPresenter = new DemoHttpPresenter<>(this, String.class);
+        mPbProgress01 = $(R.id.pb_progress01);
+        mPbProgress02 = $(R.id.pb_progress02);
+        mPbProgress03 = $(R.id.pb_progress03);
+        textView = $(R.id.textView);
     }
 
     private void startRun(Runnable runnable) {
@@ -101,9 +103,37 @@ public class FileUploadingDemoActivity extends BaseActivity<String> implements V
     @Override
     public void onClick(View v) {
         if (!MFILEARRAYLIST.isEmpty()) {
-            mStringDemoHttpPresenter.fileUpload(StaticHttpUrl.UPLOAD_URL, MFILEARRAYLIST, this);
+            //开始请求
+            RxNoHttpUtils.rxNohttpRequest()
+                    .post()
+                    .url(StaticHttpUrl.UPLOAD_URL)
+                    .addParameter("user","LiQi")
+                    .addParameter("image1",getBinaries())
+                    .setDialogGetListener(this)
+                    .builder(String.class,this)
+                    .requestRxNoHttp();
         } else
             Toast.makeText(this, "文件写入失败,无法上传", Toast.LENGTH_SHORT).show();
+    }
+
+    private List<Binary> getBinaries() {
+        List<Binary> binaries = new ArrayList<>();
+        for (int i = 0; i < MFILEARRAYLIST.size(); i++) {
+            BasicBinary binary = BinaryFactory.getBinary(MFILEARRAYLIST.get(i));
+            int tag = -1;
+            if (i == 0) {
+                tag =FILE_ONE;
+            } else if (i == 1) {
+                tag =FILE_TWO;
+            } else if (i == 2) {
+                tag =FILE_THREE;
+            } else {
+                tag = -1;
+            }
+            binary.setUploadListener(tag, this);
+            binaries.add(binary);
+        }
+        return binaries;
     }
 
     @Override

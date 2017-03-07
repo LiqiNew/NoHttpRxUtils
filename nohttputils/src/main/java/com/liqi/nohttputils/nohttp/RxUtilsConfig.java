@@ -2,12 +2,14 @@ package com.liqi.nohttputils.nohttp;
 
 import android.content.Context;
 
+import com.liqi.nohttputils.interfa.DialogGetListener;
+
 /**
- * 初始化配置文件
+ * 初始化参数配置文件
  * Created by LiQi on 2017/2/22.
  */
 
-public class RxUtilsConfig {
+class RxUtilsConfig {
     /**
      * nohttp底层请求方式
      */
@@ -41,9 +43,18 @@ public class RxUtilsConfig {
      * 上下文
      */
     private Context mContext;
+    /**
+     * 网络请求全局加载框获取接口
+     * (全项目请求默认加载框)
+     */
+    private DialogGetListener mDialogGetListener;
 
     private RxUtilsConfig(Context ontext) {
         mContext = ontext;
+    }
+
+    public DialogGetListener getDialogGetListener() {
+        return mDialogGetListener;
     }
 
     public boolean isDebug() {
@@ -85,7 +96,7 @@ public class RxUtilsConfig {
         private static ConfigBuilder mConfigBuilder;
         private RxUtilsConfig mRxUtilsConfig;
 
-        private ConfigBuilder(Context context) {
+        ConfigBuilder(Context context) {
             mRxUtilsConfig = new RxUtilsConfig(context);
         }
 
@@ -118,7 +129,7 @@ public class RxUtilsConfig {
             return mConfigBuilder;
         }
 
-        public ConfigBuilder setDebug(boolean isDebug) {
+        public ConfigBuilder isDebug(boolean isDebug) {
             mRxUtilsConfig.isDebug = isDebug;
             return mConfigBuilder;
         }
@@ -128,8 +139,19 @@ public class RxUtilsConfig {
             return mConfigBuilder;
         }
 
-        public void createInit() {
-            RxRequestUtils.getRxRequestUtils().init(mRxUtilsConfig);
+        /**
+         * 网络请求全局加载框获取接口
+         *
+         * @param dialogGetListener
+         * @return
+         */
+        public ConfigBuilder setDialogGetListener(DialogGetListener dialogGetListener) {
+            mRxUtilsConfig.mDialogGetListener = dialogGetListener;
+            return mConfigBuilder;
+        }
+
+        public void startInit() {
+            NoHttpInit.getNoHttpInit().init(mRxUtilsConfig);
         }
     }
 }
