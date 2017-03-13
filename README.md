@@ -16,7 +16,8 @@ GET、POST、PUT、PATCH、HEAD、DELETE、OPTIONS、TRACE等请求协议<br><br
 用队列保存请求，平均分配多线程的资源，支持多个请求并发<br><br>
 支持取消某个请求、取消指定多个请求、取消所有请求
 ##### 欢迎加入Nohttp作者QQ技术交流群：46523908
-### 使用方法
+使用方法
+-----
 #### Gradle
 **1：在项目根目录build.gradley**	<br>
 allprojects {<br>
