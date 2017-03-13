@@ -27,7 +27,7 @@ allprojects {<br>
 　　}<br>
 }<br>
 **2：依赖NohttpRxUtils框架**<br>
-compile 'com.github.LiqiNew:NohttpRxUtils:v.1.0'
+compile 'com.github.liqinew:nohttprxutils:v.1.0'
 # NohttpRxUtils简介
 NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行"Builder模式"链式调用封装。<br>
 NohttpRxUtils数据下载方面：针对Nohttp数据下载进行Service捆绑封装。
