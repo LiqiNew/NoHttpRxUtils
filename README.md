@@ -1,6 +1,5 @@
 ### 由于NohttpRxUtils是针对Nohttp网络框架的请求方法进行封装，<br>首先对Nohttp网络框架做一个简介
 # Nohttp框架是什么?
-**Nohttp框架作者是严振杰**<br><br>
 比Retrofit使用更简单、更易用。<br><br>
 动态配置底层框架为OkHttp、HttpURLConnection<br><br>
 支持异步请求、支持同步请求<br><br>
