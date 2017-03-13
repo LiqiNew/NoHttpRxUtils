@@ -1,7 +1,37 @@
-# NohttpRxUtils
+### 由于NohttpRxUtils是针对Nohttp网络框架的请求方法进行封装，<br>首先对Nohttp网络框架做一个简介
+# Nohttp框架是什么?
+**Nohttp框架作者是严振杰**<br><br>
+比Retrofit使用更简单、更易用。<br><br>
+动态配置底层框架为OkHttp、HttpURLConnection<br><br>
+支持异步请求、支持同步请求<br><br>
+多文件上传，支持大文件上传，表单提交数据<br><br>
+文件下载、上传下载、上传和下载的进度回调、错误回调<br><br>
+支持Json、xml、Map、List的提交<br><br>
+完美的Http缓存模式，可指定缓存到数据库、SD卡，缓存数据已安全加密<br><br>
+自定义Request，直接请求JsonObject、JavaBean等<br><br>
+Cookie的自动维持，App重启、关开机后还持续维持<br><br>
+http 301 302 303 304 307重定向，支持多层嵌套重定向<br><br>
+Https、自签名网站Https的访问、支持双向验证<br><br>
+失败重试机制，支持请求优先级<br><br>
+GET、POST、PUT、PATCH、HEAD、DELETE、OPTIONS、TRACE等请求协议<br><br>
+用队列保存请求，平均分配多线程的资源，支持多个请求并发<br><br>
+支持取消某个请求、取消指定多个请求、取消所有请求
+##### 欢迎加入Nohttp作者QQ技术交流群：46523908
+### 使用方法
+#### Gradle
+**1：在项目根目录build.gradley**	<br>
+allprojects {<br>
+　　repositories { <br>
+  　　//依赖仓库	<br>		
+　　　maven { url 'https://jitpack.io' }<br>
+　　}<br>
+}<br>
+**2：依赖NohttpRxUtils框架**<br>
+compile 'com.github.LiqiNew:NohttpRxUtils:v.1.0'
+# NohttpRxUtils简介
 NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行"Builder模式"链式调用封装。<br>
 NohttpRxUtils数据下载方面：针对Nohttp数据下载进行Service捆绑封装。
-### NohttpRxUtils数据下载方面
+### 如何使用NohttpRxUtils去数据下载?
 ##### 下载开启(链式调用)
 //获取下载请求构建器<br>
 NohttpDownloadUtils.getNohttpDownloadBuild()<br>
@@ -40,7 +70,7 @@ NohttpDownloadUtils.removeWhatAll();
 //清空当前下载请求对象,并停止服务<br>
 NohttpDownloadUtils.clearAll();
 ##### 注：如果上一次下载任务没有完成或者没有清空，那么下一次点击任何下载都会继续执行上一次没有完成的任务继续下载
-### NohttpRxUtils数据请求方面
+### 如何使用NohttpRxUtils去数据请求?
 ##### 链式初始化nohttp，建议放到Application中onCreate生命周期方法里面
 //初始化nohttp（在此处其实可以调用setDialogGetListener设置全局请求加载框）<br>
  RxNoHttpUtils.rxNoHttpInit(getApplicationContext())<br>
@@ -88,5 +118,6 @@ RxNoHttpUtils.rxNohttpRequest()<br>
 .builder(Objects.class,new OnIsRequestListener<T>)<br>
 //开始请求<br>
 .requestRxNoHttp();
+##### 如果觉得不错,请star给我动力.
 ### NohttpRxUtils数据请求方面，请查看我的博客文档
 [我的博客](http://www.jianshu.com/p/61d3eaecc7ca) 
