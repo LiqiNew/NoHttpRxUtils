@@ -27,9 +27,9 @@ allprojects {<br>
 　　}<br>
 }<br>
 **2：依赖NohttpRxUtils框架**<br>
-compile 'com.github.liqinew:nohttprxutils:v.1.0'
+compile 'com.github.liqinew:nohttprxutils:v.1.1'
 # NohttpRxUtils简介
-NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行"Builder模式"链式调用封装。<br>
+NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行"Builder模式"链式调用封装,并通过Rx"线程池"队列去管理网络请求。<br>
 NohttpRxUtils数据下载方面：针对Nohttp数据下载进行Service捆绑封装。
 ### 链式初始化nohttp，建议放到Application中onCreate生命周期方法里面
 //初始化nohttp（在此处其实可以调用setDialogGetListener设置全局请求加载框）<br>
@@ -46,6 +46,10 @@ NohttpRxUtils数据下载方面：针对Nohttp数据下载进行Service捆绑封
 //.setConnectTimeout(100*1000)<br>
 //设置全局服务器响应超时时间，单位毫秒，默认30s。<br>
 //.setReadTimeout(100*1000)<br>
+//设置下载线程池并发数量(默认并发数量是3)<br>
+.setThreadPoolSize(3)<br>
+//设置网络请求队列并发数量(默认并发数量是3)<br>
+.setRunRequestSize(4)<br>
 //设置全局默认加载对话框<br>
 //.setDialogGetListener("全局加载框获取接口")<br>
 //设置底层用那种方式去请求<br>
@@ -104,6 +108,12 @@ RxNoHttpUtils.rxNohttpRequest()<br>
 .addParameter()<br>
 //添加请求头<br>
 .addHeader()<br>
+//设置当前请求是否添加进Rx"线程池"队列中(默认是添加rx"线程池"中.!!如果设置false,请求线程不经过Rx"线程池"直接请求)<br>
+.setQueue(false)<br>
+//设置Rx"线程池"队列标识.(标识设置请保证唯一.!!如果setQueue(false)设置为false,setSign(标识对象)设置无任何作用)<br>
+.setSign(new Object())<br>
+//设置此请求是否开启缓存机制(默认不开启)<br>
+.setOpenCache(true)<br>
 //添加HTTPS协议无证书参数<br>
 .addHttpsIsCertificate()<br>
 //添加HTTPS协议有证书参数<br>
@@ -118,6 +128,13 @@ RxNoHttpUtils.rxNohttpRequest()<br>
 .builder(Objects.class,new OnIsRequestListener<T>)<br>
 //开始请求<br>
 .requestRxNoHttp();
+##### 手动取消Rx"线程池"中队列请求(注：setQueue(true)设置为true才起作用)
+//单个取消Sign对应的请求<br>
+RxNoHttpUtils.cancel(Sign));<br>
+//取消批量Sign对应的请求<br>
+RxNoHttpUtils.cancel(Sign[]);<br>
+//取消RX"线程池"中所有的请求<br>
+// RxNoHttpUtils.cancelAll();
 ##### 如果觉得不错,请star给我动力.
 ### NohttpRxUtils数据请求方面，请查看我的博客文档
 [我的博客](http://www.jianshu.com/p/61d3eaecc7ca) 
