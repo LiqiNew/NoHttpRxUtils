@@ -68,8 +68,6 @@ NohttpDownloadUtils.getNohttpDownloadBuild()<br>
 .setDownloadListener(this)<br>
 //设置在指定的文件夹发现同名的文件是否删除后重新下载<br>
 .setDeleteOld(false)<br>
-//设置线程池并发数量<br>
-.setThreadPoolSize(3)<br>
 //设置下载文件存储文件路径<br>
 .setFileFolder(FILEPATH)<br>
 //开启下载<br>
@@ -138,3 +136,5 @@ RxNoHttpUtils.cancel(Sign[]);<br>
 ##### 如果觉得不错,请star给我动力.
 ### NohttpRxUtils数据请求方面，请查看我的博客文档
 [我的博客](http://www.jianshu.com/p/61d3eaecc7ca) 
+### 由于NohttpRxUtils网络请求中Rx"线程池"是自己写的队列算法,要了解的请看我写的Rx"线程池"案例
+[Rx线程池案例](https://github.com/LiqiNew/RxThreadPool) 
