@@ -1,9 +1,9 @@
 package com.liqi.nohttputils.download;
 
 import android.app.Activity;
-import android.content.Context;
 
 
+import com.liqi.nohttputils.nohttp.RxUtilsConfig;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class NohttpDownloadConfig {
     /**
      * 线程池数量,并发任务的数量
      */
-    private int mThreadPoolSize;
+    private final int THREADPOOLSIZE = RxUtilsConfig.ConfigBuilder.getConfigBuilder().getRxUtilsConfig().getThreadPoolSize();
     /**
      * 是否断点续传下载，默认断点续传
      */
@@ -44,8 +44,8 @@ public class NohttpDownloadConfig {
         mDownloadUrlEntities = null == mDownloadUrlEntities ? new ArrayList<DownloadUrlEntity>() : mDownloadUrlEntities;
     }
 
-    public int getThreadPoolSize() {
-        return mThreadPoolSize;
+    public int getTHREADPOOLSIZE() {
+        return THREADPOOLSIZE;
     }
 
     public boolean isRange() {
@@ -76,17 +76,6 @@ public class NohttpDownloadConfig {
 
         Build() {
             mNohttpDownloadConfig = new NohttpDownloadConfig();
-        }
-
-        /**
-         * 设置线程池并发数量
-         *
-         * @param threadPoolSize 线程池并发数量
-         * @return
-         */
-        public Build setThreadPoolSize(int threadPoolSize) {
-            mNohttpDownloadConfig.mThreadPoolSize = threadPoolSize;
-            return this;
         }
 
         /**

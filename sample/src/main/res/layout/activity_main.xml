@@ -36,4 +36,8 @@
         android:id="@+id/button4"
         style="@style/button_style"
         android:text="文件下载演示"/>
+    <Button
+        android:id="@+id/button5"
+        style="@style/button_style"
+        android:text="多请求队列演示"/>
 </LinearLayout>

@@ -5,7 +5,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.liqi.nohttprxutils.base.BaseActivity;
-import com.liqi.nohttputils.nohttp.RxNoHttpUtils;
+import com.liqi.nohttputils.RxNoHttpUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

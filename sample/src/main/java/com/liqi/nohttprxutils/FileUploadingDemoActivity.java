@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.liqi.nohttprxutils.base.BaseActivity;
 import com.liqi.nohttprxutils.utils.FileUtil;
 import com.liqi.nohttputils.nohttp.BinaryFactory;
-import com.liqi.nohttputils.nohttp.RxNoHttpUtils;
+import com.liqi.nohttputils.RxNoHttpUtils;
 import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.OnUploadListener;

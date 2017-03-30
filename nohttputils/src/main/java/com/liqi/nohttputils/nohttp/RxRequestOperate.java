@@ -3,6 +3,8 @@ package com.liqi.nohttputils.nohttp;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.liqi.nohttputils.nohttp.rx_threadpool.RxMessageSource;
+import com.liqi.nohttputils.nohttp.rx_threadpool.model.RxRequestModel;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.rest.RestRequest;
@@ -53,7 +55,21 @@ public class RxRequestOperate<T> {
      * @return
      */
     public void requestRxNoHttp() {
-        RxNoHttp.getRxNoHttp().request(addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz())), mRxRequestConfig.getDialogGetListener(), mRxRequestConfig.getOnIsRequestListener());
+        if (mRxRequestConfig.isQueue()) {
+            RxRequestModel<T> requestModel = new RxRequestModel<>(
+                    addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz()))
+                    , mRxRequestConfig.getOnIsRequestListener());
+            requestModel.setDialogGetListener(mRxRequestConfig.getDialogGetListener());
+
+            Object sign = mRxRequestConfig.getSign();
+            if (sign != null) {
+                requestModel.setSign(sign);
+            }
+            requestModel.setCache(mRxRequestConfig.isOpenCache());
+            RxThreadInterchange.getRxThreadInterchange().start(RxMessageSource.getRxMessageSource().add(requestModel));
+        } else {
+            RxNoHttp.getRxNoHttp().request(addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz())), mRxRequestConfig.getDialogGetListener(), mRxRequestConfig.getOnIsRequestListener());
+        }
     }
 
     /**
@@ -188,9 +204,9 @@ public class RxRequestOperate<T> {
     private RestRequest<T> getTJavaBeanRequest(Class<T> clazz) {
         RestRequest<T> ntityRequest;
         if (clazz != Bitmap.class) {
-            ntityRequest = new RequestBeanObj<>(mRxRequestConfig.getUrl(), mRxRequestConfig.getRequestMethod(), clazz);
+            ntityRequest = new RequestBeanObj<T>(mRxRequestConfig.getUrl(), mRxRequestConfig.getRequestMethod(), clazz);
         } else {
-            ntityRequest = new RequestBeanObj(mRxRequestConfig.getUrl(),
+            ntityRequest = new RequestBeanObj<T>(mRxRequestConfig.getUrl(),
                     mRxRequestConfig.getRequestMethod(),
                     mRxRequestConfig.getMaxWidth(),
                     mRxRequestConfig.getMaxHeight(),

@@ -29,6 +29,9 @@ public class RxRequestConfig<T> {
     private DialogGetListener mDialogGetListener;
     private OnIsRequestListener<T> mOnIsRequestListener;
     private Class<T> mClazz;
+    private boolean isOpenCache;
+    private Object mSign;
+    private boolean isQueue = true;
 
     private RxRequestConfig() {
 
@@ -71,6 +74,18 @@ public class RxRequestConfig<T> {
         return mScaleType;
     }
 
+    boolean isOpenCache() {
+        return isOpenCache;
+    }
+
+    Object getSign() {
+        return mSign;
+    }
+
+    boolean isQueue() {
+        return isQueue;
+    }
+
     DialogGetListener getDialogGetListener() {
         return mDialogGetListener = null == mDialogGetListener ? NoHttpInit.getNoHttpInit().getDialogGetListener() : mDialogGetListener;
     }
@@ -102,8 +117,14 @@ public class RxRequestConfig<T> {
         private ImageView.ScaleType mScaleType;
         //加载框获取接口
         private DialogGetListener mDialogGetListener;
+        //是否开启缓存
+        private boolean isOpenCache;
+        //请求标识
+        private Object mSign;
+        //是否队列请求
+        private boolean isQueue = true;
 
-        ConfigBuilder() {
+        public ConfigBuilder() {
 
         }
 
@@ -296,6 +317,37 @@ public class RxRequestConfig<T> {
         }
 
         /**
+         * 是否设置缓存
+         *
+         * @param openCache
+         */
+        public ConfigBuilder setOpenCache(boolean openCache) {
+            isOpenCache = openCache;
+            return this;
+        }
+
+        /**
+         * 设置请求标识（必须唯一）
+         *
+         * @param sign
+         */
+        public ConfigBuilder setSign(Object sign) {
+            mSign = sign;
+            return this;
+        }
+
+        /**
+         * 设置当前请求是否添加进Rx线程池队列中
+         *
+         * @param queue
+         * @return
+         */
+        public ConfigBuilder setQueue(boolean queue) {
+            isQueue = queue;
+            return this;
+        }
+
+        /**
          * 创建请求参数处理对象
          *
          * @param clazz               请求成功后返回数据转换对象
@@ -314,6 +366,9 @@ public class RxRequestConfig<T> {
             requestConfig.mDecodeConfig = mDecodeConfig;
             requestConfig.mScaleType = mScaleType;
             requestConfig.mDialogGetListener = mDialogGetListener;
+            requestConfig.isOpenCache = isOpenCache;
+            requestConfig.mSign = mSign;
+            requestConfig.isQueue = isQueue;
             return new RxRequestOperate<T>(requestConfig);
         }
     }

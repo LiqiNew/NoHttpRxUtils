@@ -9,7 +9,7 @@ import com.liqi.nohttputils.interfa.DialogGetListener;
  * Created by LiQi on 2017/2/22.
  */
 
-class RxUtilsConfig {
+public class RxUtilsConfig {
     /**
      * nohttp底层请求方式
      */
@@ -48,6 +48,14 @@ class RxUtilsConfig {
      * (全项目请求默认加载框)
      */
     private DialogGetListener mDialogGetListener;
+    /**
+     * 指定下载线程池并发数量
+     */
+    private int mThreadPoolSize = 3;
+    /**
+     * 网络请求队列并发数量
+     */
+    private int mRunRequestSize = 3;
 
     private RxUtilsConfig(Context ontext) {
         mContext = ontext;
@@ -89,6 +97,14 @@ class RxUtilsConfig {
         return mCookieEnable;
     }
 
+    public int getThreadPoolSize() {
+        return mThreadPoolSize;
+    }
+
+    public int getRunRequestSize() {
+        return mRunRequestSize;
+    }
+
     /**
      * RxUtilsConfig建筑创建对象
      */
@@ -102,6 +118,14 @@ class RxUtilsConfig {
 
         public static ConfigBuilder getConfigBuilder(Context context) {
             return mConfigBuilder = null == mConfigBuilder ? new ConfigBuilder(context) : mConfigBuilder;
+        }
+
+        public static ConfigBuilder getConfigBuilder() {
+            return mConfigBuilder;
+        }
+
+        public RxUtilsConfig getRxUtilsConfig() {
+            return mRxUtilsConfig;
         }
 
         public ConfigBuilder setRxRequestUtilsWhy(int rxUtilsConfig) {
@@ -136,6 +160,16 @@ class RxUtilsConfig {
 
         public ConfigBuilder setDebugName(String debugName) {
             mRxUtilsConfig.mDebugName = debugName;
+            return mConfigBuilder;
+        }
+
+        public ConfigBuilder setRunRequestSize(int runRequestSize) {
+            mRxUtilsConfig.mRunRequestSize = runRequestSize;
+            return mConfigBuilder;
+        }
+
+        public ConfigBuilder setThreadPoolSize(int threadPoolSize) {
+            mRxUtilsConfig.mThreadPoolSize = threadPoolSize;
             return mConfigBuilder;
         }
 

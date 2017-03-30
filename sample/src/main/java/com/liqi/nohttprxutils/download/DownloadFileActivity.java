@@ -87,7 +87,6 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
                                 .setRange(true)
                                 .setDownloadListener(this)
                                 .setDeleteOld(false)
-                                .setThreadPoolSize(3)
                                 .setFileFolder(FILEPATH)
                                 .satart(this);
                         mSingleInit = 1;
@@ -118,7 +117,6 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
                                 .setRange(true)
                                 .setDownloadListener(this)
                                 .setDeleteOld(false)
-                                .setThreadPoolSize(3)
                                 .satart(this);
                         mMultiInit = 1;
                     }

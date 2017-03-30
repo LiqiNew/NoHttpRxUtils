@@ -3,7 +3,7 @@ package com.liqi.nohttprxutils.application;
 import android.app.Application;
 
 import com.liqi.nohttputils.nohttp.NoHttpInit;
-import com.liqi.nohttputils.nohttp.RxNoHttpUtils;
+import com.liqi.nohttputils.RxNoHttpUtils;
 
 /**
  * Created by LiQi on 2016/12/30.
@@ -30,6 +30,10 @@ public class DemoApplication extends Application {
                 //.setDialogGetListener("全局加载框获取接口")
                 //设置底层用那种方式去请求
                 .setRxRequestUtilsWhy(NoHttpInit.OKHTTP)
+                //设置下载线程池并发数量
+                .setThreadPoolSize(3)
+                //设置网络请求队列并发数量
+                .setRunRequestSize(4)
                 //开始初始化Nohttp
                 .startInit();
     }

@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.liqi.nohttprxutils.base.BaseActivity;
-import com.liqi.nohttputils.nohttp.RxNoHttpUtils;
+import com.liqi.nohttputils.RxNoHttpUtils;
 
 /**
  * 图片请求演示界面

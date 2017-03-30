@@ -58,6 +58,13 @@ class RxNoHttp {
             public void call(Subscriber<? super Response<T>> subscriberOut) {
                 // 最关键的就是用NoHttp的同步请求请求到response了，其它的都是rxjava做的，跟nohttp无关的。
                 Response<T> response = NoHttp.startRequestSync(request);
+                byte[] oo=new byte[12];
+                try {
+                    response.request().parseResponse(response.getHeaders(),oo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 if (response.isSucceed())
                     subscriberOut.onNext(response);
                 else

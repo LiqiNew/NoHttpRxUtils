@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/timg"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#DE4E42"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:text="由于线程不可控和网络请求响应时长关系,\n可能本页面展示的效果和实际效果有所误差."
+        android:textSize="12sp"/>
+    <Button
+        android:id="@+id/request_button"
+        style="@style/button_style"
+        android:text="发送多个请求"/>
+
+    <Button
+        android:id="@+id/request_button1"
+        style="@style/button_style"
+        android:text="撤销3个请求"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/request_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#174C83"
+            android:textSize="15sp"/>
+    </ScrollView>
+</LinearLayout>

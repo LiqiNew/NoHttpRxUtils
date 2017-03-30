@@ -55,7 +55,7 @@ public class NohttpDownloadService extends Service implements DownloadListener {
      */
     public void start(NohttpDownloadConfig nohttpDownloadConfig) {
         mDownloadListener = nohttpDownloadConfig.getDownloadListener();
-        threadPoolSize = nohttpDownloadConfig.getThreadPoolSize();
+        threadPoolSize = nohttpDownloadConfig.getTHREADPOOLSIZE();
         addDownloadRequest(nohttpDownloadConfig);
     }
 
@@ -183,7 +183,7 @@ public class NohttpDownloadService extends Service implements DownloadListener {
         }
         removeWhatAll();
     }
-
+    private DownloadQueue mDownloadQueue;
     /**
      * 获取下载队列
      *
@@ -191,7 +191,9 @@ public class NohttpDownloadService extends Service implements DownloadListener {
      */
     private DownloadQueue getDownloadQueueInstance() {
         threadPoolSize = threadPoolSize > 0 ? threadPoolSize : mDownloadRequests.size();
-        DownloadQueue mDownloadQueue = NoHttp.newDownloadQueue(threadPoolSize);
+        if (null==mDownloadQueue) {
+            mDownloadQueue = NoHttp.newDownloadQueue(threadPoolSize);
+        }
         return mDownloadQueue;
     }
 
