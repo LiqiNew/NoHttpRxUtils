@@ -29,7 +29,7 @@ allprojects {<br>
 **2：依赖NohttpRxUtils框架**<br>
 compile 'com.github.liqinew:nohttprxutils:v.1.1'
 # NohttpRxUtils简介
-NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行"Builder模式"链式调用封装,并通过Rx"线程池"队列去管理网络请求。<br>
+NohttpRxUtils数据请求方面：采用Rxjava对Nohttp网络请求进行"Builder模式"链式调用封装,并通过Rx"线程池"队列去管理请求。<br>
 NohttpRxUtils数据下载方面：针对Nohttp数据下载进行Service捆绑封装。
 ### 链式初始化nohttp，建议放到Application中onCreate生命周期方法里面
 //初始化nohttp（在此处其实可以调用setDialogGetListener设置全局请求加载框）<br>
@@ -136,5 +136,5 @@ RxNoHttpUtils.cancel(Sign[]);<br>
 ##### 如果觉得不错,请star给我动力.
 ### NohttpRxUtils数据请求方面，请查看我的博客文档
 [我的博客](http://www.jianshu.com/p/61d3eaecc7ca) 
-### 由于NohttpRxUtils网络请求中Rx"线程池"是自己写的队列算法,要了解的请看我写的Rx"线程池"案例
+### 由于NohttpRxUtils请求中Rx"线程池"是自己写的队列算法,要了解的请看我写的Rx"线程池"案例
 [Rx线程池案例](https://github.com/LiqiNew/RxThreadPool) 
