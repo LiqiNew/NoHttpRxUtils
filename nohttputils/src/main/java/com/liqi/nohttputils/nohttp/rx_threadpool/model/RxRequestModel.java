@@ -6,7 +6,6 @@ import com.liqi.nohttputils.interfa.DialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.RestRequest;
 
@@ -20,8 +19,6 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
     private DialogGetListener mDialogGetListener;
     private RestRequest<T> mRestRequest;
     private OnIsRequestListener<T> mOnIsRequestListener;
-    //是否设置了从缓存数据库里面取数据
-    private boolean isCache;
 
     private RxRequestModel() {
 
@@ -68,22 +65,6 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
         }
     }
 
-    public void setCache(boolean cache) {
-        isCache = cache;
-        if (isCache) {
-            cacheKeyWrite();
-        }
-    }
-
-    /**
-     * 设置是否写入缓存数据库
-     */
-    private void cacheKeyWrite() {
-        if (null != mRestRequest) {
-            mRestRequest.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
-        }
-    }
-
     public DialogGetListener getDialogGetListener() {
         return mDialogGetListener;
     }
@@ -106,7 +87,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
                 if (!isRunOff()) {
                     return response.get();
                 } else {
-                    setThrowable(new Exception(mRestRequest.url()+"撤销请求"));
+                    setThrowable(new Exception(mRestRequest.url() + "撤销请求"));
                 }
             } else {
                 setThrowable(response.getException());

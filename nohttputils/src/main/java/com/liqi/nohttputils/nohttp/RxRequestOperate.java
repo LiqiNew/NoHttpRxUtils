@@ -7,6 +7,7 @@ import com.liqi.nohttputils.nohttp.rx_threadpool.RxMessageSource;
 import com.liqi.nohttputils.nohttp.rx_threadpool.model.RxRequestModel;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.Logger;
+import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.RestRequest;
 
 import java.io.File;
@@ -65,7 +66,6 @@ public class RxRequestOperate<T> {
             if (sign != null) {
                 requestModel.setSign(sign);
             }
-            requestModel.setCache(mRxRequestConfig.isOpenCache());
             RxThreadInterchange.getRxThreadInterchange().start(RxMessageSource.getRxMessageSource().add(requestModel));
         } else {
             RxNoHttp.getRxNoHttp().request(addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz())), mRxRequestConfig.getDialogGetListener(), mRxRequestConfig.getOnIsRequestListener());
@@ -156,6 +156,11 @@ public class RxRequestOperate<T> {
                 for (Map.Entry<String, String> header : mapHeader.entrySet()) {
                     entityRequest.addHeader(header.getKey(), header.getValue());
                 }
+            }
+
+            //设置是否开启缓存
+            if (mRxRequestConfig.isOpenCache()) {
+                entityRequest.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
             }
         }
         return entityRequest;
