@@ -27,7 +27,7 @@ allprojects {<br>
 　　}<br>
 }<br>
 **2：依赖NohttpRxUtils框架**<br>
-compile 'com.github.liqinew:nohttprxutils:v.1.1'
+compile 'com.github.liqinew:nohttprxutils:v.1.1.1'
 # NohttpRxUtils简介
 NohttpRxUtils数据请求方面：通过算法实现线程池对Rx线程进行队列管理和操作,支持Rx线程队列请求和Rx线程单一请求。<br>
 NohttpRxUtils数据下载方面：针对Nohttp数据下载进行Service捆绑封装。
@@ -134,7 +134,7 @@ RxNoHttpUtils.cancel(Sign[]);<br>
 //取消RX"线程池"中所有的请求<br>
 // RxNoHttpUtils.cancelAll();
 ##### 如果觉得不错,请star给我动力.
-### NohttpRxUtils数据请求方面，请查看我的博客文档
+### NohttpRxUtils数据请求方面，请查看我的博客文档(博客文档还未更新)
 [我的博客](http://www.jianshu.com/p/61d3eaecc7ca) 
 ### 由于NohttpRxUtils请求中Rx"线程池"是自己写的队列算法,要了解的请看我写的Rx"线程池"案例
 [Rx线程池案例](https://github.com/LiqiNew/RxThreadPool) 
