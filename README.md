@@ -126,7 +126,7 @@ RxNoHttpUtils.rxNohttpRequest()<br>
 .builder(Objects.class,new OnIsRequestListener<T>)<br>
 //开始请求<br>
 .requestRxNoHttp();
-##### 手动取消Rx"线程池"中队列请求(注：setQueue(true)设置为true才起作用)
+##### 手动取消Rx"线程池"中队列请求(注：setQueue(false)如果设置为false，手动取消将失去作用)
 //单个取消Sign对应的请求<br>
 RxNoHttpUtils.cancel(Sign));<br>
 //取消批量Sign对应的请求<br>
