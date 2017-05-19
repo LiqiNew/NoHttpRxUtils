@@ -112,8 +112,9 @@ public class FileUploadingDemoActivity extends BaseActivity<String> implements V
                     .setDialogGetListener(this)
                     .builder(String.class,this)
                     .requestRxNoHttp();
-        } else
+        } else {
             Toast.makeText(this, "文件写入失败,无法上传", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private List<Binary> getBinaries() {

@@ -22,10 +22,10 @@ public class DemoApplication extends Application {
                 .isDebug(true)
                 //设置debug打印Name
                 .setDebugName("LiQi-NoHttpUtils")
-                //设置全局连接超时时间。单位毫秒，默认30s。
-                //.setConnectTimeout(100*1000)
-                //设置全局服务器响应超时时间，单位毫秒，默认30s。
-                //.setReadTimeout(100*1000)
+                //设置全局连接超时时间。单位秒，默认30s。
+                //.setConnectTimeout(40)
+                //设置全局服务器响应超时时间，单位秒，默认30s。
+                //.setReadTimeout(40)
                 //设置全局默认加载对话框
                 //.setDialogGetListener("全局加载框获取接口")
                 //设置底层用那种方式去请求

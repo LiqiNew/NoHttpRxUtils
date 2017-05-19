@@ -6,6 +6,7 @@ import com.liqi.nohttputils.nohttp.RxRequestConfig;
 import com.liqi.nohttputils.nohttp.RxUtilsConfig;
 import com.liqi.nohttputils.nohttp.rx_threadpool.RxMessageSource;
 import com.liqi.nohttputils.nohttp.rx_threadpool.interfa.OnRxMessageSetListener;
+import com.yanzhenjie.nohttp.NoHttp;
 
 /**
  * NoHttpRxUtils网络请求静态调用对象
@@ -58,6 +59,22 @@ public class RxNoHttpUtils {
      */
     public static void cancelAll() {
         getOnRxMessageSetListener().cancelAll();
+    }
+
+    /**
+     * 清除对应的key的缓存数据
+     *
+     * @param cacheKey 缓存KEY
+     */
+    public static void removeKeyCacheData(String cacheKey) {
+        NoHttp.getCacheStore().remove(cacheKey);
+    }
+
+    /**
+     * 清除所有缓存数据
+     */
+    public static void removeAllCacheData() {
+        NoHttp.getCacheStore().clear();
     }
 
     private static OnRxMessageSetListener getOnRxMessageSetListener() {

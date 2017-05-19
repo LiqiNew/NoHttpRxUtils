@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * 文件下载演示界面
  * 注：如果上一次下载任务没有完成或者没有清空，那么下一次点击任何下载都会继续执行上一次没有完成的任务继续下载
- *
+ * <p>
  * 个人QQ:543945827
  * NoHttp作者群号：46523908
  * Created by LiQi on 2017/2/24.
@@ -88,6 +88,12 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
                                 .setDownloadListener(this)
                                 .setDeleteOld(false)
                                 .setFileFolder(FILEPATH)
+                                //单个请求设置读取时间(单位秒，默认以全局读取超时时间。)
+                                // .setReadTimeout(40)
+                                //单个请求设置链接超时时间(单位秒，默认以全局链接超时时间。)
+                                // .setConnectTimeout(30)
+                                //单个请求设置请求失败重试计数。默认值是0,也就是说,失败后不会再次发起请求。
+                                //.setRetryCount(3)
                                 .satart(this);
                         mSingleInit = 1;
                     }

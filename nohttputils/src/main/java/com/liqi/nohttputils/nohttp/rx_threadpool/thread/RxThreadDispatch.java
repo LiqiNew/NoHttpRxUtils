@@ -56,38 +56,45 @@ public class RxThreadDispatch extends Thread {
     public void run() {
         while (isRunTag) {
             isRunState = true;
-           Logger.e("运行次数前mRunSize："+mRunSize + "<<<<数据源总长度：>>>>" + mList.size());
+            Logger.e("运行次数前mRunSize：" + mRunSize + "<<<<数据源总长度：>>>>" + mList.size());
 
             //开启多少条线程并发
             tag:
             while (!isRunSize && mRunSize - 1 >= 0) {
                 mRunSize = mRunSize - 1;
-               // Logger.e("运行次数后mRunSize："+mRunSize);
+                // Logger.e("运行次数后mRunSize："+mRunSize);
 
                 if (!mList.isEmpty()) {
                     int runDisposeSize = 0;
-                    int size = mList.size();
-
-                    for (int i = 0; i < size; i++) {
-                        BaseRxRequestModel baseRxRequestModel = mList.get(i);
-                        //判断是否有线程处理此对象
-                        if (!baseRxRequestModel.isRunDispose()) {
-                            baseRxRequestModel.setRunDispose(true);
-                            if (null != mOnRunDataDisListener) {
-                                mOnRunDataDisListener.getRunData(baseRxRequestModel);
-                                continue tag;
+                    why:
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (i < mList.size()) {
+                            BaseRxRequestModel baseRxRequestModel = mList.get(i);
+                            if (null != baseRxRequestModel) {
+                                //判断是否有线程处理此对象
+                                if (!baseRxRequestModel.isRunDispose()) {
+                                    baseRxRequestModel.setRunDispose(true);
+                                    if (null != mOnRunDataDisListener) {
+                                        mOnRunDataDisListener.getRunData(baseRxRequestModel);
+                                        continue tag;
+                                    }
+                                } else {
+                                    ++runDisposeSize;
+                                }
+                            } else {
+                                continue why;
                             }
                         } else {
-                            ++runDisposeSize;
+                            break why;
                         }
                     }
 
-                    if (runDisposeSize >= size) {
+                    if (runDisposeSize >= mList.size()) {
                         //如果全部数据源对象全部在处理，那么线程用掉的次数回滚
                         ++mRunSize;
                         isRunState = false;
                         isRunSize = true;
-                       // Logger.e("线程休眠01："+"已经运行>>" + runDisposeSize + "总数据源：" + size);
+                        // Logger.e("线程休眠01："+"已经运行>>" + runDisposeSize + "总数据源：" + size);
                         if (null != mOnRunDataDisListener) {
                             mOnRunDataDisListener.waitThread();
                         }
@@ -98,7 +105,7 @@ public class RxThreadDispatch extends Thread {
                     ++mRunSize;
                     isRunState = false;
                     isRunSize = true;
-                   // Logger.e("线程休眠02：数据源为空");
+                    // Logger.e("线程休眠02：数据源为空");
                     if (null != mOnRunDataDisListener) {
                         mOnRunDataDisListener.waitThread();
                     }
@@ -106,10 +113,10 @@ public class RxThreadDispatch extends Thread {
             }
             isRunState = false;
             if (null != mOnRunDataDisListener) {
-               // Logger.e("线程休眠03：运行次数用完");
+                // Logger.e("线程休眠03：运行次数用完");
                 mOnRunDataDisListener.waitThread();
             }
-          //  Logger.e("线程运行：线程运行中");
+            //  Logger.e("线程运行：线程运行中");
         }
     }
 

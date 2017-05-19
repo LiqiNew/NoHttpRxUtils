@@ -15,13 +15,13 @@ public class RxUtilsConfig {
      */
     private int mRxRequestUtilsWhy;
     /**
-     * 设置全局连接超时时间，单位毫秒，默认30s。
+     * 设置全局连接超时时间，单位秒，默认30s。
      */
-    private int mConnectTimeout = 30 * 1000;
+    private int mConnectTimeout = 30;
     /**
-     * 设置全局服务器响应超时时间，单位毫秒，默认30s。
+     * 设置全局服务器响应超时时间，单位秒，默认30s。
      */
-    private int mReadTimeout = 30 * 1000;
+    private int mReadTimeout = mConnectTimeout;
     /**
      * 配置缓存，是否缓存进数据库DBCacheStore
      */
@@ -82,11 +82,11 @@ public class RxUtilsConfig {
     }
 
     public int getConnectTimeout() {
-        return mConnectTimeout;
+        return mConnectTimeout*1000;
     }
 
     public int getReadTimeout() {
-        return mReadTimeout;
+        return mReadTimeout*1000;
     }
 
     public boolean isDbEnable() {

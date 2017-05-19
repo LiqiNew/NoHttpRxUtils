@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * 下载服务
- *
+ * <p>
  * 个人QQ:543945827
  * NoHttp作者群号：46523908
  * Created by LiQi on 2017/2/23.
@@ -43,6 +43,7 @@ public class NohttpDownloadService extends Service implements DownloadListener {
     private Hashtable<String, Integer> mWhats;
     private DownloadListener mDownloadListener;
     private DownloadServiceFinishListener mDownloadServiceFinishListener;
+    private DownloadQueue mDownloadQueue;
 
     public void setDownloadServiceFinishListener(DownloadServiceFinishListener downloadServiceFinishListener) {
         mDownloadServiceFinishListener = downloadServiceFinishListener;
@@ -86,10 +87,24 @@ public class NohttpDownloadService extends Service implements DownloadListener {
                     }
                     continue;
                 }
-                mDownloadRequests.put(key, NoHttp.createDownloadRequest(
+                DownloadRequest request = NoHttp.createDownloadRequest(
                         downloadUrL, nohttpDownloadConfig.getFileFolder(),
                         downloadUrlEntity.getFileName(), nohttpDownloadConfig.isRange(),
-                        nohttpDownloadConfig.isDeleteOld()));
+                        nohttpDownloadConfig.isDeleteOld());
+
+                int readTimeout = nohttpDownloadConfig.getReadTimeout();
+                if (readTimeout>0) {
+                    request.setReadTimeout(readTimeout);
+                }
+                int connectTimeout = nohttpDownloadConfig.getConnectTimeout();
+                if (connectTimeout>0) {
+                    request.setConnectTimeout(connectTimeout);
+                }
+                int retryCount = nohttpDownloadConfig.getRetryCount();
+                if (retryCount>0) {
+                    request.setRetryCount(retryCount);
+                }
+                mDownloadRequests.put(key, request);
             }
 
             startAllRequest();
@@ -106,14 +121,21 @@ public class NohttpDownloadService extends Service implements DownloadListener {
                 DownloadRequest downloadRequest = mDownloadRequests.get(what);
 
                 if (downloadRequest.isCanceled()) {
+                    int connectTimeout = downloadRequest.getConnectTimeout();
+                    int readTimeout = downloadRequest.getReadTimeout();
+                    int retryCount = downloadRequest.getRetryCount();
                     downloadRequest = NoHttp.createDownloadRequest(
                             downloadRequest.url(), downloadRequest.getFileDir(),
                             downloadRequest.getFileName(), downloadRequest.isRange(),
                             downloadRequest.isDeleteOld());
+                    downloadRequest.setConnectTimeout(connectTimeout);
+                    downloadRequest.setReadTimeout(readTimeout);
+                    downloadRequest.setRetryCount(retryCount);
                     mDownloadRequests.put(what, downloadRequest);
                 }
-                if (!downloadRequest.isStarted())
+                if (!downloadRequest.isStarted()) {
                     getDownloadQueueInstance().add(what, downloadRequest, this);
+                }
             }
         }
     }
@@ -128,19 +150,25 @@ public class NohttpDownloadService extends Service implements DownloadListener {
                 DownloadRequest downloadRequest = mDownloadRequests.get(what);
                 if (null != downloadRequest) {
                     if (downloadRequest.isCanceled()) {
+                        int connectTimeout = downloadRequest.getConnectTimeout();
+                        int readTimeout = downloadRequest.getReadTimeout();
+                        int retryCount = downloadRequest.getRetryCount();
                         downloadRequest = NoHttp.createDownloadRequest(
                                 downloadRequest.url(), downloadRequest.getFileDir(),
                                 downloadRequest.getFileName(), downloadRequest.isRange(),
                                 downloadRequest.isDeleteOld());
+                        downloadRequest.setConnectTimeout(connectTimeout);
+                        downloadRequest.setReadTimeout(readTimeout);
+                        downloadRequest.setRetryCount(retryCount);
                         mDownloadRequests.put(what, downloadRequest);
                     }
-                    if (!downloadRequest.isStarted())
+                    if (!downloadRequest.isStarted()) {
                         getDownloadQueueInstance().add(what, downloadRequest, this);
+                    }
                 }
             }
         }
     }
-
 
     /**
      * 暂停当前所有正在下载的任务
@@ -183,7 +211,7 @@ public class NohttpDownloadService extends Service implements DownloadListener {
         }
         removeWhatAll();
     }
-    private DownloadQueue mDownloadQueue;
+
     /**
      * 获取下载队列
      *
@@ -191,7 +219,7 @@ public class NohttpDownloadService extends Service implements DownloadListener {
      */
     private DownloadQueue getDownloadQueueInstance() {
         threadPoolSize = threadPoolSize > 0 ? threadPoolSize : mDownloadRequests.size();
-        if (null==mDownloadQueue) {
+        if (null == mDownloadQueue) {
             mDownloadQueue = NoHttp.newDownloadQueue(threadPoolSize);
         }
         return mDownloadQueue;

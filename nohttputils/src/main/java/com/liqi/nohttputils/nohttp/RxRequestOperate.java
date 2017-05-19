@@ -3,11 +3,11 @@ package com.liqi.nohttputils.nohttp;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.liqi.nohttputils.nohttp.gsonutils.JsonUtil;
 import com.liqi.nohttputils.nohttp.rx_threadpool.RxMessageSource;
 import com.liqi.nohttputils.nohttp.rx_threadpool.model.RxRequestModel;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.Logger;
-import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.RestRequest;
 
 import java.io.File;
@@ -157,10 +157,28 @@ public class RxRequestOperate<T> {
                     entityRequest.addHeader(header.getKey(), header.getValue());
                 }
             }
+            //设置开启缓存
+            entityRequest.setCacheMode(mRxRequestConfig.getCacheMode());
+            String cacheKey = mRxRequestConfig.getCacheKey();
+            if (null != cacheKey && !"".equals(cacheKey)) {
+                //设置缓存KEY
+                entityRequest.setCacheKey(cacheKey);
+            }
+            //设置请求实体
+            RxRequestEntityBase rxRequestEntityBase = mRxRequestConfig.getRxRequestEntityBase();
+            if (null != rxRequestEntityBase) {
+                if (rxRequestEntityBase instanceof RxRequestJsonObjectEntity) {
+                    entityRequest.setDefineRequestBodyForJson(JsonUtil.objectToJson(rxRequestEntityBase.getStringJsonMap()));
+                } else if (rxRequestEntityBase instanceof RxRequestStringEntity) {
+                    entityRequest.setDefineRequestBody(rxRequestEntityBase.getStringEntity(), rxRequestEntityBase.getContentType());
+                } else if (rxRequestEntityBase instanceof RxRequestInputStreamEntity) {
+                    entityRequest.setDefineRequestBody(rxRequestEntityBase.getInputStream(), rxRequestEntityBase.getContentType());
+                } else if (rxRequestEntityBase instanceof RxRequestJsonListEntity) {
+                    entityRequest.setDefineRequestBodyForJson(JsonUtil.objectToJson(rxRequestEntityBase.getJsonMapList()));
 
-            //设置是否开启缓存
-            if (mRxRequestConfig.isOpenCache()) {
-                entityRequest.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
+                } else {
+                    Logger.e("RxRequestEntityBase类型未知");
+                }
             }
         }
         return entityRequest;
@@ -217,6 +235,18 @@ public class RxRequestOperate<T> {
                     mRxRequestConfig.getMaxHeight(),
                     mRxRequestConfig.getDecodeConfig(),
                     mRxRequestConfig.getScaleType(), clazz);
+        }
+        int connectTimeout = mRxRequestConfig.getConnectTimeout();
+        if (connectTimeout > 0) {
+            ntityRequest.setConnectTimeout(connectTimeout);
+        }
+        int readTimeout = mRxRequestConfig.getReadTimeout();
+        if (readTimeout > 0) {
+            ntityRequest.setReadTimeout(readTimeout);
+        }
+        int retryCount = mRxRequestConfig.getRetryCount();
+        if (retryCount > 0) {
+            ntityRequest.setRetryCount(retryCount);
         }
         return ntityRequest;
     }

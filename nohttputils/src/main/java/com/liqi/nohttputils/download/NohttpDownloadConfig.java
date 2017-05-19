@@ -2,7 +2,6 @@ package com.liqi.nohttputils.download;
 
 import android.app.Activity;
 
-
 import com.liqi.nohttputils.nohttp.RxUtilsConfig;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 
@@ -39,6 +38,18 @@ public class NohttpDownloadConfig {
      * 下载进度监听接口
      */
     private DownloadListener mDownloadListener;
+    /**
+     * 下载链接超时时间（默认以全局链接超时时间）
+     */
+    private int mConnectTimeout = -1;
+    /**
+     * 读取超时时间（默认以全局读取超时时间）
+     */
+    private int mReadTimeout = -1;
+    /**
+     * 请求失败重试计数
+     */
+    private int mRetryCount=-1;
 
     private NohttpDownloadConfig() {
         mDownloadUrlEntities = null == mDownloadUrlEntities ? new ArrayList<DownloadUrlEntity>() : mDownloadUrlEntities;
@@ -46,6 +57,26 @@ public class NohttpDownloadConfig {
 
     public int getTHREADPOOLSIZE() {
         return THREADPOOLSIZE;
+    }
+
+    public int getRetryCount() {
+        return mRetryCount;
+    }
+
+    public int getConnectTimeout() {
+        if (mConnectTimeout > 0) {
+            return mConnectTimeout * 1000;
+        } else {
+            return mConnectTimeout;
+        }
+    }
+
+    public int getReadTimeout() {
+        if (mReadTimeout > 0) {
+            return mReadTimeout * 1000;
+        } else {
+            return mReadTimeout;
+        }
     }
 
     public boolean isRange() {
@@ -136,6 +167,39 @@ public class NohttpDownloadConfig {
          */
         public Build setFileFolder(String fileFolder) {
             mNohttpDownloadConfig.mFileFolder = fileFolder;
+            return this;
+        }
+
+        /**
+         * 设置链接超时时间
+         *
+         * @param connectTimeout 时间，单位秒
+         * @return
+         */
+        public Build setConnectTimeout(int connectTimeout) {
+            mNohttpDownloadConfig.mConnectTimeout = connectTimeout;
+            return this;
+        }
+
+        /**
+         * 设置读取时间
+         *
+         * @param readTimeout 时间，单位秒
+         * @return
+         */
+        public Build setReadTimeout(int readTimeout) {
+            mNohttpDownloadConfig.mReadTimeout = readTimeout;
+            return this;
+        }
+
+        /**
+         * 设置请求失败重试计数。默认值是0,也就是说,失败后不会再次发起请求。
+         *
+         * @param retryCount 重试计数
+         * @return
+         */
+        public Build setRetryCount(int retryCount) {
+            mNohttpDownloadConfig.mRetryCount = retryCount;
             return this;
         }
 

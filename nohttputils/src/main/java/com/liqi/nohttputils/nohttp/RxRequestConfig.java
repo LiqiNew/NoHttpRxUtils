@@ -6,7 +6,12 @@ import android.widget.ImageView;
 
 import com.liqi.nohttputils.interfa.DialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
+import com.liqi.nohttputils.nohttp.interfa.OnToInputStreamEntityMethodListener;
+import com.liqi.nohttputils.nohttp.interfa.OnToJsonListEntityMethodListener;
+import com.liqi.nohttputils.nohttp.interfa.OnToJsonObjectEntityMethodListener;
+import com.liqi.nohttputils.nohttp.interfa.OnToStringEntityMethodListener;
 import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.CacheMode;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -29,9 +34,14 @@ public class RxRequestConfig<T> {
     private DialogGetListener mDialogGetListener;
     private OnIsRequestListener<T> mOnIsRequestListener;
     private Class<T> mClazz;
-    private boolean isOpenCache;
     private Object mSign;
     private boolean isQueue = true;
+    private int mConnectTimeout = -1;
+    private int mReadTimeout = -1;
+    private int mRetryCount = -1;
+    private String mCacheKey;
+    private CacheMode mCacheMode = CacheMode.DEFAULT;
+    private RxRequestEntityBase mRxRequestEntityBase;
 
     private RxRequestConfig() {
 
@@ -40,6 +50,38 @@ public class RxRequestConfig<T> {
     RxRequestConfig(Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
         mClazz = clazz;
         mOnIsRequestListener = onIsRequestListener;
+    }
+
+    RxRequestEntityBase getRxRequestEntityBase() {
+        return mRxRequestEntityBase;
+    }
+
+    String getCacheKey() {
+        return mCacheKey;
+    }
+
+    CacheMode getCacheMode() {
+        return mCacheMode;
+    }
+
+    int getRetryCount() {
+        return mRetryCount;
+    }
+
+    int getConnectTimeout() {
+        if (mConnectTimeout > 0) {
+            return mConnectTimeout * 1000;
+        } else {
+            return mConnectTimeout;
+        }
+    }
+
+    int getReadTimeout() {
+        if (mReadTimeout > 0) {
+            return mReadTimeout * 1000;
+        } else {
+            return mReadTimeout;
+        }
     }
 
     String getUrl() {
@@ -74,10 +116,6 @@ public class RxRequestConfig<T> {
         return mScaleType;
     }
 
-    boolean isOpenCache() {
-        return isOpenCache;
-    }
-
     Object getSign() {
         return mSign;
     }
@@ -99,30 +137,74 @@ public class RxRequestConfig<T> {
     }
 
     public static class ConfigBuilder {
-        //请求模式
+        /**
+         * 请求模式
+         */
         private RequestMethod mRequestMethod;
-        //请求URL
+        /**
+         * 请求URL
+         */
         private String mUrl;
-        //参数集合
+        /**
+         * 参数集合
+         */
         private Map<String, Object> mParameterMap;
-        //请求头参数集合
+        /**
+         * 请求头参数集合
+         */
         private Map<String, String> mMapHeader;
-        //请求的bitmap最大宽度
+        /**
+         * 请求的bitmap最大宽度
+         */
         private int mMaxWidth = -1;
-        //请求的bitmap最大高度
+        /**
+         * 请求的bitmap最大高度
+         */
         private int mMaxHeight = -1;
-        //bitmap配置
+        /**
+         * bitmap配置
+         */
         private Bitmap.Config mDecodeConfig;
-        //bitmap比例
+        /**
+         * bitmap比例
+         */
         private ImageView.ScaleType mScaleType;
-        //加载框获取接口
+        /**
+         * 加载框获取接口
+         */
         private DialogGetListener mDialogGetListener;
-        //是否开启缓存
-        private boolean isOpenCache;
-        //请求标识
+        /**
+         * 请求标识
+         */
         private Object mSign;
-        //是否队列请求
+        /**
+         * 是否队列请求
+         */
         private boolean isQueue = true;
+        /**
+         * 下载链接超时时间（默认以全局链接超时时间）
+         */
+        private int mConnectTimeout = -1;
+        /**
+         * 读取超时时间（默认以全局读取超时时间）
+         */
+        private int mReadTimeout = -1;
+        /**
+         * 请求失败重试计数
+         */
+        private int mRetryCount = -1;
+        /**
+         * 数据缓存对应的KEY（Nohttp底层默认是请求对应的url）
+         */
+        private String mCacheKey;
+        /**
+         * 缓存模式（默认：CacheMode.DEFAULT）
+         */
+        private CacheMode mCacheMode = CacheMode.DEFAULT;
+        /**
+         * 请求实体（body）
+         */
+        private RxRequestEntityBase mRxRequestEntityBase;
 
         public ConfigBuilder() {
 
@@ -317,16 +399,6 @@ public class RxRequestConfig<T> {
         }
 
         /**
-         * 是否设置缓存
-         *
-         * @param openCache
-         */
-        public ConfigBuilder setOpenCache(boolean openCache) {
-            isOpenCache = openCache;
-            return this;
-        }
-
-        /**
          * 设置请求标识（必须唯一）
          *
          * @param sign
@@ -348,6 +420,131 @@ public class RxRequestConfig<T> {
         }
 
         /**
+         * 设置链接超时时间
+         *
+         * @param connectTimeout 时间，单位秒
+         * @return
+         */
+        public ConfigBuilder setConnectTimeout(int connectTimeout) {
+            mConnectTimeout = connectTimeout;
+            return this;
+        }
+
+        /**
+         * 设置读取时间
+         *
+         * @param readTimeout 时间，单位秒
+         * @return
+         */
+        public ConfigBuilder setReadTimeout(int readTimeout) {
+            mReadTimeout = readTimeout;
+            return this;
+        }
+
+        /**
+         * 设置请求失败重试计数。默认值是0,也就是说,失败后不会再次发起请求。
+         *
+         * @param retryCount 重试计数
+         * @return
+         */
+        public ConfigBuilder setRetryCount(int retryCount) {
+            mRetryCount = retryCount;
+            return this;
+        }
+
+        /**
+         * 设置缓存模式（默认：CacheMode.Default）
+         *
+         * @param cacheMode 缓存模式共五大缓存模式：
+         *                  1：CacheMode.Default，实现http 304重定向缓存 NoHttp本身是实现了RFC2616，所以这里不用设置或者设置为DEFAULT。
+         *                  2：CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE，当请求服务器失败的时候，读取缓存 请求服务器成功则返回服务器数据，如果请求服务器失败，读取缓存数据返回。
+         *                  3：CacheMode.IF_NONE_CACHE_REQUEST_NETWORK，如果发现有缓存直接成功，没有缓存才请求服务器 我们知道ImageLoader的核心除了内存优化外，
+         *                  剩下一个就是发现把内地有图片则直接使用，没有则请求服务器，所以NoHttp这一点非常使用做一个ImageLoader。
+         *                  4：CacheMode.ONLY_REQUEST_NETWORK，仅仅请求网络 这里不会读取缓存，也不支持Http304。
+         *                  5：CacheMode.ONLY_READ_CACHE，仅仅读取缓存 仅仅读取缓存，不会请求网络和其它操作。
+         * @return
+         */
+        public ConfigBuilder setCacheMode(@NonNull CacheMode cacheMode) {
+            mCacheMode = cacheMode;
+            return this;
+        }
+
+        /**
+         * 设置数据缓存对应的KEY（默认是请求对应的url）
+         *
+         * @param cacheKey key
+         * @return
+         */
+        public ConfigBuilder setCacheKey(String cacheKey) {
+            mCacheKey = cacheKey;
+            return this;
+        }
+
+        /**
+         * 设置Json请求对象实体对象
+         *json样式：{"xx":"xxx","yy":"yyy"}
+         * @return
+         */
+        public OnToJsonObjectEntityMethodListener requestJsonObjectEntity() {
+            mRxRequestEntityBase = new RxRequestJsonObjectEntity();
+            mRxRequestEntityBase.setOnGetConfigBuilderListener(new RxRequestEntityBase.OnGetConfigBuilderListener() {
+                @Override
+                public ConfigBuilder getConfigBuilder() {
+                    return ConfigBuilder.this;
+                }
+            });
+            return (OnToJsonObjectEntityMethodListener) mRxRequestEntityBase;
+        }
+        /**
+         * 设置Json请求集合实体对象
+         *json样式：[{"xx":"xxx"},{"yy":"yyy"}]
+         * @return
+         */
+        public OnToJsonListEntityMethodListener requestJsonListEntity() {
+            mRxRequestEntityBase = new RxRequestJsonListEntity();
+            mRxRequestEntityBase.setOnGetConfigBuilderListener(new RxRequestEntityBase.OnGetConfigBuilderListener() {
+                @Override
+                public ConfigBuilder getConfigBuilder() {
+                    return ConfigBuilder.this;
+                }
+            });
+            return (OnToJsonListEntityMethodListener) mRxRequestEntityBase;
+        }
+        /**
+         * 设置String请求实体对象
+         *
+         * @param contentType Content-Type
+         * @return
+         */
+        public OnToStringEntityMethodListener requestStringEntity(@NonNull String contentType) {
+            mRxRequestEntityBase = new RxRequestStringEntity(contentType);
+            mRxRequestEntityBase.setOnGetConfigBuilderListener(new RxRequestEntityBase.OnGetConfigBuilderListener() {
+                @Override
+                public ConfigBuilder getConfigBuilder() {
+                    return ConfigBuilder.this;
+                }
+            });
+            return (OnToStringEntityMethodListener) mRxRequestEntityBase;
+        }
+
+        /**
+         * 请求输入流实体对象
+         *
+         * @param contentType Content-Type
+         * @return
+         */
+        public OnToInputStreamEntityMethodListener requestInputStreamEntity(@NonNull String contentType) {
+            mRxRequestEntityBase = new RxRequestInputStreamEntity(contentType);
+            mRxRequestEntityBase.setOnGetConfigBuilderListener(new RxRequestEntityBase.OnGetConfigBuilderListener() {
+                @Override
+                public ConfigBuilder getConfigBuilder() {
+                    return ConfigBuilder.this;
+                }
+            });
+            return (OnToInputStreamEntityMethodListener) mRxRequestEntityBase;
+        }
+
+        /**
          * 创建请求参数处理对象
          *
          * @param clazz               请求成功后返回数据转换对象
@@ -356,6 +553,11 @@ public class RxRequestConfig<T> {
          * @return
          */
         public <T> RxRequestOperate builder(@NonNull Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
+            return new RxRequestOperate<T>(getRxRequestConfig(clazz, onIsRequestListener));
+        }
+
+        @NonNull
+        private <T> RxRequestConfig<T> getRxRequestConfig(@NonNull Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
             RxRequestConfig<T> requestConfig = new RxRequestConfig<T>(clazz, onIsRequestListener);
             requestConfig.mRequestMethod = mRequestMethod;
             requestConfig.mUrl = mUrl;
@@ -366,10 +568,15 @@ public class RxRequestConfig<T> {
             requestConfig.mDecodeConfig = mDecodeConfig;
             requestConfig.mScaleType = mScaleType;
             requestConfig.mDialogGetListener = mDialogGetListener;
-            requestConfig.isOpenCache = isOpenCache;
             requestConfig.mSign = mSign;
             requestConfig.isQueue = isQueue;
-            return new RxRequestOperate<T>(requestConfig);
+            requestConfig.mConnectTimeout = mConnectTimeout;
+            requestConfig.mReadTimeout = mReadTimeout;
+            requestConfig.mRetryCount = mRetryCount;
+            requestConfig.mCacheKey = mCacheKey;
+            requestConfig.mCacheMode = mCacheMode;
+            requestConfig.mRxRequestEntityBase = mRxRequestEntityBase;
+            return requestConfig;
         }
     }
 }
