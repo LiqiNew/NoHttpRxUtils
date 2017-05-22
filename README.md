@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 ### 由于NohttpRxUtils是针对Nohttp网络框架的请求方法进行封装，<br>首先对Nohttp网络框架做一个简介
 # Nohttp框架是什么?
 比Retrofit使用更简单、更易用。<br><br>
