@@ -159,8 +159,6 @@ RxNoHttpUtils.rxNohttpRequest()<br><br>
 .setQueue(false)<br><br>
 //设置Rx"线程池"队列标识.(标识设置请保证唯一.!!如果setQueue(false)设置为false,setSign(标识对象)设置无任何作用)<br>
 .setSign(new Object())<br><br>
-//设置此请求是否开启缓存机制(默认不开启)<br>
-.setOpenCache(true)<br><br>
 //添加HTTPS协议无证书参数<br>
 .addHttpsIsCertificate()<br><br>
 //添加HTTPS协议有证书参数<br>
