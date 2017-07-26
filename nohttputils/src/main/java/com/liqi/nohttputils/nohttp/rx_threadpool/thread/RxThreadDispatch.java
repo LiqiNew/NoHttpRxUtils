@@ -14,7 +14,9 @@ import java.util.List;
  */
 
 public class RxThreadDispatch extends Thread {
-    //并发最大值
+    //固定并发最大值
+    private int mFixedRunSize;
+    //要操作的并发最大值
     private int mRunSize;
     //数据源
     private List<BaseRxRequestModel> mList;
@@ -29,6 +31,7 @@ public class RxThreadDispatch extends Thread {
 
     public RxThreadDispatch(int runSize, @NonNull List<BaseRxRequestModel> list) {
         this.mRunSize = runSize;
+        this.mFixedRunSize = runSize;
         this.mList = list;
     }
 
@@ -126,6 +129,10 @@ public class RxThreadDispatch extends Thread {
     public void addRunSize() {
         synchronized (this) {
             ++mRunSize;
+
+            if (mRunSize > mFixedRunSize) {
+                mRunSize = mFixedRunSize;
+            }
             //Logger.e("运行次数：++运行次数相加" + mRunSize);
         }
     }

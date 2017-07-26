@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.liqi.nohttputils.R;
 import com.liqi.nohttputils.interfa.DialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
+import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.error.NotFoundCacheError;
@@ -106,6 +107,13 @@ class RxNoHttp {
                             } else if (e instanceof ProtocolException) {
                                 show(R.string.error_system_unsupport_method);
                             } else {
+                                Logger.e("NoHttpUtils捕获异常："+e.toString());
+                                StackTraceElement[] stackTrace = e.getStackTrace();
+                                if (null!=stackTrace) {
+                                    for (StackTraceElement traceElement : stackTrace) {
+                                        Logger.e("NoHttpUtils捕获异常："+traceElement.toString());
+                                    }
+                                }
                                 show(R.string.error_unknow);
                             }
                             dialog = null;

@@ -25,6 +25,10 @@ public class GetPostDemoActivity extends BaseActivity<String> implements View.On
         mPost.setOnClickListener(this);
         mPost.setAlpha(0.6f);
         mContent = $(R.id.content);
+        //清除对应的key的缓存数据
+        // RxNoHttpUtils.removeKeyCacheData("Cachekey");
+        //清除所有缓存数据
+        //  RxNoHttpUtils.removeAllCacheData();
     }
 
     @Override
@@ -47,6 +51,34 @@ public class GetPostDemoActivity extends BaseActivity<String> implements View.On
                         //.setCacheKey("get请求Key")
                         //单个请求设置缓存模式
                         // .setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE)
+                        //设置请求bodyEntity为StringEntity，并传请求类型。
+                        //.requestStringEntity(Content-Type)
+                        //为StringEntity添加body中String值
+                        //.addStringEntityParameter("请求的String")
+                        //从bodyEntity切换到请求配置对象
+                        // .transitionToRequest()
+                        //设置请求bodyEntity为JsonObjectEntity.json格式：{"xx":"xxx","yy":"yyy"}
+                        // .requestJsonObjectEntity()
+                        //给JsonObjectEntity添加参数和值
+                        //.addEntityParameter("key","Valu")
+                        //从bodyEntity切换到请求配置对象
+                        // .transitionToRequest()
+                        //设置请求bodyEntity为JsonListEntity.json格式：[{"xx":"xxx"},{"yy":"yyy"}]
+                        //.requestJsonListEntity()
+                        //给JsonList创造对象，并传键值参数
+                        //.addObjectEntityParameter("key","Valu")
+                        //在创造对象的上添加键值参数
+                        //.addEntityParameter("key","Valu")
+                        //把创造对象刷进进JsonList里面
+                        //.objectBrushIntoList()
+                        //从bodyEntity切换到请求配置对象
+                        //.transitionToRequest()
+                        //设置请求bodyEntity为InputStreamEntity
+                        //.requestInputStreamEntity(Content-Type)
+                        //给InputStreamEntity添加输入流
+                        //.addEntityInputStreamParameter(InputStream)
+                        //从bodyEntity切换到请求配置对象
+                        //.transitionToRequest()
                         .builder(String.class, this)
                         .requestRxNoHttp();
                 break;
@@ -63,7 +95,7 @@ public class GetPostDemoActivity extends BaseActivity<String> implements View.On
                         .setSign(this)
                         .builder(String.class, this)
                         .requestRxNoHttp();
-                RxNoHttpUtils.cancel(this);
+                //RxNoHttpUtils.cancel(this);
                 break;
         }
     }

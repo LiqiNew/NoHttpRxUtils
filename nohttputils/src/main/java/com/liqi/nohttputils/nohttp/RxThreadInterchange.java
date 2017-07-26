@@ -34,7 +34,7 @@ import rx.schedulers.Schedulers;
  * Created by LiQi on 2017/3/20.
  */
 
- public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListener {
+public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListener {
     //Rx线程池并发数量处理值
     private static final int RUNSIZE = RxUtilsConfig.ConfigBuilder.getConfigBuilder().getRxUtilsConfig().getRunRequestSize();
     private static RxThreadInterchange mRxThreadInterchange;
@@ -65,7 +65,7 @@ import rx.schedulers.Schedulers;
      * @param onRxMessageGetListener 数据源对内暴露接口
      * @param <T>
      */
-     <T extends BaseRxRequestModel> void start(@NonNull OnRxMessageGetListener<T> onRxMessageGetListener) {
+    <T extends BaseRxRequestModel> void start(@NonNull OnRxMessageGetListener<T> onRxMessageGetListener) {
         if (null == mOnRxMessageDisListener) {
             selectOkState(onRxMessageGetListener);
         } else {
@@ -163,12 +163,14 @@ import rx.schedulers.Schedulers;
                             } else if (e instanceof ProtocolException) {
                                 show(dialog, R.string.error_system_unsupport_method);
                             } else {
-                                //撤销请求
-                                if (e.getMessage().contains(REQUEST_REVOCATION)) {
-                                    Logger.e(e.getMessage());
-                                } else {
-                                    show(dialog, R.string.error_unknow);
+                                Logger.e("NoHttpUtils捕获异常："+e.toString());
+                                StackTraceElement[] stackTrace = e.getStackTrace();
+                                if (null!=stackTrace) {
+                                    for (StackTraceElement traceElement : stackTrace) {
+                                        Logger.e("NoHttpUtils捕获异常："+traceElement.toString());
+                                    }
                                 }
+                                show(dialog, R.string.error_unknow);
                             }
 
 
