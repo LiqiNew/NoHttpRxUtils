@@ -29,7 +29,7 @@ allprojects {<br>
 　　}<br>
 }<br>
 **2：依赖NohttpRxUtils框架**<br>
-compile 'com.github.liqinew:nohttprxutils:v.1.2'<br>
+compile 'com.github.liqinew:nohttprxutils:v.1.2.1'<br>
 
 NohttpRxUtils使用简介
 -----
