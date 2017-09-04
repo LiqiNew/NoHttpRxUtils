@@ -59,17 +59,19 @@ class RxNoHttp {
             public void call(Subscriber<? super Response<T>> subscriberOut) {
                 // 最关键的就是用NoHttp的同步请求请求到response了，其它的都是rxjava做的，跟nohttp无关的。
                 Response<T> response = NoHttp.startRequestSync(request);
-                byte[] oo=new byte[12];
-                try {
-                    response.request().parseResponse(response.getHeaders(),oo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                byte[] oo=new byte[12];
+//                try {
+//                    response.request().parseResponse(response.getHeaders(),oo);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
-                if (response.isSucceed())
+                if (response.isSucceed()||response.isFromCache()) {
                     subscriberOut.onNext(response);
-                else
+                }
+                else {
                     subscriberOut.onError(response.getException());
+                }
                 subscriberOut.onCompleted();
             }
         }).subscribeOn(Schedulers.io())
@@ -118,14 +120,16 @@ class RxNoHttp {
                             }
                             dialog = null;
                         }
-                        if (null != responseInterfa)
+                        if (null != responseInterfa) {
                             responseInterfa.onError(e);
+                        }
                     }
 
                     @Override
                     public void onNext(Response<T> tResponse) {
-                        if (null != responseInterfa)
+                        if (null != responseInterfa) {
                             responseInterfa.onNext(tResponse.get());
+                        }
                     }
                 });
     }

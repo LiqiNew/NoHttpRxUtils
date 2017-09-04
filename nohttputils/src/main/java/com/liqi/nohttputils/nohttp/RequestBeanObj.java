@@ -161,16 +161,19 @@ class RequestBeanObj<T> extends RestRequest<T> {
     public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
         String response = StringRequest.parseResponseString(responseHeaders, responseBody);
         if (null != clazz) {
-            Logger.e("parseResponse是否执行了>>>>>" + clazz.getName());
+            Logger.e("NohttpRxUtils服务器数据转换类型：" + clazz.getName());
             //不是bitmap和byte[]进入
             if (clazz != Bitmap.class && clazz != byte[].class) {
+                Logger.e("Http服务器响应数据："+response);
+
                 //不是JSONObject和JSONArray类型进入
                 if (clazz != JSONObject.class && clazz != JSONArray.class) {
                     if (clazz == String.class) {
                         return (T) response;
-                    } else
+                    } else {
                         // 这里如果数据格式错误，或者解析失败，会在失败的回调方法中返回 ParseError 异常。
                         return JsonUtil.jsonToBean(response, clazz);
+                    }
                 } else {
                     if (clazz == JSONArray.class) {
                         return (T) new JSONArray(response);
@@ -178,6 +181,7 @@ class RequestBeanObj<T> extends RestRequest<T> {
                         return (T) new JSONObject(response);
                     }
                 }
+
             } else {
                 //是bitmap类型就转换bitmap类型
                 if (clazz == Bitmap.class) {

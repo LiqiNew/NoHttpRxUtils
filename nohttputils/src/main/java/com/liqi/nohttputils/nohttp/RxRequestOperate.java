@@ -7,6 +7,7 @@ import com.liqi.nohttputils.nohttp.gsonutils.JsonUtil;
 import com.liqi.nohttputils.nohttp.rx_threadpool.RxMessageSource;
 import com.liqi.nohttputils.nohttp.rx_threadpool.model.RxRequestModel;
 import com.yanzhenjie.nohttp.Binary;
+import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.rest.RestRequest;
 
@@ -83,7 +84,7 @@ public class RxRequestOperate<T> {
             Map<String, Object> parameterMap = mRxRequestConfig.getParameterMap();
             //参数设置
             if (null != parameterMap && !parameterMap.isEmpty()) {
-                mapP:
+
                 for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
                     String keyParameter = entry.getKey();
                     Object valueParameter = entry.getValue();
@@ -98,53 +99,46 @@ public class RxRequestOperate<T> {
                         }
                     } else {
                         if (null != valueParameter) {
-                            if (valueParameter instanceof String) {
-                                entityRequest.add(keyParameter, valueParameter.toString());
-                                continue mapP;
-                            }
                             if (valueParameter instanceof Integer) {
                                 entityRequest.add(keyParameter, Integer.parseInt(valueParameter.toString()));
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Boolean) {
+                            }else if (valueParameter instanceof Boolean) {
                                 entityRequest.add(keyParameter, Boolean.parseBoolean(valueParameter.toString()));
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Byte) {
+                            }else if (valueParameter instanceof Byte) {
                                 entityRequest.add(keyParameter, Byte.parseByte(valueParameter.toString()));
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Double) {
+                            }else if (valueParameter instanceof Double) {
                                 entityRequest.add(keyParameter, Double.valueOf(valueParameter.toString()));
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof File) {
+                            }else if (valueParameter instanceof File) {
                                 entityRequest.add(keyParameter, (File) valueParameter);
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Float) {
+                            }else if (valueParameter instanceof Float) {
                                 entityRequest.add(keyParameter, Float.parseFloat(valueParameter.toString()));
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Binary) {
+                            }else if (valueParameter instanceof Binary) {
                                 entityRequest.add(keyParameter, (Binary) valueParameter);
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Long) {
+                            }else if (valueParameter instanceof Long) {
                                 entityRequest.add(keyParameter, Long.parseLong(valueParameter.toString()));
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof List) {
-                                entityRequest.add(keyParameter, (List<Binary>) valueParameter);
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Short) {
+                            }else if (valueParameter instanceof List) {
+                                //确保传入的文件List集合中是指定类型
+                                List list= (List) valueParameter;
+                                if (!list.isEmpty()) {
+                                    Object object = list.get(0);
+                                    if (object instanceof Binary) {
+                                        entityRequest.add(keyParameter, (List<Binary>) valueParameter);
+                                    }else{
+                                        Logger.e("文件上传list参数值类型不符合.需要传入的类型：Binary类型");
+                                    }
+                                }else{
+                                    Logger.e("文件上传list参数值为空");
+                                }
+                            }else if (valueParameter instanceof Short) {
                                 entityRequest.add(keyParameter, Short.parseShort(valueParameter.toString()));
-                                continue mapP;
-                            }
-                            if (valueParameter instanceof Map) {
-                                entityRequest.add((Map<String, String>) valueParameter);
-                                continue mapP;
+                            }else if (valueParameter instanceof Map) {
+                                try {
+                                    Map<String, String> mapString= (Map<String, String>) valueParameter;
+                                    entityRequest.add(mapString);
+                                } catch (Exception e) {
+                                    Logger.e("参数Map传入值类型错误.Map键值类型：key=String类型,value=String类型");
+                                }
+                            }else{
+                                entityRequest.add(keyParameter, valueParameter.toString());
                             }
                         }
                     }
@@ -168,15 +162,32 @@ public class RxRequestOperate<T> {
             RxRequestEntityBase rxRequestEntityBase = mRxRequestConfig.getRxRequestEntityBase();
             if (null != rxRequestEntityBase) {
                 if (rxRequestEntityBase instanceof RxRequestJsonObjectEntity) {
-                    entityRequest.setDefineRequestBodyForJson(JsonUtil.objectToJson(rxRequestEntityBase.getStringJsonMap()));
-                } else if (rxRequestEntityBase instanceof RxRequestStringEntity) {
-                    entityRequest.setDefineRequestBody(rxRequestEntityBase.getStringEntity(), rxRequestEntityBase.getContentType());
-                } else if (rxRequestEntityBase instanceof RxRequestInputStreamEntity) {
-                    entityRequest.setDefineRequestBody(rxRequestEntityBase.getInputStream(), rxRequestEntityBase.getContentType());
-                } else if (rxRequestEntityBase instanceof RxRequestJsonListEntity) {
-                    entityRequest.setDefineRequestBodyForJson(JsonUtil.objectToJson(rxRequestEntityBase.getJsonMapList()));
+                    String objectToJson = JsonUtil.objectToJson(rxRequestEntityBase.getStringJsonMap());
+                    entityRequest.setDefineRequestBodyForJson(objectToJson);
+                    Logger.e("JsonObject类型-Body值："+objectToJson+"\nBody-ContentType类型："+ Headers.HEAD_VALUE_ACCEPT_APPLICATION_JSON);
+                }
 
-                } else {
+                else if (rxRequestEntityBase instanceof RxRequestStringEntity) {
+                    String stringEntity = rxRequestEntityBase.getStringEntity();
+                    String contentType = rxRequestEntityBase.getContentType();
+                    entityRequest.setDefineRequestBody(stringEntity, contentType);
+                    Logger.e("字符串类型-Body值："+stringEntity+"\nBody-ContentType类型："+contentType);
+                }
+
+                else if (rxRequestEntityBase instanceof RxRequestInputStreamEntity) {
+                    InputStream inputStream = rxRequestEntityBase.getInputStream();
+                    String contentType = rxRequestEntityBase.getContentType();
+                    entityRequest.setDefineRequestBody(inputStream, contentType);
+                    Logger.e("字节流类型-Body值：(字节流"+")\nBody-ContentType类型："+contentType);
+                }
+
+                else if (rxRequestEntityBase instanceof RxRequestJsonListEntity) {
+                    String objectToJson = JsonUtil.objectToJson(rxRequestEntityBase.getJsonMapList());
+                    entityRequest.setDefineRequestBodyForJson(objectToJson);
+                    Logger.e("JsonArray类型-Body值："+objectToJson+"\nBody-ContentType类型："+Headers.HEAD_VALUE_ACCEPT_APPLICATION_JSON);
+                }
+
+                else {
                     Logger.e("RxRequestEntityBase类型未知");
                 }
             }
