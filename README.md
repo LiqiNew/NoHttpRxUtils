@@ -100,7 +100,7 @@ NoHttpRxUtils使用简介
 //开始初始化NoHttp<br>
 .startInit();
 ### 如何使用NoHttpRxUtils去数据下载?
-##### 下载开启(链式调用)
+#### * 下载开启(链式调用)
 //获取下载请求构建器<br>
 NoHttpDownloadUtils.getNoHttpDownloadBuild()<br><br>
 //添加下载文件参数<br>
@@ -121,24 +121,24 @@ NoHttpDownloadUtils.getNoHttpDownloadBuild()<br><br>
 .setRetryCount(3)<br><br>
 //开启下载<br>
 .satart(this);
-##### 下载暂停(取消)
+#### * 下载暂停(取消)
 //暂停全部正在下载任务<br>
 NoHttpDownloadUtils.cancelAll();<br><br>
 //暂停指定下载任务<br>
 NoHttpDownloadUtils.cancel(downloadUrl);
-##### 下载恢复
+#### * 下载恢复
 //恢复指定下载<br>
   NoHttpDownloadUtils.startRequest(downloadUrl);<br><br>
   //恢复全部下载<br>
 NoHttpDownloadUtils.startAllRequest();
-##### 下载Url对应的what值操作方法
+#### * 下载Url对应的what值操作方法
 //获取下载URL对象的What值<br>
 NoHttpDownloadUtils.getDownloadRequestsWhat(downloadUrl);<br><br>
 //移除下载地址对应的What<br>
 NoHttpDownloadUtils.removeWhatData(downloadUrl);<br><br>
 //移除全部下载What<br>
 NoHttpDownloadUtils.removeWhatAll();
-##### 手动清空下载请求，并关闭下载服务
+#### * 手动清空下载请求，并关闭下载服务
 //清空当前下载请求对象,并停止服务<br>
 NoHttpDownloadUtils.clearAll();
 ##### 注：如果上一次下载任务没有完成或者没有清空，那么下一次点击任何下载都会继续执行上一次没有完成的任务继续下载
@@ -214,7 +214,7 @@ RxNoHttpUtils.rxNoHttpRequest()<br><br>
 //开始请求<br>
 .requestRxNoHttp();
   
-##### 手动取消Rx"线程池"中队列请求(注：setQueue(false)如果设置为false，手动取消将失去作用)
+#### * 手动取消Rx"线程池"中队列请求(注：setQueue(false)如果设置为false，手动取消将失去作用)
 //单个取消Sign对应的请求<br>
 RxNoHttpUtils.cancel(Sign));<br><br>
 //取消批量Sign对应的请求<br>
@@ -275,7 +275,7 @@ RxNoHttpUtils.rxNoHttpRequest()<br><br>
 //开始请求<br>
 .requestRxNoHttp();
   
-##### 手动取消轮询请求
+#### * 手动取消轮询请求
 //单个取消Sign对应的轮询请求<br>
 RxNoHttpUtils.cancelPoll(Sign));<br><br>
 //取消批量Sign对应的轮询请求<br>
@@ -283,7 +283,7 @@ RxNoHttpUtils.cancelPoll(Sign[]);<br><br>
 //取消所有的轮询请求<br>
 // RxNoHttpUtils.cancelPollAll();
   
-##### 手动清除缓存
+#### * 手动清除缓存
 //清除对应的key的缓存数据<br>
 RxNoHttpUtils.removeKeyCacheData("Cachekey");<br><br>
 //清除所有缓存数据<br>
