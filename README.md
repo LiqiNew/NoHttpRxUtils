@@ -54,8 +54,13 @@ allprojects {<br>
 　　　maven { url 'https://jitpack.io' }<br>
 　　}<br>
 }<br>
+<<<<<<< HEAD
 **2：依赖NoHttpRxUtils框架**<br>
 compile 'com.github.liqinew:NoHttprxutils:v.1.2.1'<br>
+=======
+**2：依赖NohttpRxUtils框架**<br>
+compile 'com.github.liqinew:nohttprxutils:v.1.2.2'<br>
+>>>>>>> origin/master
 
 NoHttpRxUtils使用简介
 -----
@@ -152,6 +157,7 @@ RxNoHttpUtils.rxNoHttpRequest()<br><br>
 //设置Url<br>
 .url("url")<br><br>
 //添加请求参数<br>
+//当传入的参数类型不属于内部设定类型时，默认调用Object的toString()转换为String类型参数<br>
 .addParameter()<br><br>
 //添加请求头<br>
 .addHeader()<br><br>
