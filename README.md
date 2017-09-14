@@ -143,7 +143,7 @@ NoHttpDownloadUtils.removeWhatAll();
 NoHttpDownloadUtils.clearAll();
 ##### 注：如果上一次下载任务没有完成或者没有清空，那么下一次点击任何下载都会继续执行上一次没有完成的任务继续下载
 ### 如何使用NoHttpRxUtils去数据请求?
-##### NoHttpRxUtils网络请求，采用链式调用
+#### * NoHttpRxUtils网络请求，采用链式调用
 //获取请求对象<br>
 RxNoHttpUtils.rxNoHttpRequest()<br><br>
 //get请求方式（除了get和post请求，还支持put，delete，head，patch，options，trace）<br>
@@ -222,7 +222,7 @@ RxNoHttpUtils.cancel(Sign[]);<br><br>
 //取消RX"线程池"中所有的请求<br>
 // RxNoHttpUtils.cancelAll();
   
-##### NoHttpRxUtils轮询请求，采用链式调用
+#### * NoHttpRxUtils轮询请求，采用链式调用
 //获取请求对象<br>
 RxNoHttpUtils.rxNoHttpRequest()<br><br>
 //NoHttp网络请求设置参数跟上面一样设置<br>
