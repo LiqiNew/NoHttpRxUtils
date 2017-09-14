@@ -27,7 +27,7 @@ GET、POST、PUT、PATCH、HEAD、DELETE、OPTIONS、TRACE等请求协议<br><br
 NoHttpRxUtils主要是通过RxJava-1框架对NoHttp网络框架操作进行再次封装。<br>
 减轻使用者繁琐的调用，让使用者更专注于项目业务，而非客户端与服务器之间的网络通讯。<br><br>
 由于NoHttpRxUtils网络请求方面是采用NoHttp同步请求，所以请求队列不是NoHttp队列而是NoHttpRxUtils队列。<br>
-暂时不支持请求优先级设置。<br>
+暂时不支持队列请求优先级设置。<br>
 由于Android系统对SD卡写入权限的约束，所以所有的缓存数据路径都指向于数据库。
 
 ##### NoHttpRxUtils框架功能
