@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/liqinew/NoHttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
+[![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 ### 由于NoHttpRxUtils是通过RxJava-1对NoHttp网络框架操作进行一系列封装。<br>首先对RxJava和NoHttp网络框架做一个简介
 # RxJava框架是什么?
 RxJava是响应式程序设计的一种实现。<br>
@@ -44,6 +44,7 @@ NoHttpRxUtils主要是通过RxJava-1框架对NoHttp网络框架操作进行再�
 ##### 框架内部使用RxJava版本是RxJava-1.1.9
 ##### 框架内部使用NoHttp版本是NoHttp-1.1.4
 ##### 框架内部使用Gson版本是Gson-2.8.0
+
 如何远程依赖
 -----
 #### Gradle
@@ -54,13 +55,8 @@ allprojects {<br>
 　　　maven { url 'https://jitpack.io' }<br>
 　　}<br>
 }<br>
-<<<<<<< HEAD
-**2：依赖NoHttpRxUtils框架**<br>
-compile 'com.github.liqinew:NoHttprxutils:v.1.2.1'<br>
-=======
 **2：依赖NohttpRxUtils框架**<br>
-compile 'com.github.liqinew:nohttprxutils:v.1.2.2'<br>
->>>>>>> origin/master
+compile 'com.github.liqinew:nohttprxutils:v.1.3'<br>
 
 NoHttpRxUtils使用简介
 -----
@@ -217,12 +213,22 @@ RxNoHttpUtils.rxNoHttpRequest()<br><br>
 .builder(Objects.class,new OnIsRequestListener<T>)<br><br>
 //开始请求<br>
 .requestRxNoHttp();
-
+  
+##### 手动取消Rx"线程池"中队列请求(注：setQueue(false)如果设置为false，手动取消将失去作用)
+//单个取消Sign对应的请求<br>
+RxNoHttpUtils.cancel(Sign));<br><br>
+//取消批量Sign对应的请求<br>
+RxNoHttpUtils.cancel(Sign[]);<br><br>
+//取消RX"线程池"中所有的请求<br>
+// RxNoHttpUtils.cancelAll();
+  
 ##### NoHttpRxUtils轮询请求，采用链式调用
 //获取请求对象<br>
 RxNoHttpUtils.rxNoHttpRequest()<br><br>
 //NoHttp网络请求设置参数跟上面一样设置<br>
 ...<br><br>
+//设置当前轮询请求Sign<br>
+.setSign(new Object())<br><br>
 //创建轮询请求对象，并指定响应转换类型和请求成功或者失败回调接口<br>
 .builderPoll(Objects.class,new OnIsRequestListener<T>)<br><br>
 //设置初始化加载延迟<br>
@@ -232,49 +238,51 @@ RxNoHttpUtils.rxNoHttpRequest()<br><br>
 //设置被观察者产生的行为事件监听器-<br>
 //(如果此处实现被观察者产生的行为事件监听器，那么框架内部就不去维护此轮询请求，必须实现轮询拦截器接口去维护此轮询什么时候停止。)<br>
 .setOnObserverEventListener(new OnObserverEventListener<RestRequest<T>, RxInformationModel<T>>(){<br>
-        @Override<br>
-    public RxInformationModel<T> onObserverEvent(RestRequest<T> transferValue) {<br>
-       // RxInformationModel<T>对象方法介绍<br>
-       //getData()=获取请求数据<br>
-       //setData(T data)=赋值请求数据<br>
-       //setException(boolean exception)=赋值是否是异常状态<br>
-       //isException()=获取是否异常状态<br>
-       //setThrowable(Throwable throwable)=赋值异常类<br>
-       //getThrowable()=获取异常类<br>
-       //setStop(boolean stop)=赋值是否停止轮询状态<br>
-       //isStop()=获取是否轮询状态<br>
-       //RxInformationModel<T> 此对象需要new 出来.<br>
-       //在此方法中可以换成自己钟意的网络框架去请求，如果上面设置网络请求参数，除了body其它的都能从RestRequest<Objects>里面取得。<br>
-     return informationModel;<br>
-    }<br>
+　　　　 @Override<br>
+　　public RxInformationModel<T> onObserverEvent(RestRequest<T> transferValue) {<br>
+　　　　// RxInformationModel<T>对象方法介绍<br>
+　　　　//getData()=获取请求数据<br>
+　　　　//setData(T data)=赋值请求数据<br>
+　　　　//setException(boolean exception)=赋值是否是异常状态<br>
+　　　　//isException()=获取是否异常状态<br>
+　　　　//setThrowable(Throwable throwable)=赋值异常类<br>
+　　　　//getThrowable()=获取异常类<br>
+　　　　//setStop(boolean stop)=赋值是否停止轮询状态<br>
+　　　　//isStop()=获取是否轮询状态<br>
+　　　　//RxInformationModel<T> 此对象需要new 出来.<br>
+　　　　//在此方法中可以换成自己钟意的网络框架去请求，如果上面设置网络请求参数，除了body其它的都能从RestRequest<Objects>里面取得。<br>
+　　　return informationModel;<br>
+　　}<br>
 })<br><br>
 // 设置设置数据拦截监听对象<br>
 .setBooleanFunc1(new Func1<RxInformationModel<T>, Boolean>() {<br>
-      @Override <br>
-    public Boolean call(RxInformationModel<T> stringRxInformationModel) {<br>
-    //在此方法里面可以根据RxInformationModel<T>.getData()获取请求的数据，然后根据请求的数据来决定是否停止轮询<br>
-        return stringRxInformationModel.isStop();<br>
-    }
+　　　　@Override <br>
+　　　public Boolean call(RxInformationModel<T> stringRxInformationModel) {<br>
+　　//在此方法里面可以根据RxInformationModel<T>.getData()获取请求的数据，然后根据请求的数据来决定是否停止轮询<br>
+　　　　return stringRxInformationModel.isStop();<br>
+　　　}
 })<br><br>
 //设置观察者根据被观察产生的行为做出相应处理监听器<br>
 //如果实现了此接口，那么builderPoll重实现的OnIsRequestListener将无效。<br>
 .setRxInformationModelAction1(new Action1<RxInformationModel<T>>() {<br>
-        @Override <br>
-    public void call(RxInformationModel<T> stringRxInformationModel) {<br>
-        //在此方法里面根据RxInformationModel<T>中的数据做出相应动作<br>
-    }<br>
+　　　　@Override <br>
+　　　public void call(RxInformationModel<T> stringRxInformationModel) {<br>
+　　　　//在此方法里面根据RxInformationModel<T>中的数据做出相应动作<br>
+　　　}<br>
 })<br><br>
 //转换成轮询请求类<br>
 .switchPoll()<br><br>
 //开始请求<br>
 .requestRxNoHttp();
-##### 手动取消Rx"线程池"中队列请求(注：setQueue(false)如果设置为false，手动取消将失去作用)
-//单个取消Sign对应的请求<br>
-RxNoHttpUtils.cancel(Sign));<br><br>
-//取消批量Sign对应的请求<br>
-RxNoHttpUtils.cancel(Sign[]);<br><br>
-//取消RX"线程池"中所有的请求<br>
-// RxNoHttpUtils.cancelAll();
+  
+##### 手动取消轮询请求
+//单个取消Sign对应的轮询请求<br>
+RxNoHttpUtils.cancelPoll(Sign));<br><br>
+//取消批量Sign对应的轮询请求<br>
+RxNoHttpUtils.cancelPoll(Sign[]);<br><br>
+//取消所有的轮询请求<br>
+// RxNoHttpUtils.cancelPollAll();
+  
 ##### 手动清除缓存
 //清除对应的key的缓存数据<br>
 RxNoHttpUtils.removeKeyCacheData("Cachekey");<br><br>
