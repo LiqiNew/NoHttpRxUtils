@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.liqi.nohttputils.nohttp.RxRequestConfig;
 import com.liqi.nohttputils.nohttp.RxUtilsConfig;
+import com.liqi.nohttputils.nohttp.rx_poll.pond.RxInformationPool;
 import com.liqi.nohttputils.nohttp.rx_threadpool.RxMessageSource;
 import com.liqi.nohttputils.nohttp.rx_threadpool.interfa.OnRxMessageSetListener;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -59,6 +60,32 @@ public class RxNoHttpUtils {
      */
     public static void cancelAll() {
         getOnRxMessageSetListener().cancelAll();
+    }
+
+
+    /**
+     * 取消Sign对应的网络请求轮询
+     *
+     * @param sign
+     */
+    public static void cancelPoll(Object sign) {
+        RxInformationPool.getRxInformationPoolCancel().cancel(sign);
+    }
+
+    /**
+     * 批量取消Sign对应的网络请求轮询
+     *
+     * @param sign
+     */
+    public static void cancelPoll(Object[] sign) {
+        RxInformationPool.getRxInformationPoolCancel().cancel(sign);
+    }
+
+    /**
+     * 取消全部网络请求轮询
+     */
+    public static void cancelPollAll() {
+        RxInformationPool.getRxInformationPoolCancel().cancelAll();
     }
 
     /**

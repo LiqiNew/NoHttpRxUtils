@@ -38,6 +38,7 @@ public class ImageDownloadDemoActivity extends BaseActivity<Bitmap> implements V
                 .get()
                 .url(StaticHttpUrl.IMAGE_URL)
                 .setDialogGetListener(this)
+                .setSign(this)
                 .builder(Bitmap.class, this)
                 .requestRxNoHttp();
     }
@@ -45,5 +46,11 @@ public class ImageDownloadDemoActivity extends BaseActivity<Bitmap> implements V
     @Override
     protected String requestHint() {
         return "正在请求图片中,请稍后...";
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxNoHttpUtils.cancel(this);
     }
 }

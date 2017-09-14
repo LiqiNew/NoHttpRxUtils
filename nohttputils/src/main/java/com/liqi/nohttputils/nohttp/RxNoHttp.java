@@ -14,7 +14,7 @@ import com.yanzhenjie.nohttp.error.NotFoundCacheError;
 import com.yanzhenjie.nohttp.error.TimeoutError;
 import com.yanzhenjie.nohttp.error.URLError;
 import com.yanzhenjie.nohttp.error.UnKnownHostError;
-import com.yanzhenjie.nohttp.rest.IProtocolRequest;
+import com.yanzhenjie.nohttp.rest.ProtocolRequest;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.net.ProtocolException;
@@ -47,7 +47,7 @@ class RxNoHttp {
      * @param mDialogGetListener dialog获取接口
      * @param responseInterfa   请求成功或者失败回调对象
      */
-    <T> void request(final IProtocolRequest<T> request, DialogGetListener mDialogGetListener, final OnIsRequestListener<T> responseInterfa) {
+    <T> void request(final ProtocolRequest<?,T> request, DialogGetListener mDialogGetListener, final OnIsRequestListener<T> responseInterfa) {
         if (null != mDialogGetListener)
             dialog = mDialogGetListener.getDialog();
 

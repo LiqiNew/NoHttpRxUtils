@@ -3,6 +3,7 @@ package com.liqi.nohttputils.nohttp;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.liqi.nohttputils.interfa.OnRequestRxNoHttpListener;
 import com.liqi.nohttputils.nohttp.gsonutils.JsonUtil;
 import com.liqi.nohttputils.nohttp.rx_threadpool.RxMessageSource;
 import com.liqi.nohttputils.nohttp.rx_threadpool.model.RxRequestModel;
@@ -20,7 +21,7 @@ import java.util.Map;
  * nohttp请求参数处理对象
  * Created by LiQi on 2016/11/7.
  */
-public class RxRequestOperate<T> {
+public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
     /**
      * HTTPS请求map中key标识-->值必须为map
      * 例子：
@@ -58,9 +59,7 @@ public class RxRequestOperate<T> {
      */
     public void requestRxNoHttp() {
         if (mRxRequestConfig.isQueue()) {
-            RxRequestModel<T> requestModel = new RxRequestModel<>(
-                    addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz()))
-                    , mRxRequestConfig.getOnIsRequestListener());
+            RxRequestModel<T> requestModel = new RxRequestModel<>(getRestRequest(), mRxRequestConfig.getOnIsRequestListener());
             requestModel.setDialogGetListener(mRxRequestConfig.getDialogGetListener());
 
             Object sign = mRxRequestConfig.getSign();
@@ -73,6 +72,20 @@ public class RxRequestOperate<T> {
         }
     }
 
+    /**
+     * 获取参数配置对象
+     * @return 参数配置对象
+     */
+    public RxRequestConfig<T> getRxRequestConfig() {
+        return mRxRequestConfig;
+    }
+    /**
+     * 获取请求参数对象
+     * @return 请求参数对象
+     */
+    public RestRequest<T> getRestRequest(){
+        return addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz()));
+    }
     /**
      * 添加参数
      *
@@ -132,10 +145,10 @@ public class RxRequestOperate<T> {
                                 entityRequest.add(keyParameter, Short.parseShort(valueParameter.toString()));
                             }else if (valueParameter instanceof Map) {
                                 try {
-                                    Map<String, String> mapString= (Map<String, String>) valueParameter;
+                                    Map<String, Object> mapString= (Map<String, Object>) valueParameter;
                                     entityRequest.add(mapString);
                                 } catch (Exception e) {
-                                    Logger.e("参数Map传入值类型错误.Map键值类型：key=String类型,value=String类型");
+                                    Logger.e("参数Map传入值类型错误.Map键值类型：key=String类型,value=Object类型");
                                 }
                             }else{
                                 entityRequest.add(keyParameter, valueParameter.toString());
@@ -164,7 +177,7 @@ public class RxRequestOperate<T> {
                 if (rxRequestEntityBase instanceof RxRequestJsonObjectEntity) {
                     String objectToJson = JsonUtil.objectToJson(rxRequestEntityBase.getStringJsonMap());
                     entityRequest.setDefineRequestBodyForJson(objectToJson);
-                    Logger.e("JsonObject类型-Body值："+objectToJson+"\nBody-ContentType类型："+ Headers.HEAD_VALUE_ACCEPT_APPLICATION_JSON);
+                    Logger.e("JsonObject类型-Body值："+objectToJson+"\nBody-ContentType类型："+ Headers.HEAD_VALUE_CONTENT_TYPE_JSON);
                 }
 
                 else if (rxRequestEntityBase instanceof RxRequestStringEntity) {
@@ -184,7 +197,7 @@ public class RxRequestOperate<T> {
                 else if (rxRequestEntityBase instanceof RxRequestJsonListEntity) {
                     String objectToJson = JsonUtil.objectToJson(rxRequestEntityBase.getJsonMapList());
                     entityRequest.setDefineRequestBodyForJson(objectToJson);
-                    Logger.e("JsonArray类型-Body值："+objectToJson+"\nBody-ContentType类型："+Headers.HEAD_VALUE_ACCEPT_APPLICATION_JSON);
+                    Logger.e("JsonArray类型-Body值："+objectToJson+"\nBody-ContentType类型："+Headers.HEAD_VALUE_CONTENT_TYPE_JSON);
                 }
 
                 else {
@@ -202,7 +215,6 @@ public class RxRequestOperate<T> {
      * @param mapHttps      https参数集合
      */
     private void mapValueHttps(RestRequest<T> entityRequest, Map<String, Object> mapHttps) {
-        mapHs:
         for (Map.Entry<String, Object> entryHttps : mapHttps.entrySet()) {
             String keyHttps = entryHttps.getKey();
             Object valueHttps = entryHttps.getValue();
@@ -212,7 +224,7 @@ public class RxRequestOperate<T> {
                     if (valueHttps instanceof InputStream) {
                         InputStream inputStream = (InputStream) valueHttps;
                         entityRequest.setSSLSocketFactory(SSLContextUtil.getSSLContext(inputStream).getSocketFactory());
-                        break mapHs;
+                        break;
                     } else {
                         Logger.e("Https集合需要证书值需要InputStream类型");
                     }
@@ -224,7 +236,7 @@ public class RxRequestOperate<T> {
             if (HTTPS_CERTIFICATE_NO.equals(keyHttps)) {
                 entityRequest.setSSLSocketFactory(SSLContextUtil.getDefaultSLLContext().getSocketFactory());
                 entityRequest.setHostnameVerifier(SSLContextUtil.HOSTNAME_VERIFIER);
-                break mapHs;
+                break;
             }
         }
     }

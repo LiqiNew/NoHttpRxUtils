@@ -40,4 +40,8 @@
         android:id="@+id/button5"
         style="@style/button_style"
         android:text="多请求队列演示"/>
+    <Button
+        android:id="@+id/button6"
+        style="@style/button_style"
+        android:text="轮询请求演示界面"/>
 </LinearLayout>

@@ -69,7 +69,6 @@ public class RxThreadDispatch extends Thread {
 
                 if (!mList.isEmpty()) {
                     int runDisposeSize = 0;
-                    why:
                     for (int i = 0; i < mList.size(); i++) {
                         if (i < mList.size()) {
                             BaseRxRequestModel baseRxRequestModel = mList.get(i);
@@ -84,11 +83,9 @@ public class RxThreadDispatch extends Thread {
                                 } else {
                                     ++runDisposeSize;
                                 }
-                            } else {
-                                continue why;
                             }
                         } else {
-                            break why;
+                            break;
                         }
                     }
 

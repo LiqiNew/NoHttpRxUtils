@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@mipmap/timg"
+              android:orientation="vertical">
+
+    <Button
+        android:id="@+id/start_poll_nohttp_three"
+        style="@style/button_style"
+        android:text="开启三个NoHttp网络轮询请求线程"/>
+
+    <Button
+        android:id="@+id/stop_poll_nohttp_three"
+        style="@style/button_style"
+        android:text="停止“线程2222”的NoHttp网络轮询请求"/>
+
+    <Button
+        android:id="@+id/start_poll"
+        style="@style/button_style"
+        android:text="开启自定义轮询"/>
+
+    <Button
+        android:id="@+id/stop_poll"
+        style="@style/button_style"
+        android:text="停止自定义轮询"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+    </ScrollView>
+</LinearLayout>

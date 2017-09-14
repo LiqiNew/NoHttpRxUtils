@@ -38,7 +38,7 @@ public class GetPostDemoActivity extends BaseActivity<String> implements View.On
                 //开始请求
                 RxNoHttpUtils.rxNohttpRequest()
                         .get()
-                        .url(StaticHttpUrl.getGetUrl("LiQi", "LiQi.pass", 20, "1"))
+                        .url(StaticHttpUrl.getGetUrl("LiQi1", "LiQi1.pass", 20, "1"))
                         .setDialogGetListener(this)
                         .setQueue(false)
                         //单个请求设置读取时间(单位秒，默认以全局读取超时时间。)

@@ -129,9 +129,9 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
         if (null != baseRxRequestModel) {
             final DialogGetListener dialogGetListener = baseRxRequestModel.getDialogGetListener();
             final Dialog dialog = null == dialogGetListener ? null : dialogGetListener.getDialog();
-            if (null != dialog)
+            if (null != dialog) {
                 dialog.show();
-
+            }
             final OnIsRequestListener<T> onIsRequestListener = baseRxRequestModel.getOnIsRequestListener();
 
             Observable.create(baseRxRequestModel)
@@ -202,8 +202,9 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
             if (mOnRxMessageDisListener.size() >= SIZE) {
                 for (int i = 0; i < mOnRxMessageDisListener.size(); i++) {
                     BaseRxRequestModel baseRxRequestModel = mOnRxMessageDisListener.get(i);
-                    if (baseRxRequestModel.isRunDispose())
+                    if (baseRxRequestModel.isRunDispose()) {
                         mOnRxMessageDisListener.delete(i);
+                    }
                 }
             }
             mRxThreadDispatch.addRunSize();

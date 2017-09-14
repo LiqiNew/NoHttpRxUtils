@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.liqi.nohttputils.interfa.DialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
+import com.liqi.nohttputils.interfa.OnRequestRxNoHttpListener;
 import com.liqi.nohttputils.nohttp.interfa.OnToInputStreamEntityMethodListener;
 import com.liqi.nohttputils.nohttp.interfa.OnToJsonListEntityMethodListener;
 import com.liqi.nohttputils.nohttp.interfa.OnToJsonObjectEntityMethodListener;
@@ -116,19 +117,19 @@ public class RxRequestConfig<T> {
         return mScaleType;
     }
 
-    Object getSign() {
+    public Object getSign() {
         return mSign;
     }
 
-    boolean isQueue() {
+    public boolean isQueue() {
         return isQueue;
     }
 
-    DialogGetListener getDialogGetListener() {
+    public DialogGetListener getDialogGetListener() {
         return mDialogGetListener = null == mDialogGetListener ? NoHttpInit.getNoHttpInit().getDialogGetListener() : mDialogGetListener;
     }
 
-    OnIsRequestListener<T> getOnIsRequestListener() {
+    public OnIsRequestListener<T> getOnIsRequestListener() {
         return mOnIsRequestListener;
     }
 
@@ -482,7 +483,8 @@ public class RxRequestConfig<T> {
 
         /**
          * 设置Json请求对象实体对象
-         *json样式：{"xx":"xxx","yy":"yyy"}
+         * json样式：{"xx":"xxx","yy":"yyy"}
+         *
          * @return
          */
         public OnToJsonObjectEntityMethodListener requestJsonObjectEntity() {
@@ -495,9 +497,11 @@ public class RxRequestConfig<T> {
             });
             return (OnToJsonObjectEntityMethodListener) mRxRequestEntityBase;
         }
+
         /**
          * 设置Json请求集合实体对象
-         *json样式：[{"xx":"xxx"},{"yy":"yyy"}]
+         * json样式：[{"xx":"xxx"},{"yy":"yyy"}]
+         *
          * @return
          */
         public OnToJsonListEntityMethodListener requestJsonListEntity() {
@@ -510,6 +514,7 @@ public class RxRequestConfig<T> {
             });
             return (OnToJsonListEntityMethodListener) mRxRequestEntityBase;
         }
+
         /**
          * 设置String请求实体对象
          *
@@ -545,6 +550,18 @@ public class RxRequestConfig<T> {
         }
 
         /**
+         * 构建请求轮询处理类
+         *
+         * @param clazz               请求成功后返回数据转换对象
+         * @param onIsRequestListener 请求成功或者失败回调接口
+         * @param <T>
+         * @return
+         */
+        public <T> RxPollNoHttpConfig.ConfigBuilder<T> builderPoll(@NonNull Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
+            return RxPollNoHttpConfig.ConfigBuilder.getConfigBuilder(getRxRequestOperate(clazz, onIsRequestListener));
+        }
+
+        /**
          * 创建请求参数处理对象
          *
          * @param clazz               请求成功后返回数据转换对象
@@ -552,13 +569,24 @@ public class RxRequestConfig<T> {
          * @param <T>
          * @return
          */
-        public <T> RxRequestOperate builder(@NonNull Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
-            return new RxRequestOperate<T>(getRxRequestConfig(clazz, onIsRequestListener));
+        public <T> OnRequestRxNoHttpListener builder(@NonNull Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
+            return getRxRequestOperate(clazz, onIsRequestListener);
         }
 
-        @NonNull
+        /**
+         * 获取请求参数类
+         *
+         * @param clazz               请求成功后返回数据转换对象
+         * @param onIsRequestListener 请求成功或者失败回调接口
+         * @param <T>
+         * @return
+         */
+        private <T> RxRequestOperate<T> getRxRequestOperate(@NonNull Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
+            return new RxRequestOperate<>(getRxRequestConfig(clazz, onIsRequestListener));
+        }
+
         private <T> RxRequestConfig<T> getRxRequestConfig(@NonNull Class<T> clazz, OnIsRequestListener<T> onIsRequestListener) {
-            RxRequestConfig<T> requestConfig = new RxRequestConfig<T>(clazz, onIsRequestListener);
+            RxRequestConfig<T> requestConfig = new RxRequestConfig<>(clazz, onIsRequestListener);
             requestConfig.mRequestMethod = mRequestMethod;
             requestConfig.mUrl = mUrl;
             requestConfig.mParameterMap = mParameterMap;

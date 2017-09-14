@@ -18,10 +18,10 @@ import java.util.List;
 public class RxMessageSource implements OnRxMessageSetListener<RxRequestModel>, OnRxMessageGetListener<RxRequestModel> {
     private static RxMessageSource mRxMessageSource;
     //信息源集合
-    private final List<RxRequestModel> MMESSAGELIST = new ArrayList<>();
+    private final List<RxRequestModel> mRequestModels;
 
     private RxMessageSource() {
-
+        mRequestModels = new ArrayList<>();
     }
 
     public static RxMessageSource getRxMessageSource() {
@@ -31,49 +31,45 @@ public class RxMessageSource implements OnRxMessageSetListener<RxRequestModel>, 
     @Override
     public RxMessageSource add(@NonNull RxRequestModel parameter, @NonNull Object sign) {
         parameter.setSign(sign);
-        MMESSAGELIST.add(parameter);
+        mRequestModels.add(parameter);
         return mRxMessageSource;
     }
 
     @Override
     public List<RxRequestModel> getList() {
-        return MMESSAGELIST;
+        return mRequestModels;
     }
 
     @Override
     public RxRequestModel get(int index) {
-        if (size() - 1 >= index) {
-            return MMESSAGELIST.get(index);
-        }
-        return null;
+        return mRequestModels.get(index % size());
     }
 
     @Override
-    public void delete(int indxe) {
-        if (size() - 1 >= indxe)
-            MMESSAGELIST.remove(indxe);
+    public void delete(int index) {
+        mRequestModels.remove(index % size());
     }
 
     @Override
     public int size() {
-        return MMESSAGELIST.size();
+        return mRequestModels.size();
     }
 
     private void deleteAll() {
-        if (!MMESSAGELIST.isEmpty()) {
-            MMESSAGELIST.clear();
+        if (!mRequestModels.isEmpty()) {
+            mRequestModels.clear();
         }
     }
 
 
     @Override
     public RxMessageSource cancel(Object sign) {
-        if (!MMESSAGELIST.isEmpty()) {
-            for (int i = 0; i < MMESSAGELIST.size(); i++) {
-                RxRequestModel requestModel = MMESSAGELIST.get(i);
+        if (!mRequestModels.isEmpty()) {
+            for (int i = 0; i < mRequestModels.size(); i++) {
+                RxRequestModel requestModel = mRequestModels.get(i);
                 if (requestModel.isCancel(sign)) {
                     requestModel.cancelBySign(sign);
-                    MMESSAGELIST.remove(i);
+                    mRequestModels.remove(i);
                 }
             }
         }
@@ -92,9 +88,9 @@ public class RxMessageSource implements OnRxMessageSetListener<RxRequestModel>, 
 
     @Override
     public RxMessageSource cancelAll() {
-        if (!MMESSAGELIST.isEmpty()) {
+        if (!mRequestModels.isEmpty()) {
             for (int i = 0; i < size(); i++) {
-                MMESSAGELIST.get(i).cancel();
+                mRequestModels.get(i).cancel();
 
             }
         }
@@ -104,7 +100,7 @@ public class RxMessageSource implements OnRxMessageSetListener<RxRequestModel>, 
 
     @Override
     public RxMessageSource add(@NonNull RxRequestModel parameter) {
-        MMESSAGELIST.add(parameter);
+        mRequestModels.add(parameter);
         return mRxMessageSource;
     }
 }

@@ -4,6 +4,15 @@ import android.app.Application;
 
 import com.liqi.nohttputils.nohttp.NoHttpInit;
 import com.liqi.nohttputils.RxNoHttpUtils;
+import com.yanzhenjie.nohttp.cookie.DBCookieStore;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpCookie;
+import java.net.URI;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 /**
  * Created by LiQi on 2016/12/30.
@@ -12,6 +21,8 @@ public class DemoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        try {
+           // InputStream inputStream =getApplicationContext().getAssets().open("srca.cer");
         //初始化nohttp（在此处其实可以调用setDialogGetListener设置全局请求加载框）
         RxNoHttpUtils.rxNoHttpInit(getApplicationContext())
                 //是否维护Cookie
@@ -34,7 +45,24 @@ public class DemoApplication extends Application {
                 .setThreadPoolSize(3)
                 //设置网络请求队列并发数量
                 .setRunRequestSize(4)
+                //设置带证书安全协议请求
+                //.setInputStreamSSL(new InputStream())
+                //设置无证书安全协议请求
+                //.setInputStreamSSL()
+                //添加全局请求头
+                //.addHeader("app>>head","app_head_global")
+                //添加全局请求参数-只支持String类型
+               // .addParam("app_param","app_param_global")
+                //设置Cookie管理监听。
+               // .setCookieStoreListener(new DBCookieStore.CookieStoreListener())
+                //设置主机验证
+               // .setHostnameVerifier(new HostnameVerifier())
+                //设置全局重试次数，配置后每个请求失败都会重试设置的次数。
+                //.setRetry(5)
                 //开始初始化Nohttp
                 .startInit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

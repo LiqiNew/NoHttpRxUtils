@@ -14,7 +14,7 @@ import com.liqi.nohttprxutils.download.DownloadFileActivity;
  * Created by LiQi on 2016/12/30.
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button button, button1, button2, button3,button4,button5;
+    private Button button, button1, button2, button3,button4,button5,button6;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button5 = (Button) findViewById(R.id.button5);
         button5.setOnClickListener(this);
         button5.setAlpha(0.6f);
+        button6 = (Button) findViewById(R.id.button6);
+        button6.setOnClickListener(this);
+        button6.setAlpha(0.6f);
     }
 
     @Override
@@ -66,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //多请求队列演示
             case R.id.button5:
                 startActivity(new Intent(this, RequestQueueDemoActivity.class));
+                break;
+            //多请求队列演示
+            case R.id.button6:
+                startActivity(new Intent(this, PollDemo.class));
                 break;
         }
     }
