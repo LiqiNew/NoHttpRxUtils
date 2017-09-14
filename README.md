@@ -83,9 +83,9 @@ NoHttpRxUtils使用简介
 //.setDialogGetListener("全局加载框获取接口")<br><br>
 //设置底层用那种方式去请求<br>
 .setRxRequestUtilsWhy(NoHttpInit.OKHTTP)<br><br>
-//设置带证书安全协议请求<br>
+//设置全局带证书安全协议请求（如果在请求调用的时候切换了安全协议方式，允许覆盖此设置）<br>
 //.setInputStreamSSL(new InputStream())<br><br>
-//设置无证书安全协议请求<br>
+//设置全局无证书安全协议请求（如果在请求调用的时候切换了安全协议方式，允许覆盖此设置）<br>
 //.setInputStreamSSL()<br><br>
 //添加全局请求头<br>
 //.addHeader("app>>head","app_head_global")<br><br>
@@ -93,7 +93,7 @@ NoHttpRxUtils使用简介
 //.addParam("app_param","app_param_global")<br><br>
 //设置Cookie管理监听。<br>
 //.setCookieStoreListener(new DBCookieStore.CookieStoreListener())<br><br>
-//设置主机验证<br>
+//设置全局主机验证（如果在请求调用的时候切换了无证书安全协议方式，此设置失效）<br>
 //.setHostnameVerifier(new HostnameVerifier())<br><br>
 //设置全局重试次数，配置后每个请求失败都会重试设置的次数。<br>
 //.setRetry(5)<br><br>
