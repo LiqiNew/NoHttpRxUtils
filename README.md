@@ -229,9 +229,11 @@ RxNoHttpUtils.rxNoHttpRequest()
              .setCacheKey("get请求Key")
              //单个请求设置缓存模式(跟原生NoHttp五种缓存模式一致)
              .setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE)
-             //设置当前请求是否添加进Rx"线程池"队列中(默认是添加rx"线程池"中.!!如果设置false,请求线程不经过Rx"线程池"队列直接请求，不针对轮询请求)
+             //设置当前请求是否添加进Rx"线程池"队列中
+             //(默认是添加rx"线程池"中.!!如果设置false,请求线程不经过Rx"线程池"队列直接请求，不针对轮询请求)
              .setQueue(false)
-             //设置Rx"线程池"队列标识.(标识设置请保证唯一.!!如果setQueue(false)设置为false,setSign(标识对象)设置无任何作用)
+             //设置Rx"线程池"队列标识.
+             //(标识设置请保证唯一.!!如果setQueue(false)设置为false,setSign(标识对象)设置无任何作用)
              .setSign(new Object())
              //添加HTTPS协议无证书参数
              .addHttpsIsCertificate()
@@ -276,10 +278,12 @@ RxNoHttpUtils.rxNoHttpRequest()
              //设置轮询间隔时间-默认3秒
              .setPeriod(5 * 1000)
              //设置被观察者产生的行为事件监听器
-             //(如果此处实现被观察者产生的行为事件监听器，那么框架内部就不去维护此轮询请求，必须实现轮询拦截器接口去维护此轮询什么时候停止。)
+             //(如果此处实现被观察者产生的行为事件监听器，
+             //那么框架内部就不去维护此轮询请求，必须实现轮询拦截器接口去维护此轮询什么时候停止。)
              .setOnObserverEventListener(new OnObserverEventListener<RestRequest<T>, RxInformationModel<T>>(){
                      @Override
                   public RxInformationModel<T> onObserverEvent(RestRequest<T> transferValue) {
+                  
                     // RxInformationModel<T>对象方法介绍
                     //getData()=获取请求数据
                     //setData(T data)=赋值请求数据
@@ -290,7 +294,10 @@ RxNoHttpUtils.rxNoHttpRequest()
                     //setStop(boolean stop)=赋值是否停止轮询状态
                     //isStop()=获取是否轮询状态
                     //RxInformationModel<T> 此对象需要new 出来.
-                    //在此方法中可以换成自己钟意的网络框架去请求，如果上面设置网络请求参数，除了body其它的都能从RestRequest<Objects>里面取得。
+                    
+                    //在此方法中可以换成自己钟意的网络框架去请求。
+                    //如果上面设置网络请求参数，除了body其它的都能从RestRequest<Objects>里面取得。
+                    
                    return informationModel;
                   }
              })
@@ -298,7 +305,10 @@ RxNoHttpUtils.rxNoHttpRequest()
              .setBooleanFunc1(new Func1<RxInformationModel<T>, Boolean>() {
                       @Override
                    public Boolean call(RxInformationModel<T> stringRxInformationModel) {
-                  //在此方法里面可以根据RxInformationModel<T>.getData()获取请求的数据，然后根据请求的数据来决定是否停止轮询
+                   
+                  //在此方法里面可以根据RxInformationModel<T>.getData()获取请求的数据，
+                  //然后根据请求的数据来决定是否停止轮询
+                  
                     return stringRxInformationModel.isStop();
                    }
              })
@@ -307,7 +317,9 @@ RxNoHttpUtils.rxNoHttpRequest()
             .setRxInformationModelAction1(new Action1<RxInformationModel<T>>() {
                 @Override
                public void call(RxInformationModel<T> stringRxInformationModel) {
+               
                 //在此方法里面根据RxInformationModel<T>中的数据做出相应动作
+                
                }
              })
              //转换成轮询请求类
