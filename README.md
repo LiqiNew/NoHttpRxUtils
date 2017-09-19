@@ -27,7 +27,7 @@ GET、POST、PUT、PATCH、HEAD、DELETE、OPTIONS、TRACE等请求协议<br><br
 支持断点续传和断点处继续下载<br><br>
 [NoHttp框架GitHub(严振杰)](https://github.com/yanzhenjie/NoHttp)
 ##### 欢迎加入NoHttp作者QQ技术交流群：46523908
-<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=28760218432b83451cf4849d585ccfe282f3ef136c44446f55720b6de4f98546"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Android 愚公移山1群" title="Android 愚公移山1群"></a>（点击图标，可以直接加入)
+<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=28760218432b83451cf4849d585ccfe282f3ef136c44446f55720b6de4f98546"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Android 愚公移山1群" title="Android 愚公移山1群"></a>（点击图标，可以直接加入)
 # NoHttpRxUtils框架是什么?
 NoHttpRxUtils主要是通过RxJava-1框架对NoHttp网络框架操作进行再次封装。<br>
 减轻使用者繁琐的调用，让使用者更专注于项目业务，而非客户端与服务器之间的网络通讯。<br><br>
