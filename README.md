@@ -65,7 +65,7 @@ repositories {
 
 **2：项目目录build.gradle中依赖NohttpRxUtils框架**<br>
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.1.3'
+compile 'com.github.liqinew:nohttprxutils:v.1.3.1'
 ```
 
 NoHttpRxUtils使用简介
