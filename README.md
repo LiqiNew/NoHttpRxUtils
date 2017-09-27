@@ -254,11 +254,11 @@ RxNoHttpUtils.rxNoHttpRequest()
 #### * 手动取消Rx"线程池"中队列请求(注：setQueue(false)如果设置为false，手动取消将失去作用)
 
 ```java
-//单个取消Sign对应的请求<br>
-RxNoHttpUtils.cancel(Sign));<br><br>
-//取消批量Sign对应的请求<br>
-RxNoHttpUtils.cancel(Sign[]);<br><br>
-//取消RX"线程池"中所有的请求<br>
+//单个取消Sign对应的请求
+RxNoHttpUtils.cancel(Sign));
+//取消批量Sign对应的请求
+RxNoHttpUtils.cancel(Sign[]);
+//取消RX"线程池"中所有的请求
 // RxNoHttpUtils.cancelAll();
 ```
 
