@@ -244,7 +244,7 @@ RxNoHttpUtils.rxNoHttpRequest()
              //设置请求位图的配置和比例
              .setBitmapConfigType(Bitmap.Config, ImageView.ScaleType)
              //设置请求加载框(如果此处没有设置加载框，那么就默认使用初始化设置的加载框)
-             .setDialogGetListener(this)<br><br>
+             .setDialogGetListener(this)
              //创建请求对象，并指定响应转换类型和请求成功或者失败回调接口
              .builder(Objects.class,new OnIsRequestListener<T>)
              //开始请求
