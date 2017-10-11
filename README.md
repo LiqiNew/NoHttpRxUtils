@@ -355,3 +355,19 @@ RxNoHttpUtils.removeAllCacheData();
 [基于RxJava-1源码扩展的轮询器](http://www.jianshu.com/p/2aa5855425c8) 
 ### 由于NoHttpRxUtils请求中Rx"线程池"是自己写的队列算法,要了解的请看我写的Rx"线程池"案例
 [Rx线程池案例](https://github.com/LiqiNew/RxThreadPool) 
+
+# License
+
+    Copyright 2016 Liqi
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+       http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
