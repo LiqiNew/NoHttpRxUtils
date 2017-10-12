@@ -76,44 +76,63 @@ NoHttpRxUtils use method
 //Initialize NoHttp
 // hint:in fact, you can call setDialogGetListener here to set the global load box.
  RxNoHttpUtils.rxNoHttpInit(getApplicationContext())
+ 
               //Whether to maintain cookies,(If true maintain,else not maintained.)
               .setCookieEnable(false)
+              
               //Whether the cache into the database.(If true yes,else not.)
               .setDbEnable(true)
+              
               //Whether to open debug.(If true yes,else not.)
               .isDebug(true)
+              
               //Set debug to print Name
               .setDebugName("LiQi-NoHttpUtils")
+              
               //Set the global connection timeout. Unit seconds, default 30s.
               .setConnectTimeout(40)
+              
               //Set the global server response timeout. Unit seconds, the default 30s.
               .setReadTimeout(40)
+              
               //Set the number of concurrent downloads, the default number of concurrent 3.
               .setThreadPoolSize(3)
+              
               //Set the number of concurrent requests for network requests, the default number of concurrent 3.
               .setRunRequestSize(4)
+              
               //Set the global default load dialog box
-              //Note:The incoming context must be the top of the stack.You can get by using the method 'registerActivityLifecycleCallbacks()' to get.
+              //Note:The incoming context must be the top of the stack.
+              //You can get by using the method 'registerActivityLifecycleCallbacks()' to get.
               .setDialogGetListener(new Dialog())
+              
               //Set the bottom layer in that way to request.NoHttpInit.OKHTTP or NoHttpInit.URLCONNECTION two ways.
               .setRxRequestUtilsWhy(NoHttpInit.OKHTTP)
+              
               //Set the global security protocol request with certificate.
               //Note: If the security protocol mode is toggled while the request is being called, the setting is overwritten.
               .setInputStreamSSL(new InputStream())
+              
               //Set the global certificateless security protocol request
               //Note: If the security protocol mode is toggled while the request is being called, the setting is overwritten.
               .setInputStreamSSL()
+              
               //Add a global request header
               .addHeader("app_head_key","app_head_global")
+              
               //Add global request parameters. Only the String type is supported.
               .addParam("app_param","app_param_global")
+              
               //Set up cookie management to listen.
               .setCookieStoreListener(new DBCookieStore.CookieStoreListener())
+              
               //Set up global host authentication.
               //Note: This setting is not valid if the certificateless security protocol is switched when the request is called.
               .setHostnameVerifier(new HostnameVerifier())
+              
               //Sets the number of global request failed retries.
               //.setRetry(5)
+              
               //Start initialization.
               .startInit();
 ```
@@ -124,22 +143,31 @@ NoHttpRxUtils use method
 ```java
 //Get the download request builder
 NoHttpDownloadUtils.getNoHttpDownloadBuild()
+
                     //Add download file parameters
                    .addDownloadParameter(DOWNLOAD_URL, "Download_Name.apk")
+                   
                    //Set whether to continue downloading at breakpoint.If true yes,else not.
                    .setRange(true)
+                   
                    //Set the download progress monitoring interface
                    .setDownloadListener(new DownloadListener())
+                   
                    //Set whether to delete the same file name file, and then re-download.If true yes,else not.
                    .setDeleteOld(false)
+                   
                    //Set the download file to store the file path
                    .setFileFolder(FILEPATH)
+                   
                    //Single request to set the read time. Unit seconds, default to global read timeout.
                    .setReadTimeout(40)
+                   
                    //Single request to set the link timeout. Unit seconds, default to global link timeout.
                    .setConnectTimeout(40)
+                   
                    //Single request to set the number of failed request retries, default number of global link retries.
                    .setRetryCount(3)
+                   
                    //Open the download
                    .satart(new Activity());
 ```
@@ -149,6 +177,7 @@ NoHttpDownloadUtils.getNoHttpDownloadBuild()
 ```java
 //Pause all Downloading tasks
 NoHttpDownloadUtils.cancelAll();
+
 //Pause the specified download task
 NoHttpDownloadUtils.cancel(downloadUrl);
 ```
@@ -158,6 +187,7 @@ NoHttpDownloadUtils.cancel(downloadUrl);
 ```java
 //Restore the specified download
 NoHttpDownloadUtils.startRequest(downloadUrl);
+
 //Restore all downloads
 NoHttpDownloadUtils.startAllRequest();
 ```
@@ -167,8 +197,10 @@ NoHttpDownloadUtils.startAllRequest();
 ```java
 //Get the 'What' value for the download URL
 NoHttpDownloadUtils.getDownloadRequestsWhat(downloadUrl);
+
 //Remove the 'What' value for the download URL
 NoHttpDownloadUtils.removeWhatData(downloadUrl);
+
 //Remove all downloads 'What' values
 NoHttpDownloadUtils.removeWhatAll();
 ```
@@ -186,81 +218,113 @@ NoHttpDownloadUtils.clearAll();
 ```java
 //Get the request object
 RxNoHttpUtils.rxNoHttpRequest()
+
              //get request mode. In addition to get and post requests, but also support put, delete, head, patch, options, trace,
              .get() 
              //post request mode. In addition to get and post requests, but also support put, delete, head, patch, options, trace,
              .post()
+             
              //Set the request Url
              .url("url")
+             
              //Add the request parameters.
              //Note: When the incoming parameter type does not belong to the internal setting type,
              //the default call toString () of Object is converted to a String type parameter.
              .addParameter()
+             
              //Add the request header.
              .addHeader()
+             
              //Set the request bodyEntity to StringEntity and pass the request type.
              .requestStringEntity(Content-Type)
+             
              //Add a String value for the body for StringEntity.
              .addStringEntityParameter("bodyString")
+             
              //Switch from bodyEntity to request configuration object
              .transitionToRequest()
+             
              //Set the request bodyEntity to JsonObjectEntity.Json format: {"xx": "xxx", "yy": "yyy"}
              .requestJsonObjectEntity()
+             
              //Add parameters and values to JsonObjectEntity
              .addEntityParameter("key","Valu")
+             
              //Switch from bodyEntity to request configuration object
              .transitionToRequest()
+             
              //Set the request bodyEntity to JsonListEntity.json format: [{"xx": "xxx"}, {"yy": "yyy"}]
              .requestJsonListEntity()
+             
              //Create an object for JsonList and pass key value parameters
              .addObjectEntityParameter("key","Valu")
+             
              //Add key-value parameters to the created object
              .addEntityParameter("key","Valu")
+             
              //Brush the creation object into JsonList
              //Note: If you need to create multiple objects in the collection, 
              //you can continue to call addObjectEntityParameter () after this method to create.
              //The process is consistent with the above.
              .objectBrushIntoList()
+             
              //Switch from bodyEntity to request configuration object
              .transitionToRequest()
+             
              //Set the request bodyEntity to InputStreamEntity
              .requestInputStreamEntity(Content-Type)
+             
              //Add an input stream to InputStreamEntity
              .addEntityInputStreamParameter(new InputStream())
+             
              //Switch from bodyEntity to request configuration object
              .transitionToRequest()
+             
              //Single request to set the read time. Unit seconds, default to global read timeout.
              .setReadTimeout(40)
+             
              //Single request to set the link timeout. Unit seconds, default to global link timeout.
              .setConnectTimeout(30)
+             
              //Single request to set the number of failed request retries, default number of global link retries.
              .setRetryCount(3)
+             
              //Set a single request to set the cache key.
              .setCacheKey("setRequestCacheKey")
+             
              //Single request to set the cache mode. With the original NoHttp five cache mode consistent.
              .setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE)
+             
              //Sets whether the current request is added to the Rx "thread pool" queue. default is to add RxJava 'thread pool'.
              //Note: If false is set, the request thread does not request it directly through the RxJava "thread pool" queue.
              //Only for data requests, not for polling requests.
              .setQueue(false)
+             
              //Set the RxJava "thread pool" queue identifier,Please make sure to be unique.
              //Note: If setQueue (false) is set to false, the setSign (Sign) setting has no effect.
              .setSign(new Object())
+             
              //Add HTTPS protocol without certificate parameters.
              .addHttpsIsCertificate()
+             
              //Add the HTTPS protocol with certificate parameters.
              .addHttpsIsCertificate(new InputStream())
+             
              //Set the maximum width of the requested image.
              .setBitmapMaxWH(500,500)
+             
              //Set the configuration and scale of the requested bitmap.
              .setBitmapConfigType(Bitmap.Config, ImageView.ScaleType)
+             
              //Set the load box.
              //Note: If you do not set the load box here, then the default use of the global settings of the load box.
              //If the global setting does not set the load box, then the load box and built-in prompts are not displayed.
              .setDialogGetListener(new Dialog())
+             
              //Create the request object to specify the response data conversion type,
              //and then set the request to succeed or fail the callback interface.
              .builder(Objects.class,new OnIsRequestListener<T>)
+             
              //Start the request.
              .requestRxNoHttp();
 ```
@@ -270,8 +334,10 @@ RxNoHttpUtils.rxNoHttpRequest()
 ```java
 //Single cancellation of the corresponding request for 'Sign'.
 RxNoHttpUtils.cancel(Sign));
+
 //Cancel the request for bulk 'Sign'
 RxNoHttpUtils.cancel(Sign[]);
+
 //Cancel all requests in the RxJava 'thread pool'.
 // RxNoHttpUtils.cancelAll();
 ```
@@ -281,17 +347,23 @@ RxNoHttpUtils.cancel(Sign[]);
 ```java
 //Get the request object.
 RxNoHttpUtils.rxNoHttpRequest()
+
              //NoHttp The network request settings are set as described above
              ...
+             
              //Set the current polling request 'Sign'
              .setSign(new Object())
+             
              //Create a polling request object, 
              //and then specify the response data conversion type and setup request success and failure callback interface
              .builderPoll(Objects.class,new OnIsRequestListener<T>)
+             
              //Set the initialization load delay
              .setInitialDelay(3 * 1000)
+             
              //Set the polling interval, default 3s.
              .setPeriod(5 * 1000)
+             
              //Set the behavior event listener generated by the observer
              //Note: If the behavioral event listener is implemented here,
              //then the polling request is not maintained inside the framework,
@@ -319,6 +391,7 @@ RxNoHttpUtils.rxNoHttpRequest()
                    return informationModel;
                   }
              })
+             
              // Set the data to intercept the listening object
              .setBooleanFunc1(new Func1<RxInformationModel<T>, Boolean>() {
                       @Override
@@ -330,6 +403,7 @@ RxNoHttpUtils.rxNoHttpRequest()
                     return stringRxInformationModel.isStop();
                    }
              })
+             
              //Set the observer to make the corresponding handler based on the observed behavior
              //Note: If this interface is implemented, the implementation of the OnIsRequestListener in the builderPoll will be invalid.
             .setRxInformationModelAction1(new Action1<RxInformationModel<T>>() {
@@ -340,8 +414,10 @@ RxNoHttpUtils.rxNoHttpRequest()
                 
                }
              })
+             
              //Convert to polling request class
              .switchPoll()
+             
              //Start the request
              .requestRxNoHttp();
 ```
@@ -351,10 +427,12 @@ RxNoHttpUtils.rxNoHttpRequest()
 ```java
 //Single Cancel the poll request corresponding to 'Sign'
 RxNoHttpUtils.cancelPoll(Sign));
+
 //Cancel the batch request corresponding to 'Sign'
 RxNoHttpUtils.cancelPoll(Sign[]);
+
 //Cancel all polling requests
-// RxNoHttpUtils.cancelPollAll();
+RxNoHttpUtils.cancelPollAll();
 ```
 
 #### * Manually clear the cache
@@ -362,6 +440,7 @@ RxNoHttpUtils.cancelPoll(Sign[]);
 ```java
 //Clear the cache data corresponding to 'Key'
 RxNoHttpUtils.removeKeyCacheData("Cachekey");
+
 //Clear all cached data
 RxNoHttpUtils.removeAllCacheData();
 ```
