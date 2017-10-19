@@ -94,14 +94,14 @@ public class RxNoHttpUtils {
      * @param cacheKey 缓存KEY
      */
     public static void removeKeyCacheData(String cacheKey) {
-        NoHttp.getCacheStore().remove(cacheKey);
+        NoHttp.getInitializeConfig().getCacheStore().remove(cacheKey);
     }
 
     /**
      * 清除所有缓存数据
      */
     public static void removeAllCacheData() {
-        NoHttp.getCacheStore().clear();
+        NoHttp.getInitializeConfig().getCacheStore().clear();
     }
 
     private static OnRxMessageSetListener getOnRxMessageSetListener() {

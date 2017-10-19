@@ -19,6 +19,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
     private DialogGetListener mDialogGetListener;
     private RestRequest<T> mRestRequest;
     private OnIsRequestListener<T> mOnIsRequestListener;
+    private Object mSign;
 
     private RxRequestModel() {
 
@@ -30,6 +31,23 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
     }
 
     /**
+     * 释放当前对象内存
+     */
+    public void clear() {
+        mDialogGetListener = null;
+        mOnIsRequestListener = null;
+        mSign = null;
+    }
+
+    /**
+     * 释放当前全部对象内存
+     */
+    public void clearAll() {
+        clear();
+        mRestRequest = null;
+    }
+
+    /**
      * 判断此标识是否是当前对象,并取消当前sign的请求
      *
      * @param sign 标识
@@ -37,7 +55,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
      */
     public boolean isCancel(@NonNull Object sign) {
         if (null != mRestRequest) {
-            if (mRestRequest.getTag() == sign) {
+            if (mSign == sign) {
                 return true;
             }
         }
@@ -45,17 +63,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
     }
 
     public void setSign(@NonNull Object sign) {
-        if (null != mRestRequest) {
-            mRestRequest.setTag(sign);
-            mRestRequest.setCancelSign(sign);
-        }
-    }
-
-    public void cancelBySign(Object sign) {
-        if (null != mRestRequest) {
-            mRestRequest.cancelBySign(sign);
-            setRunOff(true);
-        }
+        mSign = sign;
     }
 
     public void cancel() {
@@ -87,7 +95,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
                 if (!isRunOff()) {
                     return response.get();
                 } else {
-                    setThrowable(new Exception(mRestRequest.url() + "撤销请求"));
+                    setThrowable(new Exception(mRestRequest.url() + "　-->撤销请求"));
                 }
             } else {
                 setThrowable(response.getException());

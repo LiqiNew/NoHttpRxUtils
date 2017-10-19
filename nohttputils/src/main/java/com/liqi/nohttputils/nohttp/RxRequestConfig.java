@@ -402,9 +402,9 @@ public class RxRequestConfig<T> {
         /**
          * 设置请求标识（必须唯一）
          *
-         * @param sign
+         * @param sign 请求标识
          */
-        public ConfigBuilder setSign(Object sign) {
+        public ConfigBuilder setSign(@NonNull Object sign) {
             mSign = sign;
             return this;
         }

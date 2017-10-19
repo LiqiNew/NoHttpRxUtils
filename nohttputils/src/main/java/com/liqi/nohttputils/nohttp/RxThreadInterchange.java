@@ -125,10 +125,10 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
      * @param baseRxRequestModel 要处理的对象
      * @param <T>
      */
-    private <T> void runRequest(RxRequestModel<T> baseRxRequestModel) {
+    private <T> void runRequest(final RxRequestModel<T> baseRxRequestModel) {
         if (null != baseRxRequestModel) {
-            final DialogGetListener dialogGetListener = baseRxRequestModel.getDialogGetListener();
-            final Dialog dialog = null == dialogGetListener ? null : dialogGetListener.getDialog();
+
+            Dialog dialog = getDialog(baseRxRequestModel);
             if (null != dialog) {
                 dialog.show();
             }
@@ -144,10 +144,11 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
 
                         @Override
                         public void onError(Throwable e) {
-                            messageListDalete();
+                            Dialog dialog = getDialog(baseRxRequestModel);
                             if (null != dialog && dialog.isShowing()) {
                                 dialog.dismiss();
                             }
+
                             // 提示异常信息。
                             if (e instanceof NetworkError) {// 网络不好
                                 show(dialog, R.string.error_please_check_network);
@@ -163,31 +164,42 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
                             } else if (e instanceof ProtocolException) {
                                 show(dialog, R.string.error_system_unsupport_method);
                             } else {
-                                Logger.e("NoHttpUtils捕获异常："+e.toString());
-                                StackTraceElement[] stackTrace = e.getStackTrace();
-                                if (null!=stackTrace) {
-                                    for (StackTraceElement traceElement : stackTrace) {
-                                        Logger.e("NoHttpUtils捕获异常："+traceElement.toString());
+                                if (e.getMessage().contains(REQUEST_REVOCATION)) {
+                                    Logger.e(e.getMessage());
+                                } else {
+                                    Logger.e("NoHttpUtils捕获异常：" + e.toString());
+                                    StackTraceElement[] stackTrace = e.getStackTrace();
+                                    if (null != stackTrace) {
+                                        for (StackTraceElement traceElement : stackTrace) {
+                                            Logger.e("NoHttpUtils捕获异常：" + traceElement.toString());
+                                        }
                                     }
+                                    show(dialog, R.string.error_unknow);
                                 }
-                                show(dialog, R.string.error_unknow);
                             }
 
 
                             if (null != onIsRequestListener) {
                                 onIsRequestListener.onError(e);
                             }
+
+                            baseRxRequestModel.clearAll();
+                            messageListDalete();
                         }
 
                         @Override
                         public void onNext(T t) {
-                            messageListDalete();
+                            Dialog dialog = getDialog(baseRxRequestModel);
                             if (null != dialog && dialog.isShowing()) {
                                 dialog.dismiss();
                             }
 
-                            if (null != onIsRequestListener)
+                            if (null != onIsRequestListener) {
                                 onIsRequestListener.onNext(t);
+                            }
+
+                            baseRxRequestModel.clearAll();
+                            messageListDalete();
                         }
                     });
         }
@@ -199,11 +211,13 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
      */
     private void messageListDalete() {
         synchronized (this) {
-            if (mOnRxMessageDisListener.size() >= SIZE) {
-                for (int i = 0; i < mOnRxMessageDisListener.size(); i++) {
-                    BaseRxRequestModel baseRxRequestModel = mOnRxMessageDisListener.get(i);
-                    if (baseRxRequestModel.isRunDispose()) {
-                        mOnRxMessageDisListener.delete(i);
+            int size = mOnRxMessageDisListener.size();
+            if (size >= SIZE) {
+                for (int i = 0; i < size; i++) {
+                    int index = i % size;
+                    BaseRxRequestModel baseRxRequestModel = mOnRxMessageDisListener.get(index);
+                    if (null != baseRxRequestModel && baseRxRequestModel.isRunDispose()) {
+                        mOnRxMessageDisListener.delete(index);
                     }
                 }
             }
@@ -234,5 +248,16 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
             Context context = dialog.getContext();
             Toast.makeText(context, context.getResources().getString(stringId), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * 从RxRequestModel对象中获取dialog
+     *
+     * @param baseRxRequestModel RxRequestModel对象
+     * @return
+     */
+    private Dialog getDialog(RxRequestModel baseRxRequestModel) {
+        DialogGetListener dialogGetListener = baseRxRequestModel.getDialogGetListener();
+        return null == dialogGetListener ? null : dialogGetListener.getDialog();
     }
 }

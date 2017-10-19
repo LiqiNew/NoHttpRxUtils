@@ -250,9 +250,9 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
     private RestRequest<T> getTJavaBeanRequest(Class<T> clazz) {
         RestRequest<T> ntityRequest;
         if (clazz != Bitmap.class) {
-            ntityRequest = new RequestBeanObj<T>(mRxRequestConfig.getUrl(), mRxRequestConfig.getRequestMethod(), clazz);
+            ntityRequest = new RequestBeanObj<>(mRxRequestConfig.getUrl(), mRxRequestConfig.getRequestMethod(), clazz);
         } else {
-            ntityRequest = new RequestBeanObj<T>(mRxRequestConfig.getUrl(),
+            ntityRequest = new RequestBeanObj<>(mRxRequestConfig.getUrl(),
                     mRxRequestConfig.getRequestMethod(),
                     mRxRequestConfig.getMaxWidth(),
                     mRxRequestConfig.getMaxHeight(),
