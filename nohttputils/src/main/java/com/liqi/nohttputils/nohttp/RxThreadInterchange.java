@@ -129,8 +129,12 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
         if (null != baseRxRequestModel) {
 
             Dialog dialog = getDialog(baseRxRequestModel);
-            if (null != dialog) {
-                dialog.show();
+            if (null != dialog&&!dialog.isShowing()) {
+                try {
+                    dialog.show();
+                } catch (Exception e) {
+                    Logger.e("Dialog-显示异常：由于Dialog依赖的Context不是栈顶。");
+                }
             }
 
             Observable.create(baseRxRequestModel)
@@ -145,7 +149,11 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
                         public void onError(Throwable e) {
                             Dialog dialog = getDialog(baseRxRequestModel);
                             if (null != dialog && dialog.isShowing()) {
-                                dialog.dismiss();
+                                try {
+                                    dialog.dismiss();
+                                } catch (Exception e1) {
+                                    Logger.e("Dialog-关闭异常：由于Dialog已经关闭或者依赖的Context不存在");
+                                }
                             }
 
                             // 提示异常信息。
@@ -190,7 +198,11 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
                         public void onNext(T t) {
                             Dialog dialog = getDialog(baseRxRequestModel);
                             if (null != dialog && dialog.isShowing()) {
-                                dialog.dismiss();
+                                try {
+                                    dialog.dismiss();
+                                } catch (Exception e) {
+                                    Logger.e("Dialog-关闭异常：由于Dialog已经关闭或者依赖的Context不存在");
+                                }
                             }
 
                             OnIsRequestListener<T> onIsRequestListener = baseRxRequestModel.getOnIsRequestListener();
