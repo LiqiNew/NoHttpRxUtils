@@ -66,7 +66,7 @@ repositories {
 
 **2：The project directory build.gradle relies on the NohttpRxUtils framework**<br>
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.1.3.2'
+compile 'com.github.liqinew:nohttprxutils:v.1.3.4'
 ```
 
 NoHttpRxUtils use method
