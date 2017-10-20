@@ -132,7 +132,6 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
             if (null != dialog) {
                 dialog.show();
             }
-            final OnIsRequestListener<T> onIsRequestListener = baseRxRequestModel.getOnIsRequestListener();
 
             Observable.create(baseRxRequestModel)
                     .subscribeOn(Schedulers.io())
@@ -178,7 +177,7 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
                                 }
                             }
 
-
+                            OnIsRequestListener<T> onIsRequestListener = baseRxRequestModel.getOnIsRequestListener();
                             if (null != onIsRequestListener) {
                                 onIsRequestListener.onError(e);
                             }
@@ -194,6 +193,7 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
                                 dialog.dismiss();
                             }
 
+                            OnIsRequestListener<T> onIsRequestListener = baseRxRequestModel.getOnIsRequestListener();
                             if (null != onIsRequestListener) {
                                 onIsRequestListener.onNext(t);
                             }

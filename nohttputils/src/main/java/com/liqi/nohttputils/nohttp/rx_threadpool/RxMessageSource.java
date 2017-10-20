@@ -47,7 +47,7 @@ public class RxMessageSource implements OnRxMessageSetListener<RxRequestModel>, 
 
     @Override
     public synchronized void delete(int index) {
-        mRequestModels.remove(index % size()).clear();
+        mRequestModels.remove(index % size());
     }
 
     @Override
@@ -65,9 +65,8 @@ public class RxMessageSource implements OnRxMessageSetListener<RxRequestModel>, 
     @Override
     public RxMessageSource cancel(Object sign) {
         if (!mRequestModels.isEmpty()) {
-            int size =size();
-            for (int i = 0; i < size; i++) {
-                int index=i%size;
+            for (int i = 0; i < size(); i++) {
+                int index=i%size();
                 RxRequestModel requestModel = mRequestModels.get(index);
                 if (null!=requestModel&&requestModel.isCancel(sign)) {
                     requestModel.cancel();
@@ -91,9 +90,8 @@ public class RxMessageSource implements OnRxMessageSetListener<RxRequestModel>, 
     @Override
     public RxMessageSource cancelAll() {
         if (!mRequestModels.isEmpty()) {
-            int size = size();
-            for (int i = 0; i < size; i++) {
-                int index=i%size;
+            for (int i = 0; i < size(); i++) {
+                int index=i%size();
                 RxRequestModel requestModel = mRequestModels.get(index);
                 if (null!=requestModel) {
                     requestModel.cancel();
