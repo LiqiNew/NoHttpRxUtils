@@ -15,10 +15,11 @@ import com.yanzhenjie.nohttp.rest.RestRequest;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * RxJava轮询控制类
@@ -63,13 +64,13 @@ public class RxPollUtils<T> implements OnRequestRxNoHttpListener {
             informationPoolModel.setSign(sign);
         }
         //赋值拦截器
-        Func1<RxInformationModel<T>, Boolean> booleanFunc1 = mRxPollNoHttpConfig.getBooleanFunc1();
+        Predicate<RxInformationModel<T>> booleanFunc1 = mRxPollNoHttpConfig.getBooleanFunc1();
         if (null != booleanFunc1) {
             informationPoolModel.setBooleanFunc1(booleanFunc1);
         }
 
         //设置观察者相应处理事件
-        Action1<RxInformationModel<T>> rxInformationModelAction1 = mRxPollNoHttpConfig.getRxInformationModelAction1();
+        Consumer<RxInformationModel<T>> rxInformationModelAction1 = mRxPollNoHttpConfig.getRxInformationModelAction1();
         if (null != rxInformationModelAction1) {
             informationPoolModel.setRxInformationModelAction1(rxInformationModelAction1);
         }

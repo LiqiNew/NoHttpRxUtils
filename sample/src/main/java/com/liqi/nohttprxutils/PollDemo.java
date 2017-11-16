@@ -12,8 +12,8 @@ import com.liqi.nohttputils.nohttp.rx_poll.model.RxInformationModel;
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnObserverEventListener;
 import com.yanzhenjie.nohttp.rest.RestRequest;
 
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * 轮询请求演示界面
@@ -212,23 +212,36 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                             }
                         })
 
-                        .setBooleanFunc1(new Func1<RxInformationModel<String>,Boolean>() {
-                            @Override
-                            public Boolean call(RxInformationModel<String> stringRxInformationModel) {
-                                Log.e("外部实现轮询拦截","外部实现轮询拦截>>>拦截状态："+stringRxInformationModel.isStop());
-                                return stringRxInformationModel.isStop();
-                            }
-
+                        .setBooleanFunc1(new Predicate<RxInformationModel<String>>() {
 //                            @Override
-//                            public boolean test(@NonNull RxInformationModel<String> stringRxInformationModel) throws Exception {
+//                            public Boolean call(RxInformationModel<String> stringRxInformationModel) {
 //                                Log.e("外部实现轮询拦截","外部实现轮询拦截>>>拦截状态："+stringRxInformationModel.isStop());
 //                                return stringRxInformationModel.isStop();
 //                            }
+
+                            @Override
+                            public boolean test(RxInformationModel<String> stringRxInformationModel) throws Exception {
+                                Log.e("外部实现轮询拦截","外部实现轮询拦截>>>拦截状态："+stringRxInformationModel.isStop());
+                                return stringRxInformationModel.isStop();
+                            }
                         })
 
-                        .setRxInformationModelAction1(new Action1<RxInformationModel<String>>() {
+                        .setRxInformationModelAction1(new Consumer<RxInformationModel<String>>() {
+//                            @Override
+//                            public void call(RxInformationModel<String> stringRxInformationModel) {
+//                                String data = stringRxInformationModel.getData();
+//                                Log.e("外部实现轮询完毕","外部实现轮询运行完毕>>>运行结果："+data);
+//                                if (!isDiy) {
+//                                    isDiy = true;
+//                                    content.setText("轮询名称：自定义轮询\n外部实现调用轮询结果：" + data);
+//                                } else {
+//                                    String trim = content.getText().toString().trim();
+//                                    content.setText(trim + "\n\n轮询名称：自定义轮询\n外部实现调用轮询结果：" + data);
+//                                }
+//                            }
+
                             @Override
-                            public void call(RxInformationModel<String> stringRxInformationModel) {
+                            public void accept(RxInformationModel<String> stringRxInformationModel) throws Exception {
                                 String data = stringRxInformationModel.getData();
                                 Log.e("外部实现轮询完毕","外部实现轮询运行完毕>>>运行结果："+data);
                                 if (!isDiy) {
@@ -239,11 +252,6 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                                     content.setText(trim + "\n\n轮询名称：自定义轮询\n外部实现调用轮询结果：" + data);
                                 }
                             }
-
-//                            @Override
-//                            public void accept(RxInformationModel<String> stringRxInformationModel) throws Exception {
-//
-//                            }
                         })
                         .switchPoll()
                         .requestRxNoHttp();

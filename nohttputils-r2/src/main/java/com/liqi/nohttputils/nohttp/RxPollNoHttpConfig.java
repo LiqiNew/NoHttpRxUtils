@@ -9,8 +9,8 @@ import com.liqi.nohttputils.nohttp.rx_poll.model.RxInformationModel;
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnObserverEventListener;
 import com.yanzhenjie.nohttp.rest.RestRequest;
 
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * NoHttp轮询配置类
@@ -29,7 +29,7 @@ public class RxPollNoHttpConfig<T> {
     /**
      * 设置数据拦截监听对象
      */
-    private Func1<RxInformationModel<T>, Boolean> mBooleanFunc1;
+    private Predicate<RxInformationModel<T>> mBooleanFunc1;
     /**
      * 被观察者产生的行为事件监听器
      */
@@ -37,7 +37,7 @@ public class RxPollNoHttpConfig<T> {
     /**
      * 观察者根据被观察产生的行为做出相应处理监听器
      */
-    private Action1<RxInformationModel<T>> mRxInformationModelAction1;
+    private Consumer<RxInformationModel<T>> mRxInformationModelAction1;
     /**
      * 网络请求参数对象
      */
@@ -54,7 +54,7 @@ public class RxPollNoHttpConfig<T> {
         return mPeriod;
     }
 
-    public Func1<RxInformationModel<T>, Boolean> getBooleanFunc1() {
+    public Predicate<RxInformationModel<T>> getBooleanFunc1() {
         return mBooleanFunc1;
     }
 
@@ -62,7 +62,7 @@ public class RxPollNoHttpConfig<T> {
         return mRxRequestOperate;
     }
 
-    public Action1<RxInformationModel<T>> getRxInformationModelAction1() {
+    public Consumer<RxInformationModel<T>> getRxInformationModelAction1() {
         return mRxInformationModelAction1;
     }
 
@@ -123,7 +123,7 @@ public class RxPollNoHttpConfig<T> {
          * @param booleanFunc1 设置数据拦截监听对象
          * @return 构建轮询配置类
          */
-        public ConfigBuilder<T> setBooleanFunc1(Func1<RxInformationModel<T>, Boolean> booleanFunc1) {
+        public ConfigBuilder<T> setBooleanFunc1(Predicate<RxInformationModel<T>> booleanFunc1) {
             mRxPollNoHttpConfig.mBooleanFunc1 = booleanFunc1;
             return this;
         }
@@ -134,7 +134,7 @@ public class RxPollNoHttpConfig<T> {
          * @param rxInformationModelAction1 观察者根据被观察产生的行为做出相应处理监听器
          * @return 构建轮询配置类
          */
-        public ConfigBuilder<T> setRxInformationModelAction1(Action1<RxInformationModel<T>> rxInformationModelAction1) {
+        public ConfigBuilder<T> setRxInformationModelAction1(Consumer<RxInformationModel<T>> rxInformationModelAction1) {
             mRxPollNoHttpConfig.mRxInformationModelAction1 = rxInformationModelAction1;
             return this;
         }

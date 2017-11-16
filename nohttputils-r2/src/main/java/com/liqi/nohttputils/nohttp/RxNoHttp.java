@@ -21,10 +21,14 @@ import com.yanzhenjie.nohttp.rest.Response;
 import java.net.ConnectException;
 import java.net.ProtocolException;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -58,9 +62,9 @@ class RxNoHttp {
             }
         }
 
-        Observable.create(new Observable.OnSubscribe<Response<T>>() {
+        Observable.create(new ObservableOnSubscribe<Response<T>>() {
             @Override
-            public void call(Subscriber<? super Response<T>> subscriberOut) {
+            public void subscribe(@NonNull ObservableEmitter<Response<T>> subscriberOut) throws Exception {
                 // 最关键的就是用NoHttp的同步请求请求到response了，其它的都是rxjava做的，跟nohttp无关的。
                 Response<T> response = NoHttp.startRequestSync(request);
                 if (response.isSucceed() || response.isFromCache()) {
@@ -68,18 +72,39 @@ class RxNoHttp {
                 } else {
                     subscriberOut.onError(response.getException());
                 }
-
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Response<T>>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(new Observer<Response<T>>() {
+                    private Disposable mDisposable;
 
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        mDisposable = d;
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onNext(@NonNull Response<T> tResponse) {
+                        mDisposable.dispose();
+
+                        // 关闭dialog.
+                        if (null != dialog && dialog.isShowing()) {
+                            try {
+                                dialog.dismiss();
+                            } catch (Exception e1) {
+                                Logger.e("Dialog-关闭异常：由于Dialog已经关闭或者依赖的Context不存在");
+                            }
+                        }
+
+                        if (null != responseInterfa) {
+                            responseInterfa.onNext(tResponse.get());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mDisposable.dispose();
+
                         // 关闭dialog.
                         if (null != dialog && dialog.isShowing()) {
                             try {
@@ -115,8 +140,8 @@ class RxNoHttp {
                             }
                             if (TextUtils.isEmpty(anUnknownErrorHint)) {
                                 show(dialog, R.string.error_unknow);
-                            }else{
-                                show(dialog,anUnknownErrorHint);
+                            } else {
+                                show(dialog, anUnknownErrorHint);
                             }
                         }
 
@@ -127,19 +152,8 @@ class RxNoHttp {
                     }
 
                     @Override
-                    public void onNext(Response<T> tResponse) {
-                        // 关闭dialog.
-                        if (null != dialog && dialog.isShowing()) {
-                            try {
-                                dialog.dismiss();
-                            } catch (Exception e1) {
-                                Logger.e("Dialog-关闭异常：由于Dialog已经关闭或者依赖的Context不存在");
-                            }
-                        }
+                    public void onComplete() {
 
-                        if (null != responseInterfa) {
-                            responseInterfa.onNext(tResponse.get());
-                        }
                     }
                 });
     }
@@ -155,6 +169,7 @@ class RxNoHttp {
             Toast.makeText(context, context.getResources().getString(stringId), Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * 土司提示
      *
