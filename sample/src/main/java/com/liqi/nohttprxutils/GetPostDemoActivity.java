@@ -93,6 +93,7 @@ public class GetPostDemoActivity extends BaseActivity<String> implements View.On
                         .addParameter("userSex", "1")
                         .setDialogGetListener(this)
                         .setSign(this)
+                        .setAnUnknownErrorHint("POST未知错误提示")
                         .builder(String.class, this)
                         .requestRxNoHttp();
                 //RxNoHttpUtils.cancel(this);

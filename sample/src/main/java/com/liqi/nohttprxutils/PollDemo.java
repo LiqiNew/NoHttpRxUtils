@@ -178,6 +178,7 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                         .addParameter("userPass", "LiQi.pass")
                         .addParameter("userAge", 20)
                         .addParameter("userSex", "1")
+                        .setAnUnknownErrorHint("Poll自定义请求未知错误提示")
                         //.setDialogGetListener(this)
                         .setSign(this)
                         //构建轮询请求
@@ -211,12 +212,18 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                             }
                         })
 
-                        .setBooleanFunc1(new Func1<RxInformationModel<String>, Boolean>() {
+                        .setBooleanFunc1(new Func1<RxInformationModel<String>,Boolean>() {
                             @Override
                             public Boolean call(RxInformationModel<String> stringRxInformationModel) {
                                 Log.e("外部实现轮询拦截","外部实现轮询拦截>>>拦截状态："+stringRxInformationModel.isStop());
                                 return stringRxInformationModel.isStop();
                             }
+
+//                            @Override
+//                            public boolean test(@NonNull RxInformationModel<String> stringRxInformationModel) throws Exception {
+//                                Log.e("外部实现轮询拦截","外部实现轮询拦截>>>拦截状态："+stringRxInformationModel.isStop());
+//                                return stringRxInformationModel.isStop();
+//                            }
                         })
 
                         .setRxInformationModelAction1(new Action1<RxInformationModel<String>>() {
@@ -232,12 +239,18 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                                     content.setText(trim + "\n\n轮询名称：自定义轮询\n外部实现调用轮询结果：" + data);
                                 }
                             }
+
+//                            @Override
+//                            public void accept(RxInformationModel<String> stringRxInformationModel) throws Exception {
+//
+//                            }
                         })
                         .switchPoll()
                         .requestRxNoHttp();
                 break;
             //停止自定义轮询
             case R.id.stop_poll:
+                //如果重新赋值OnObserverEventListener，手动取消无用
                 RxNoHttpUtils.cancelPoll(this);
                 break;
         }

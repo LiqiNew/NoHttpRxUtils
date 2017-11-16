@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E6%9D%8E%E5%A5%87-orange.svg)](https://github.com/LiqiNew)
-### 由于NoHttpRxUtils是通过RxJava-1对NoHttp网络框架操作进行一系列封装。<br>首先对RxJava和NoHttp网络框架做一个简介
+### 由于NoHttpRxUtils是通过RxJava对NoHttp网络框架操作进行一系列封装。<br>首先对RxJava和NoHttp网络框架做一个简介
 # RxJava框架是什么?
 RxJava是响应式程序设计的一种实现。<br>
 在响应式程序设计中，当数据到达的时候，消费者做出响应。<br>
@@ -29,7 +29,7 @@ GET、POST、PUT、PATCH、HEAD、DELETE、OPTIONS、TRACE等请求协议<br><br
 ##### 欢迎加入NoHttp作者QQ技术交流群：46523908
 <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=28760218432b83451cf4849d585ccfe282f3ef136c44446f55720b6de4f98546"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Android 愚公移山1群" title="Android 愚公移山1群"></a>（点击图标，可以直接加入)
 # NoHttpRxUtils框架是什么?
-NoHttpRxUtils主要是通过RxJava-1框架对NoHttp网络框架操作进行再次封装。<br>
+NoHttpRxUtils主要是通过RxJava框架对NoHttp网络框架操作进行再次封装。<br>
 减轻使用者繁琐的调用，让使用者更专注于项目业务，而非客户端与服务器之间的网络通讯。<br><br>
 由于NoHttpRxUtils网络请求方面是采用NoHttp同步请求，所以请求队列不是NoHttp队列算法而是NoHttpRxUtils队列算法。<br>
 暂时不支持队列请求优先级设置。如果要想让一个请求优先,可以使用RxJava线程单一请求。<br>
@@ -46,7 +46,7 @@ NoHttpRxUtils主要是通过RxJava-1框架对NoHttp网络框架操作进行再�
 * 支持使用其它网络框架去轮询请求
 
 # 为了你使用更加清晰明了,请仔细阅读下面使用教程
-##### 框架内部使用RxJava版本是RxJava-1.1.9
+##### 框架内部使用RxJava版本是RxJava-1.1.9和RxJava-2.1.5
 ##### 框架内部使用NoHttp版本是NoHttp-1.1.4
 ##### 框架内部使用Gson版本是Gson-2.8.0
 
@@ -63,7 +63,13 @@ repositories {
 }
 ```
 
-**2：项目目录build.gradle中依赖NohttpRxUtils框架**<br>
+**2：项目目录build.gradle中依赖NoHttpRxUtils框架**<br>
+* 使用RxJava-1的项目请依赖
+```gradle
+compile 'com.github.liqinew:nohttprxutils:v.1.3.4'
+```
+
+* 使用RxJava-2的项目请依赖
 ```gradle
 compile 'com.github.liqinew:nohttprxutils:v.1.3.4'
 ```
@@ -126,7 +132,10 @@ NoHttpRxUtils使用简介
               
               //设置全局重试次数，配置后每个请求失败都会重试设置的次数。
               //.setRetry(5)
-              
+
+              //设置全局请求网络出现未知错误提示语
+              .setAnUnknownErrorHint("全局未知错误提示语")
+
               //开始初始化NoHttp
               .startInit();
 ```
@@ -311,7 +320,10 @@ RxNoHttpUtils.rxNoHttpRequest()
              //注：如果此处没有设置加载框，那么就默认使用全局设置的加载框。
              //如果全局设置也没有设置加载框，那么就不显示加载框和内置提示语。
              .setDialogGetListener(new Dialog())
-             
+
+             //设置请求网络出现未知错误提示语
+             .setAnUnknownErrorHint("未知错误提示语")
+
              //创建请求对象指定响应数据转换类型，然后在设置请求成功或者失败回调接口
              .builder(Objects.class,new OnIsRequestListener<T>)
              
@@ -355,7 +367,8 @@ RxNoHttpUtils.rxNoHttpRequest()
              
              //设置被观察者产生的行为事件监听器
              //(如果此处实现被观察者产生的行为事件监听器，
-             //那么框架内部就不去维护此轮询请求，必须实现轮询拦截器接口去维护此轮询什么时候停止。)
+             //那么框架内部就不去维护此轮询请求，必须实现轮询拦截器接口去维护此轮询什么时候停止。
+             //RxNoHttpUtils.cancelPoll()取消轮询将无效，设置内部加载框将无效)
              .setOnObserverEventListener(new OnObserverEventListener<RestRequest<T>, RxInformationModel<T>>(){
                      @Override
                   public RxInformationModel<T> onObserverEvent(RestRequest<T> transferValue) {

@@ -1,7 +1,7 @@
 [中文版文档](https://github.com/LiqiNew/NoHttpRxUtils/blob/master/README_CHINESE.md) <br><br>
 [![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E6%9D%8E%E5%A5%87-orange.svg)](https://github.com/LiqiNew)
-### Because NoHttpRxUtils through the RxJava-1 face NoHttp network framework for a series of bundle.First of all against RxJava and NoHttp network framework to do a brief introduction
+### Because NoHttpRxUtils through the RxJava face NoHttp network framework for a series of bundle.First of all against RxJava and NoHttp network framework to do a brief introduction
 # What is the RxJava framework?
 RxJava is a responsive programming design frame.<br>
 In a responsive programming, when the data arrives, the consumer responds.<br>
@@ -30,7 +30,7 @@ Support breakpoint upload and breakpoint download.<br><br>
 [NoHttp Frame GitHub(Zhenjie Yan)](https://github.com/yanzhenjie/NoHttp)
 
 # What is the NoHttpRxUtils framework?
-NoHttpRxUtils is mainly through the RxJava-1 framework for 'NoHttp' network framework operation re-encapsulation.<br>
+NoHttpRxUtils is mainly through the RxJava framework for 'NoHttp' network framework operation re-encapsulation.<br>
 Reduce the user's cumbersome calls, so that users are more focused on the project business, rather than the client and the server network communication between.<br>
 Since the 'NoHttpRxUtils' network request is a 'NoHttp' synchronization request, the request queue is not a 'NoHttp' queue algorithm but a 'NoHttpRxUtils' queue algorithm.<br>
 Sorry, the queue request priority setting is not supported at this time. If you want to make a request priority, you can use the RxJava thread single request.<br>
@@ -47,7 +47,7 @@ Sorry, because the Android system to write permissions on the SD card constraint
 * Support the use of other network framework to polling requests.
 
 # For your use more clarity, please read the following tutorials carefully.
-##### RxJava in the internal use of the version is RxJava-1.1.9
+##### RxJava in the internal use of the version is RxJava-1.1.9 and RxJava-2.1.5
 ##### NoHttp in the internal use of the version is NoHttp-1.1.4
 ##### Gson in the internal use of the version is Gson-2.8.0
 
@@ -64,11 +64,16 @@ repositories {
 }
 ```
 
-**2：The project directory build.gradle relies on the NohttpRxUtils framework**<br>
+**2：The project directory build.gradle relies on the NoHttpRxUtils framework**<br>
+* RxJava-1 project depends on
 ```gradle
 compile 'com.github.liqinew:nohttprxutils:v.1.3.4'
 ```
 
+* RxJava-2 project depends on
+```gradle
+compile 'com.github.liqinew:nohttprxutils:v.1.3.4'
+```
 NoHttpRxUtils use method
 -----
 ### Chained mode call initialization NoHttp, suggested to the Application onCreate life cycle method inside.
@@ -132,7 +137,10 @@ NoHttpRxUtils use method
               
               //Sets the number of global request failed retries.
               //.setRetry(5)
-              
+
+              //Set global request network appears unknown error hint message
+              .setAnUnknownErrorHint("Global unknown error hint message")
+
               //Start initialization.
               .startInit();
 ```
@@ -320,7 +328,10 @@ RxNoHttpUtils.rxNoHttpRequest()
              //Note: If you do not set the load box here, then the default use of the global settings of the load box.
              //If the global setting does not set the load box, then the load box and built-in prompts are not displayed.
              .setDialogGetListener(new Dialog())
-             
+
+             //Set request network appears unknown error hint message
+             .setAnUnknownErrorHint("Unknown error hint message")
+
              //Create the request object to specify the response data conversion type,
              //and then set the request to succeed or fail the callback interface.
              .builder(Objects.class,new OnIsRequestListener<T>)
@@ -368,6 +379,7 @@ RxNoHttpUtils.rxNoHttpRequest()
              //Note: If the behavioral event listener is implemented here,
              //then the polling request is not maintained inside the framework,
              //and the polling interceptor interface must be implemented to maintain the polling stop.
+             //RxNoHttpUtils.cancelPoll () cancel polling will be invalid, set the internal loading box will be invalid.
              .setOnObserverEventListener(new OnObserverEventListener<RestRequest<T>, RxInformationModel<T>>(){
                      @Override
                   public RxInformationModel<T> onObserverEvent(RestRequest<T> transferValue) {
