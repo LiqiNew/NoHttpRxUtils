@@ -1,1 +1,1 @@
-include ':sample', ':nohttputils-r1', ':nohttputils-r2'
+include ':sample', ':nohttputils-r1'
