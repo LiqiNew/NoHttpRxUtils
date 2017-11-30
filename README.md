@@ -109,6 +109,7 @@ NoHttpRxUtils use method
               //Set the global default load dialog box
               //Note:The incoming context must be the top of the stack.
               //You can get by using the method 'registerActivityLifecycleCallbacks()' to get.
+              //Note:This method is not allowed to create a dialog object inside.
               .setDialogGetListener(new Dialog())
               
               //Set the bottom layer in that way to request.NoHttpInit.OKHTTP or NoHttpInit.URLCONNECTION two ways.
@@ -327,6 +328,7 @@ RxNoHttpUtils.rxNoHttpRequest()
              //Set the load box.
              //Note: If you do not set the load box here, then the default use of the global settings of the load box.
              //If the global setting does not set the load box, then the load box and built-in prompts are not displayed.
+             //Note:This method is not allowed to create a dialog object inside.
              .setDialogGetListener(new Dialog())
 
              //Set request network appears unknown error hint message
