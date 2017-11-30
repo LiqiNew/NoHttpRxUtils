@@ -107,7 +107,8 @@ NoHttpRxUtils使用简介
               
               //设置全局默认加载对话框
               //注：传入的context必须是栈顶的context。你可以通过方法registerActivityLifecycleCallbacks()去获取。
-              .setDialogGetListener("全局加载框获取接口")
+              //注：不允许在此方法里面创建dialog对象。
+              .setDialogGetListener("全局加载框获取接口")
               
               //设置底层用那种方式去请求
               .setRxRequestUtilsWhy(NoHttpInit.OKHTTP)
@@ -319,6 +320,7 @@ RxNoHttpUtils.rxNoHttpRequest()
              //设置请求加载框。
              //注：如果此处没有设置加载框，那么就默认使用全局设置的加载框。
              //如果全局设置也没有设置加载框，那么就不显示加载框和内置提示语。
+             //注：不允许在此方法里面创建dialog对象。
              .setDialogGetListener(new Dialog())
 
              //设置请求网络出现未知错误提示语
