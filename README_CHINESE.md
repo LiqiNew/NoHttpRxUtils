@@ -66,12 +66,12 @@ repositories {
 **2：项目目录build.gradle中依赖NoHttpRxUtils框架**<br>
 * 使用RxJava-1的项目请依赖
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.1.3.5'
+compile 'com.github.liqinew:nohttprxutils:v.1.3.6'
 ```
 
 * 使用RxJava-2的项目请依赖
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.2.0.1'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.2'
 ```
 
 NoHttpRxUtils使用简介
