@@ -67,7 +67,7 @@ repositories {
 **2：The project directory build.gradle relies on the NoHttpRxUtils framework**<br>
 * RxJava-1 project depends on
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.1.3.5'
+compile 'com.github.liqinew:nohttprxutils:v.1.3.6'
 ```
 
 * RxJava-2 project depends on
