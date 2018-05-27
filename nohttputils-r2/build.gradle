@@ -7,15 +7,9 @@ android {
 
     defaultConfig {
         minSdkVersion 11
-<<<<<<< HEAD:nohttputils-r2/build.gradle
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 2
         versionName "2"
-=======
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1"
->>>>>>> refs/remotes/origin/master:nohttputils-r1/build.gradle
     }
     buildTypes {
         release {
