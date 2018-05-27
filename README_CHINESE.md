@@ -71,7 +71,7 @@ compile 'com.github.liqinew:nohttprxutils:v.1.3.6'
 
 * 使用RxJava-2的项目请依赖
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.2.0.2'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.1'
 ```
 
 NoHttpRxUtils使用简介
