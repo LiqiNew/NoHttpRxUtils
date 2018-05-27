@@ -24,10 +24,9 @@ import com.yanzhenjie.nohttp.rest.RestRequest;
 import java.net.ConnectException;
 import java.net.ProtocolException;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * rxJava轮询操作数据源对象
@@ -42,9 +41,9 @@ public class RxInformationPoolModel<T> {
     private RxInformationModel<T> mRxInformationModel;
 
 
-    private Func1<RxInformationModel<T>, Boolean> mBooleanFunc1;
+    private Predicate<RxInformationModel<T>> mBooleanFunc1;
     private OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> mOnObserverEventListener;
-    private Action1<RxInformationModel<T>> mRxInformationModelAction1;
+    private Consumer<RxInformationModel<T>> mRxInformationModelAction1;
 
     public RxInformationPoolModel(@NonNull OnIsRequestListener<T> onIsRequestListener, DialogGetListener dialogGetListener, String anUnknownErrorHint) {
         mOnIsRequestListener = onIsRequestListener;
@@ -62,9 +61,9 @@ public class RxInformationPoolModel<T> {
      */
     private void initRxInformationModelAction1(final String anUnknownErrorHint) {
 
-        mRxInformationModelAction1 = new Action1<RxInformationModel<T>>() {
+        mRxInformationModelAction1 = new Consumer<RxInformationModel<T>>() {
             @Override
-            public void call(RxInformationModel<T> tRxInformationModel) {
+            public void accept(RxInformationModel<T> tRxInformationModel) throws Exception {
                 Logger.e(mRestRequest.url() + "：轮询运行完毕");
 
                 Dialog dialog = null == mDialogGetListener ? null : mDialogGetListener.getDialog();
@@ -130,9 +129,9 @@ public class RxInformationPoolModel<T> {
      * 内部实现是否取消轮询-拦截器
      */
     private void initBooleanFunc1() {
-        mBooleanFunc1 = new Func1<RxInformationModel<T>, Boolean>() {
+        mBooleanFunc1 = new Predicate<RxInformationModel<T>>() {
             @Override
-            public Boolean call(RxInformationModel<T> tRxInformationModel) {
+            public boolean test(RxInformationModel<T> tRxInformationModel) throws Exception {
                 //拦截传输过来的对象为null之时，创建一个对象关闭临时关闭轮询对象
                 if (null == tRxInformationModel) {
                     tRxInformationModel = new RxInformationModel<>();
@@ -155,9 +154,9 @@ public class RxInformationPoolModel<T> {
                 initTransitionModel();
                 if (null != mDialogGetListener) {
                     //对话框放到主线程去运行
-                    AndroidSchedulers.mainThread().createWorker().schedule(new Action0() {
+                    AndroidSchedulers.mainThread().createWorker().schedule(new Runnable() {
                         @Override
-                        public void call() {
+                        public void run() {
                             Dialog dialog = mDialogGetListener.getDialog();
                             if (null != dialog) {
                                 dialog.show();
@@ -192,7 +191,7 @@ public class RxInformationPoolModel<T> {
      *
      * @return 数据拦截监听对象
      */
-    public Func1<RxInformationModel<T>, Boolean> getBooleanFunc1() {
+    public Predicate<RxInformationModel<T>> getBooleanFunc1() {
         return mBooleanFunc1;
     }
 
@@ -201,7 +200,7 @@ public class RxInformationPoolModel<T> {
      *
      * @param booleanFunc1 数据拦截监听对象
      */
-    public void setBooleanFunc1(Func1<RxInformationModel<T>, Boolean> booleanFunc1) {
+    public void setBooleanFunc1(Predicate<RxInformationModel<T>> booleanFunc1) {
         if (null != booleanFunc1) {
             mBooleanFunc1 = booleanFunc1;
         }
@@ -230,7 +229,7 @@ public class RxInformationPoolModel<T> {
      *
      * @return 可观察者事件产生对应行动监听器
      */
-    public Action1<RxInformationModel<T>> getRxInformationModelAction1() {
+    public Consumer<RxInformationModel<T>> getRxInformationModelAction1() {
         return mRxInformationModelAction1;
     }
 
@@ -239,7 +238,7 @@ public class RxInformationPoolModel<T> {
      *
      * @param rxInformationModelAction1 可观察者事件产生对应行动监听器
      */
-    public void setRxInformationModelAction1(Action1<RxInformationModel<T>> rxInformationModelAction1) {
+    public void setRxInformationModelAction1(Consumer<RxInformationModel<T>> rxInformationModelAction1) {
         mRxInformationModelAction1 = rxInformationModelAction1;
     }
 

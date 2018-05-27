@@ -26,10 +26,12 @@ import com.yanzhenjie.nohttp.error.UnKnownHostError;
 import java.net.ConnectException;
 import java.net.ProtocolException;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * 把数据源中的数据转换成rxJava线程的中转站对象
@@ -142,13 +144,40 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
             Observable.create(baseRxRequestModel)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<T>() {
+                    .subscribe(new Observer<T>() {
+                        private Disposable mDisposable;
+
                         @Override
-                        public void onCompleted() {
+                        public void onSubscribe(@NonNull Disposable d) {
+                            mDisposable = d;
                         }
 
                         @Override
-                        public void onError(Throwable e) {
+                        public void onNext(@NonNull T t) {
+                            mDisposable.dispose();
+
+                            Dialog dialog = getDialog(baseRxRequestModel);
+                            if (null != dialog && dialog.isShowing()) {
+                                try {
+                                    dialog.dismiss();
+                                } catch (Exception e) {
+                                    Logger.e("Dialog-关闭异常：由于Dialog已经关闭或者依赖的Context不存在");
+                                }
+                            }
+
+                            OnIsRequestListener<T> onIsRequestListener = baseRxRequestModel.getOnIsRequestListener();
+                            if (null != onIsRequestListener) {
+                                onIsRequestListener.onNext(t);
+                            }
+
+                            baseRxRequestModel.clearAll();
+                            messageListDalete();
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            mDisposable.dispose();
+
                             Dialog dialog = getDialog(baseRxRequestModel);
                             if (null != dialog && dialog.isShowing()) {
                                 try {
@@ -204,23 +233,8 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
                         }
 
                         @Override
-                        public void onNext(T t) {
-                            Dialog dialog = getDialog(baseRxRequestModel);
-                            if (null != dialog && dialog.isShowing()) {
-                                try {
-                                    dialog.dismiss();
-                                } catch (Exception e) {
-                                    Logger.e("Dialog-关闭异常：由于Dialog已经关闭或者依赖的Context不存在");
-                                }
-                            }
+                        public void onComplete() {
 
-                            OnIsRequestListener<T> onIsRequestListener = baseRxRequestModel.getOnIsRequestListener();
-                            if (null != onIsRequestListener) {
-                                onIsRequestListener.onNext(t);
-                            }
-
-                            baseRxRequestModel.clearAll();
-                            messageListDalete();
                         }
                     });
         }

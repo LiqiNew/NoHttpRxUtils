@@ -1,39 +1,23 @@
 package com.liqi.nohttputils.nohttp.rx_poll.extend;
 
 
-import android.support.annotation.NonNull;
-
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnObserverEventListener;
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnSubscribeTimerPeriodically;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Scheduler;
-import rx.plugins.RxJavaHooks;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * 继承rxjava-Observable扩展类
  * Created by LiQi on 2017/9/6.
  */
 
-public class ObservableExpand<V, T> extends Observable<T> {
-
-    final OnSubscribeTimerPeriodically<V, T> onSubscribeTimerPeriodically;
-
-    /**
-     * Creates an Observable with a Function to execute when it is subscribed to.
-     * <p>
-     * <em>Note:</em> Use {@link #create(OnSubscribe)} to create an Observable, instead of this constructor,
-     * unless you specifically have a need for inheritance.
-     *
-     * @param f {@link OnSubscribe} to be executed when {@link #subscribe(Subscriber)} is called
-     */
-    protected ObservableExpand(OnSubscribe<T> f, OnSubscribeTimerPeriodically<V, T> onSubscribe1) {
-        super(f);
-        onSubscribeTimerPeriodically = onSubscribe1;
-    }
+public class ObservableExpand {
 
 
     /**
@@ -53,7 +37,7 @@ public class ObservableExpand<V, T> extends Observable<T> {
 
     /**
      * 订阅间隔计时Builder
-     * @param <V>
+     *
      * @param <T>
      */
     public static class Builder<V, T> {
@@ -85,16 +69,16 @@ public class ObservableExpand<V, T> extends Observable<T> {
          * 设置可观察者监听器线程线路
          *
          * @param eventScheduler 线程线路
-         * @param transferValue  传输给被观察者对象
+         * @param transferValue  待处理或者待传输的对象
          * @return
          */
-        public ObservableExpand<V, T> subscribeOn(Scheduler eventScheduler, @NonNull V transferValue) {
+        public Observable<T> subscribeOn(Scheduler eventScheduler, V transferValue) {
 
-            OnSubscribeTimerPeriodically<V, T> timerPeriodically = new OnSubscribeTimerPeriodically<>(initialDelay, period, unit, Schedulers.computation());
+            OnSubscribeTimerPeriodically<V, T> timerPeriodically = new OnSubscribeTimerPeriodically<>(Math.max(0L, initialDelay), Math.max(0L, period), unit, Schedulers.computation());
             timerPeriodically.setOnObserverEventListener(observerEventListener);
             timerPeriodically.setTransferValue(transferValue);
             timerPeriodically.setEventScheduler(eventScheduler);
-            return new ObservableExpand<>(RxJavaHooks.onCreate(timerPeriodically), timerPeriodically);
+            return RxJavaPlugins.onAssembly(timerPeriodically);
         }
     }
 }
