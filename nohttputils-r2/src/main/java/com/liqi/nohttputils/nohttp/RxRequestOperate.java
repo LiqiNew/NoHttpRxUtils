@@ -10,7 +10,8 @@ import com.liqi.nohttputils.nohttp.rx_threadpool.model.RxRequestModel;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.Logger;
-import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.ssl.SSLUtils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -59,8 +60,8 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
      */
     public void requestRxNoHttp() {
         if (mRxRequestConfig.isQueue()) {
-            RxRequestModel<T> requestModel = new RxRequestModel<>(getRestRequest(), mRxRequestConfig.getOnIsRequestListener());
-            requestModel.setDialogGetListener(mRxRequestConfig.getDialogGetListener());
+            RxRequestModel<T> requestModel = new RxRequestModel<>(getRequest(), mRxRequestConfig.getOnIsRequestListener());
+            requestModel.setOnDialogGetListener(mRxRequestConfig.getOnDialogGetListener());
             requestModel.setAnUnknownErrorHint(mRxRequestConfig.getAnUnknownErrorHint());
             Object sign = mRxRequestConfig.getSign();
             if (sign != null) {
@@ -69,7 +70,7 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
             RxThreadInterchange.getRxThreadInterchange().start(RxMessageSource.getRxMessageSource().add(requestModel));
         } else {
             RxNoHttp.getRxNoHttp().request(addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz())),
-                    mRxRequestConfig.getDialogGetListener(),
+                    mRxRequestConfig.getOnDialogGetListener(),
                     mRxRequestConfig.getOnIsRequestListener(),
                     mRxRequestConfig.getAnUnknownErrorHint());
         }
@@ -89,7 +90,7 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
      *
      * @return 请求参数对象
      */
-    public RestRequest<T> getRestRequest() {
+    public Request<T> getRequest() {
         return addParameter(getTJavaBeanRequest(mRxRequestConfig.getShiftDataClazz()));
     }
 
@@ -99,7 +100,7 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
      * @param entityRequest 请求网络参数对象
      * @return
      */
-    private RestRequest<T> addParameter(RestRequest<T> entityRequest) {
+    private Request<T> addParameter(Request<T> entityRequest) {
         if (null != entityRequest) {
             Map<String, Object> parameterMap = mRxRequestConfig.getParameterMap();
             //参数设置
@@ -213,7 +214,7 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
      * @param entityRequest 参数对象
      * @param mapHttps      https参数集合
      */
-    private void mapValueHttps(RestRequest<T> entityRequest, Map<String, Object> mapHttps) {
+    private void mapValueHttps(Request<T> entityRequest, Map<String, Object> mapHttps) {
         for (Map.Entry<String, Object> entryHttps : mapHttps.entrySet()) {
             String keyHttps = entryHttps.getKey();
             Object valueHttps = entryHttps.getValue();
@@ -222,7 +223,7 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
                 if (null != valueHttps) {
                     if (valueHttps instanceof InputStream) {
                         InputStream inputStream = (InputStream) valueHttps;
-                        entityRequest.setSSLSocketFactory(SSLContextUtil.getSSLContext(inputStream).getSocketFactory());
+                        entityRequest.setSSLSocketFactory(SSLUtils.fixSSLLowerThanLollipop(SSLContextUtil.getSSLContext(inputStream).getSocketFactory()));
                         break;
                     } else {
                         Logger.e("Https集合需要证书值需要InputStream类型");
@@ -233,7 +234,7 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
             }
             //不需要证书
             if (HTTPS_CERTIFICATE_NO.equals(keyHttps)) {
-                entityRequest.setSSLSocketFactory(SSLContextUtil.getDefaultSLLContext().getSocketFactory());
+                entityRequest.setSSLSocketFactory(SSLContextUtil.getDefaultSLLContext());
                 entityRequest.setHostnameVerifier(SSLContextUtil.HOSTNAME_VERIFIER);
                 break;
             }
@@ -246,8 +247,8 @@ public class RxRequestOperate<T> implements OnRequestRxNoHttpListener {
      * @param clazz 请求网络返回对象
      * @return
      */
-    private RestRequest<T> getTJavaBeanRequest(Class<T> clazz) {
-        RestRequest<T> ntityRequest;
+    private Request<T> getTJavaBeanRequest(Class<T> clazz) {
+        Request<T> ntityRequest;
         if (clazz != Bitmap.class) {
             ntityRequest = new RequestBeanObj<>(mRxRequestConfig.getUrl(), mRxRequestConfig.getRequestMethod(), clazz);
         } else {

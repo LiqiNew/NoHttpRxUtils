@@ -154,7 +154,22 @@ class NohttpDownload implements NohttpDownloadService.DownloadServiceFinishListe
             what = mBindService.getWhat(downloadUrl);
         return what;
     }
+    /**
+     * 获取下载请求What值对应的路径
+     * <p>
+     * 如果有重复的值，那么获取数据源最后一位路径值。
+     * </p>
+     *
+     * @param what What值
+     * @return 下载请求What值对应的路径值
+     */
+    String getDownloadRequestsUrl(int what) {
+        String downloadRequestsUrl = "";
+        if (null != mBindService)
+            downloadRequestsUrl = mBindService.getDownloadRequestsUrl(what);
 
+        return downloadRequestsUrl;
+    }
     /**
      * 把指定的What从容器里面移除
      *

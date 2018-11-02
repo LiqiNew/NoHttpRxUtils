@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.liqi.nohttputils.R;
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.liqi.nohttputils.nohttp.rx_threadpool.interfa.OnRxMessageGetListener;
 import com.liqi.nohttputils.nohttp.rx_threadpool.model.BaseRxRequestModel;
@@ -304,7 +304,7 @@ public class RxThreadInterchange implements RxThreadDispatch.OnRunDataDisListene
      * @return
      */
     private Dialog getDialog(RxRequestModel baseRxRequestModel) {
-        DialogGetListener dialogGetListener = baseRxRequestModel.getDialogGetListener();
-        return null == dialogGetListener ? null : dialogGetListener.getDialog();
+        OnDialogGetListener onDialogGetListener = baseRxRequestModel.getOnDialogGetListener();
+        return null == onDialogGetListener ? null : onDialogGetListener.getDialog();
     }
 }

@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 import com.liqi.nohttprxutils.base.BaseActivity;
 import com.liqi.nohttprxutils.utils.FileUtil;
-import com.liqi.nohttputils.nohttp.BinaryFactory;
 import com.liqi.nohttputils.RxNoHttpUtils;
+import com.liqi.nohttputils.nohttp.BinaryFactory;
 import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.OnUploadListener;
@@ -106,10 +106,11 @@ public class FileUploadingDemoActivity extends BaseActivity<String> implements V
             //开始请求
             RxNoHttpUtils.rxNohttpRequest()
                     .post()
-                    .url(StaticHttpUrl.UPLOAD_URL)
-                    .addParameter("user","LiQi")
-                    .addParameter("image1",getBinaries())
-                    .setDialogGetListener(this)
+                    .url(StaticHttpUrl.UPLOAD_FORM)
+                    .addParameter("name","nohttp")
+                    .addParameter("age", 18)
+                    .addParameter("file1",getBinaries().get(0))
+                    .setOnDialogGetListener(this)
                     .builder(String.class,this)
                     .requestRxNoHttp();
         } else {

@@ -39,9 +39,8 @@ public class DownloadUrlEntity {
      */
     private String urlGetName() {
         String[] split = mDownloadUrL.split("/");
-        if (null != split && split.length > 0) {
-            String name = split[split.length - 1];
-            return name + ".nohttpDownload";
+        if (split.length > 0) {
+            return split[split.length - 1];
         } else {
             Logger.e("下载地址按“/”切割错误,无法获取存储文件名");
             return "ErrorDownloading";

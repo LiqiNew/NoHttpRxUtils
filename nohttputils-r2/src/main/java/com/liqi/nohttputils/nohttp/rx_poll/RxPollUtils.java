@@ -11,7 +11,7 @@ import com.liqi.nohttputils.nohttp.rx_poll.model.RxInformationModel;
 import com.liqi.nohttputils.nohttp.rx_poll.model.RxInformationPoolModel;
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnObserverEventListener;
 import com.liqi.nohttputils.nohttp.rx_poll.pond.RxInformationPool;
-import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.Request;
 
 import java.util.concurrent.TimeUnit;
 
@@ -57,7 +57,7 @@ public class RxPollUtils<T> implements OnRequestRxNoHttpListener {
 
         RxInformationPoolModel<T> informationPoolModel = new RxInformationPoolModel<>(
                 rxRequestConfig.getOnIsRequestListener(),
-                rxRequestConfig.getDialogGetListener(),
+                rxRequestConfig.getOnDialogGetListener(),
                 rxRequestConfig.getAnUnknownErrorHint());
         Object sign = rxRequestConfig.getSign();
         if (null != sign) {
@@ -76,7 +76,7 @@ public class RxPollUtils<T> implements OnRequestRxNoHttpListener {
         }
 
         //赋值被观察者处理事件
-        OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> onObserverEventListener = mRxPollNoHttpConfig.getOnObserverEventListener();
+        OnObserverEventListener<Request<T>, RxInformationModel<T>> onObserverEventListener = mRxPollNoHttpConfig.getOnObserverEventListener();
         if (null != onObserverEventListener) {
             informationPoolModel.setOnObserverEventListener(onObserverEventListener);
         }
@@ -90,7 +90,7 @@ public class RxPollUtils<T> implements OnRequestRxNoHttpListener {
                 mRxPollNoHttpConfig.getPeriod(),
                 TimeUnit.MILLISECONDS,
                 informationPoolModel.getOnObserverEventListener())
-                .subscribeOn(Schedulers.io(), rxRequestOperate.getRestRequest())
+                .subscribeOn(Schedulers.io(), rxRequestOperate.getRequest())
                 .takeUntil(informationPoolModel.getBooleanFunc1())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(informationPoolModel.getRxInformationModelAction1());

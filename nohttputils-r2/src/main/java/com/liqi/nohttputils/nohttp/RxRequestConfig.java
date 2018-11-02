@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.liqi.nohttputils.interfa.OnRequestRxNoHttpListener;
 import com.liqi.nohttputils.nohttp.interfa.OnToInputStreamEntityMethodListener;
@@ -33,7 +33,7 @@ public class RxRequestConfig<T> {
     private int mMaxHeight = -1;
     private Bitmap.Config mDecodeConfig;
     private ImageView.ScaleType mScaleType;
-    private DialogGetListener mDialogGetListener;
+    private OnDialogGetListener mOnDialogGetListener;
     private OnIsRequestListener<T> mOnIsRequestListener;
     private Class<T> mClazz;
     private Object mSign;
@@ -131,8 +131,8 @@ public class RxRequestConfig<T> {
         return isQueue;
     }
 
-    public DialogGetListener getDialogGetListener() {
-        return mDialogGetListener = null == mDialogGetListener ? NoHttpInit.getNoHttpInit().getDialogGetListener() : mDialogGetListener;
+    public OnDialogGetListener getOnDialogGetListener() {
+        return mOnDialogGetListener = null == mOnDialogGetListener ? NoHttpInit.getNoHttpInit().getOnDialogGetListener() : mOnDialogGetListener;
     }
 
     public OnIsRequestListener<T> getOnIsRequestListener() {
@@ -179,7 +179,7 @@ public class RxRequestConfig<T> {
         /**
          * 加载框获取接口
          */
-        private DialogGetListener mDialogGetListener;
+        private OnDialogGetListener mOnDialogGetListener;
         /**
          * 请求标识
          */
@@ -406,11 +406,11 @@ public class RxRequestConfig<T> {
         /**
          * 设置请求加载框
          *
-         * @param dialogGetListener 加载框获取接口
+         * @param onDialogGetListener 加载框获取接口
          * @return
          */
-        public ConfigBuilder setDialogGetListener(DialogGetListener dialogGetListener) {
-            mDialogGetListener = dialogGetListener;
+        public ConfigBuilder setOnDialogGetListener(OnDialogGetListener onDialogGetListener) {
+            mOnDialogGetListener = onDialogGetListener;
             return this;
         }
 
@@ -621,7 +621,7 @@ public class RxRequestConfig<T> {
             requestConfig.mMaxHeight = mMaxHeight;
             requestConfig.mDecodeConfig = mDecodeConfig;
             requestConfig.mScaleType = mScaleType;
-            requestConfig.mDialogGetListener = mDialogGetListener;
+            requestConfig.mOnDialogGetListener = mOnDialogGetListener;
             requestConfig.mSign = mSign;
             requestConfig.isQueue = isQueue;
             requestConfig.mConnectTimeout = mConnectTimeout;

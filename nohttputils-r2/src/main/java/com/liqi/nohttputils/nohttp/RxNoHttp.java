@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.liqi.nohttputils.R;
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -15,7 +15,7 @@ import com.yanzhenjie.nohttp.error.NotFoundCacheError;
 import com.yanzhenjie.nohttp.error.TimeoutError;
 import com.yanzhenjie.nohttp.error.URLError;
 import com.yanzhenjie.nohttp.error.UnKnownHostError;
-import com.yanzhenjie.nohttp.rest.ProtocolRequest;
+import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.net.ConnectException;
@@ -49,11 +49,11 @@ class RxNoHttp {
     /**
      * 通过nohttp去请求
      *
-     * @param mDialogGetListener dialog获取接口
+     * @param mOnDialogGetListener dialog获取接口
      * @param responseInterfa    请求成功或者失败回调对象
      */
-    <T> void request(final ProtocolRequest<?, T> request, DialogGetListener mDialogGetListener, final OnIsRequestListener<T> responseInterfa, final String anUnknownErrorHint) {
-        final Dialog dialog = null == mDialogGetListener ? null : mDialogGetListener.getDialog();
+    <T> void request(final Request<T> request, OnDialogGetListener mOnDialogGetListener, final OnIsRequestListener<T> responseInterfa, final String anUnknownErrorHint) {
+        final Dialog dialog = null == mOnDialogGetListener ? null : mOnDialogGetListener.getDialog();
         if (null != dialog && !dialog.isShowing()) {
             try {
                 dialog.show();

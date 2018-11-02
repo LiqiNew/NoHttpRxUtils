@@ -44,7 +44,9 @@ public class RequestQueueDemoActivity extends BaseActivity<String> implements Vi
                     //发送多个请求
                     RxNoHttpUtils.rxNohttpRequest()
                             .get()
-                            .url(StaticHttpUrl.getGetUrl("LiQi" + i + "" + i + "" + i, "LiQi.pass", 20, "1"))
+                            .url(StaticHttpUrl.LOGIN)
+                            .addParameter("pageNum",1)
+                            .addParameter("pageSize",10)
                             .setSign(mSign[i])
                             .builder(String.class, this)
                             .requestRxNoHttp();

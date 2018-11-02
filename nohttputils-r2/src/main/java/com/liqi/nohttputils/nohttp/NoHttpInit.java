@@ -2,7 +2,7 @@ package com.liqi.nohttputils.nohttp;
 
 import android.content.Context;
 
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NetworkExecutor;
@@ -33,7 +33,7 @@ public class NoHttpInit {
     /**
      * 加载框获取接口
      */
-    private DialogGetListener mDialogGetListener;
+    private OnDialogGetListener mOnDialogGetListener;
 
     private NoHttpInit() {
 
@@ -43,8 +43,8 @@ public class NoHttpInit {
         return mNoHttpInit = null == mNoHttpInit ? new NoHttpInit() : mNoHttpInit;
     }
 
-    public DialogGetListener getDialogGetListener() {
-        return mDialogGetListener;
+    public OnDialogGetListener getOnDialogGetListener() {
+        return mOnDialogGetListener;
     }
 
     /**
@@ -100,9 +100,9 @@ public class NoHttpInit {
                 SSLSocketFactory socketFactory;
                 //是否有证书
                 if (null != inputStreamSSL) {
-                    socketFactory = SSLContextUtil.getSSLContext(inputStreamSSL).getSocketFactory();
+                    socketFactory = SSLUtils.fixSSLLowerThanLollipop(SSLContextUtil.getSSLContext(inputStreamSSL).getSocketFactory());
                 } else {
-                    socketFactory =SSLContextUtil.getDefaultSLLContext().getSocketFactory();
+                    socketFactory =SSLContextUtil.getDefaultSLLContext();
                 }
                 builder.sslSocketFactory(socketFactory);
                 //主机名验证
@@ -118,7 +118,7 @@ public class NoHttpInit {
             NoHttp.initialize(builder.build());
             Logger.setDebug(rxUtilsConfig.isDebug());// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
             Logger.setTag(rxUtilsConfig.getDebugName());// 设置NoHttp打印Log的tag。
-            mDialogGetListener = rxUtilsConfig.getDialogGetListener();
+            mOnDialogGetListener = rxUtilsConfig.getOnDialogGetListener();
         }
     }
 }

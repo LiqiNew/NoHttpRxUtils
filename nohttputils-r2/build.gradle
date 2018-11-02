@@ -23,7 +23,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.yanzhenjie.nohttp:okhttp:1.1.4'
+    compile 'com.yanzhenjie.nohttp:okhttp:1.1.11'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     compile 'com.google.code.gson:gson:2.8.0'

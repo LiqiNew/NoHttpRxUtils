@@ -10,7 +10,7 @@ import com.liqi.nohttputils.RxNoHttpUtils;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.liqi.nohttputils.nohttp.rx_poll.model.RxInformationModel;
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnObserverEventListener;
-import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.Request;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -61,11 +61,9 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                 //开始轮询请求 --->>线程1111
                 RxNoHttpUtils.rxNohttpRequest()
                         .post()
-                        .url(StaticHttpUrl.POST_URL)
-                        .addParameter("userName", "LiQi")
-                        .addParameter("userPass", "LiQi.pass")
-                        .addParameter("userAge", 20)
-                        .addParameter("userSex", "1")
+                        .url(StaticHttpUrl.LOGIN)
+                        .addParameter("pageNum",1)
+                        .addParameter("pageSize",10)
                         // .setDialogGetListener(this)
                         .setSign(mSign[0])
                         //构建轮询请求
@@ -95,11 +93,9 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                 //开始轮询请求 --->>线程2222
                 RxNoHttpUtils.rxNohttpRequest()
                         .post()
-                        .url(StaticHttpUrl.POST_URL)
-                        .addParameter("userName", "LiQi")
-                        .addParameter("userPass", "LiQi.pass")
-                        .addParameter("userAge", 20)
-                        .addParameter("userSex", "1")
+                        .url(StaticHttpUrl.LOGIN)
+                        .addParameter("pageNum",1)
+                        .addParameter("pageSize",10)
                         // .setDialogGetListener(this)
                         .setSign(mSign[1])
                         //构建轮询请求
@@ -130,11 +126,9 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                 //开始轮询请求 --->>线程3333
                 RxNoHttpUtils.rxNohttpRequest()
                         .post()
-                        .url(StaticHttpUrl.POST_URL)
-                        .addParameter("userName", "LiQi")
-                        .addParameter("userPass", "LiQi.pass")
-                        .addParameter("userAge", 20)
-                        .addParameter("userSex", "1")
+                        .url(StaticHttpUrl.LOGIN)
+                        .addParameter("pageNum",1)
+                        .addParameter("pageSize",10)
                         //.setDialogGetListener(this)
                         .setSign(mSign[2])
                         //构建轮询请求
@@ -173,11 +167,9 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                 //开始自定义轮询
                 RxNoHttpUtils.rxNohttpRequest()
                         .post()
-                        .url(StaticHttpUrl.POST_URL)
-                        .addParameter("userName", "LiQi")
-                        .addParameter("userPass", "LiQi.pass")
-                        .addParameter("userAge", 20)
-                        .addParameter("userSex", "1")
+                        .url(StaticHttpUrl.LOGIN)
+                        .addParameter("pageNum",1)
+                        .addParameter("pageSize",10)
                         .setAnUnknownErrorHint("Poll自定义请求未知错误提示")
                         //.setDialogGetListener(this)
                         .setSign(this)
@@ -202,9 +194,9 @@ public class PollDemo extends BaseActivity<String> implements View.OnClickListen
                         .setInitialDelay(3 * 1000)
                         .setPeriod(5 * 1000)
 
-                        .setOnObserverEventListener(new OnObserverEventListener<RestRequest<String>, RxInformationModel<String>>() {
+                        .setOnObserverEventListener(new OnObserverEventListener<Request<String>, RxInformationModel<String>>() {
                             @Override
-                            public RxInformationModel<String> onObserverEvent(RestRequest<String> transferValue) {
+                            public RxInformationModel<String> onObserverEvent(Request<String> transferValue) {
                                 Log.e("外部实现轮询运行","外部实现轮询运行开始>>>");
                                 RxInformationModel<String> informationModel=new RxInformationModel<>();
                                 informationModel.setData("<<<外部现实轮询>>>");

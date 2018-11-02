@@ -238,7 +238,27 @@ public class NohttpDownloadService extends Service implements DownloadListener {
         }
         return -1;
     }
-
+    /**
+     * 获取下载请求What值对应的路径
+     * <p>
+     * 如果有重复的值，那么获取数据源最后一位路径值。
+     *</p>
+     * @param what What值
+     * @return 下载请求What值对应的路径值
+     */
+    public String getDownloadRequestsUrl(int what) {
+        String downloadRequestsUrl = "";
+        if (null != mWhats && !mWhats.isEmpty()) {
+            if (mWhats.containsValue(what))
+                for (Map.Entry<String, Integer> entry : mWhats.entrySet()) {
+                    Integer value = entry.getValue();
+                    if (value == what) {
+                        downloadRequestsUrl = entry.getKey();
+                    }
+                }
+        }
+        return downloadRequestsUrl;
+    }
     /**
      * 把指定的What从容器里面移除
      *

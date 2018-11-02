@@ -7,7 +7,7 @@ import com.liqi.nohttputils.nohttp.rx_poll.RxPollUtils;
 import com.liqi.nohttputils.nohttp.rx_poll.interfa.OnRxPollConfigBuilderListener;
 import com.liqi.nohttputils.nohttp.rx_poll.model.RxInformationModel;
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnObserverEventListener;
-import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.Request;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -33,7 +33,7 @@ public class RxPollNoHttpConfig<T> {
     /**
      * 被观察者产生的行为事件监听器
      */
-    private OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> mOnObserverEventListener;
+    private OnObserverEventListener<Request<T>, RxInformationModel<T>> mOnObserverEventListener;
     /**
      * 观察者根据被观察产生的行为做出相应处理监听器
      */
@@ -66,7 +66,7 @@ public class RxPollNoHttpConfig<T> {
         return mRxInformationModelAction1;
     }
 
-    public OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> getOnObserverEventListener() {
+    public OnObserverEventListener<Request<T>, RxInformationModel<T>> getOnObserverEventListener() {
         return mOnObserverEventListener;
     }
 
@@ -145,7 +145,7 @@ public class RxPollNoHttpConfig<T> {
          * @param onObserverEventListener 被观察者产生的行为事件监听器
          * @return 构建轮询配置类
          */
-        public OnRxPollConfigBuilderListener<T> setOnObserverEventListener(OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> onObserverEventListener) {
+        public OnRxPollConfigBuilderListener<T> setOnObserverEventListener(OnObserverEventListener<Request<T>, RxInformationModel<T>> onObserverEventListener) {
             mRxPollNoHttpConfig.mOnObserverEventListener = onObserverEventListener;
             return this;
         }

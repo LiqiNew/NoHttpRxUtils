@@ -23,7 +23,7 @@ import com.liqi.nohttputils.nohttp.gsonutils.JsonUtil;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.StringRequest;
 
 import org.json.JSONArray;
@@ -37,7 +37,7 @@ import java.util.Locale;
  * @param <T> 请求成功后的数据转换对象
  *            Created by Liqi on 2016/10/15.
  */
-class RequestBeanObj<T> extends RestRequest<T> {
+class RequestBeanObj<T> extends Request<T> {
 
     /**
      * Decoding lock so that we don't decode more than one image at a time (to avoid OOM's).
