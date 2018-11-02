@@ -40,7 +40,7 @@ public class HttpsDemoActivity extends BaseActivity<String> implements View.OnCl
                             .post()
                             .url(StaticHttpUrl.HTTPS_URL)
                             .addHttpsIsCertificate(inputStream)
-                            .setDialogGetListener(this)
+                            .setOnDialogGetListener(this)
                             .builder(String.class,this)
                             .requestRxNoHttp();
                 } catch (IOException e) {
@@ -54,7 +54,7 @@ public class HttpsDemoActivity extends BaseActivity<String> implements View.OnCl
                         .post()
                         .url(StaticHttpUrl.HTTPS_URL)
                         .addHttpsIsCertificate()
-                        .setDialogGetListener(this)
+                        .setOnDialogGetListener(this)
                         .builder(String.class,this)
                         .requestRxNoHttp();
                 break;

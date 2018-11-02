@@ -68,6 +68,19 @@ public class NohttpDownloadUtils {
     }
 
     /**
+     * 获取下载请求What值对应的路径
+     * <p>
+     * 如果有重复的值，那么获取数据源最后一位路径值。
+     * </p>
+     *
+     * @param what What值
+     * @return 下载请求What值对应的路径值
+     */
+    public static String getDownloadRequestsUrl(int what) {
+        return NohttpDownload.getNohttpDownload().getDownloadRequestsUrl(what);
+    }
+
+    /**
      * 移除下载地址对应的What
      *
      * @param downloadUrl 下载地址

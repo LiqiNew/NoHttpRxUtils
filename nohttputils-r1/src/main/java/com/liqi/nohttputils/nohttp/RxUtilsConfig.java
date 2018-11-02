@@ -3,7 +3,7 @@ package com.liqi.nohttputils.nohttp;
 import android.content.Context;
 
 import com.liqi.nohttputils.R;
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
@@ -54,7 +54,7 @@ public class RxUtilsConfig {
      * 网络请求全局加载框获取接口
      * (全项目请求默认加载框)
      */
-    private DialogGetListener mDialogGetListener;
+    private OnDialogGetListener mOnDialogGetListener;
     /**
      * 下载线程池并发数量
      */
@@ -102,8 +102,8 @@ public class RxUtilsConfig {
         return mAnUnknownErrorHint;
     }
 
-    DialogGetListener getDialogGetListener() {
-        return mDialogGetListener;
+    OnDialogGetListener getOnDialogGetListener() {
+        return mOnDialogGetListener;
     }
 
     boolean isDebug() {
@@ -206,11 +206,11 @@ public class RxUtilsConfig {
         /**
          * 设置底层请求方式
          *
-         * @param rxUtilsConfig NoHttpInit.URLCONNECTION=>URLCONNECTION请求, NoHttpInit.OKHTTP=>OKHTTP请求
+         * @param typeNoHttpInit {@link NoHttpInit.URLCONNECTION URLCONNECTION请求}{@link NoHttpInit.OKHTTP OKHTTP请求}
          * @return
          */
-        public ConfigBuilder setRxRequestUtilsWhy(int rxUtilsConfig) {
-            mRxUtilsConfig.mRxRequestUtilsWhy = rxUtilsConfig;
+        public ConfigBuilder setRxRequestUtilsWhy(int typeNoHttpInit) {
+            mRxUtilsConfig.mRxRequestUtilsWhy = typeNoHttpInit;
             return this;
         }
 
@@ -305,11 +305,11 @@ public class RxUtilsConfig {
         /**
          * 网络请求全局加载框获取接口
          *
-         * @param dialogGetListener
+         * @param onDialogGetListener
          * @return
          */
-        public ConfigBuilder setDialogGetListener(DialogGetListener dialogGetListener) {
-            mRxUtilsConfig.mDialogGetListener = dialogGetListener;
+        public ConfigBuilder setDialogGetListener(OnDialogGetListener onDialogGetListener) {
+            mRxUtilsConfig.mOnDialogGetListener = onDialogGetListener;
             return this;
         }
 

@@ -13,6 +13,7 @@ import com.liqi.nohttprxutils.StaticHttpUrl;
 import com.liqi.nohttprxutils.utils.FileUtil;
 import com.liqi.nohttputils.download.NohttpDownloadUtils;
 import com.yanzhenjie.nohttp.Headers;
+import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.error.ServerError;
@@ -38,9 +39,9 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
     //存储文件夹路径
     private final String FILEPATH = FileUtil.getRootPath().getAbsolutePath() + StaticHttpUrl.FILE_PATH + "/DownloadFile";
     //文件下载路径
-    private String DOWNLOAD_FILE01 = "http://api.nohttp.net/download/1.apk",
-            DOWNLOAD_FILE02 = "http://api.nohttp.net/download/2.apk",
-            DOWNLOAD_FILE03 = "http://api.nohttp.net/download/3.apk";
+    private String DOWNLOAD_FILE01 = "http://wap.dl.pinyin.sogou.com/wapdl/android/apk/SogouInput_android_v8.18_sweb.apk",
+            DOWNLOAD_FILE02 = "http://wap.dl.pinyin.sogou.com/wapdl/android/apk/SogouInput_android_v8.18_sweb.apk",
+            DOWNLOAD_FILE03 = "http://wap.dl.pinyin.sogou.com/wapdl/android/apk/SogouInput_android_v8.10_sweb.apk";
     private ProgressBar mDownloadSingleProgress;
     private TextView mDownloadSingleHint;
     private Button mDownloadSingleButton;
@@ -83,7 +84,7 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
                     //把要下载的请求添加到下载服务队列中，并开始下载
                     if (mSingleInit == -1) {
                         NohttpDownloadUtils.getNohttpDownloadBuild()
-                                .addDownloadParameter(DOWNLOAD_FILE01, "Liqi_single_test.apk")
+                                .addDownloadParameter(DOWNLOAD_FILE01, "")
                                 .setRange(true)
                                 .setDownloadListener(this)
                                 .setDeleteOld(false)
@@ -226,6 +227,9 @@ public class DownloadFileActivity extends AppCompatActivity implements View.OnCl
                 mDownloadMultiButton.setEnabled(false);
             }
         }
+        Logger.e("What值：" + NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE01));
+        Logger.e("路径值：" + NohttpDownloadUtils.getDownloadRequestsUrl(NohttpDownloadUtils.getDownloadRequestsWhat(DOWNLOAD_FILE01)));
+        Logger.e("\n回调路径值：" + NohttpDownloadUtils.getDownloadRequestsUrl(what));
     }
 
     private void setProgress(int what, int progress, long speed) {

@@ -1,5 +1,11 @@
 [![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E6%9D%8E%E5%A5%87-orange.svg)](https://github.com/LiqiNew)
+**---- v.2.0.5版本新增功能 ----**
+* **兼容到NoHttp-v.1.1.11**
+* **修复BUG**修复因为下载时未传入文件名称而导致下载文件不可用的BUG
+* **NohttpDownloadUtils** 文件下载工具对象新增getDownloadRequestsUrl()获取下载请求What值对应的路径方法
+
+
 ### 由于NoHttpRxUtils是通过RxJava对NoHttp网络框架操作进行一系列封装。<br>首先对RxJava和NoHttp网络框架做一个简介
 # RxJava框架是什么?
 RxJava是响应式程序设计的一种实现。<br>
@@ -66,12 +72,12 @@ repositories {
 **2：项目目录build.gradle中依赖NoHttpRxUtils框架**<br>
 * 使用RxJava-1的项目请依赖
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.1.3.6'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.5'
 ```
 
 * 使用RxJava-2的项目请依赖
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.2.0.1'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.6'
 ```
 
 NoHttpRxUtils使用简介

@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.liqi.nohttputils.R;
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.liqi.nohttputils.nohttp.rx_poll.operators.OnObserverEventListener;
 import com.yanzhenjie.nohttp.Logger;
@@ -18,8 +18,8 @@ import com.yanzhenjie.nohttp.error.NotFoundCacheError;
 import com.yanzhenjie.nohttp.error.TimeoutError;
 import com.yanzhenjie.nohttp.error.URLError;
 import com.yanzhenjie.nohttp.error.UnKnownHostError;
+import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.RestRequest;
 
 import java.net.ConnectException;
 import java.net.ProtocolException;
@@ -36,19 +36,19 @@ import rx.functions.Func1;
 
 public class RxInformationPoolModel<T> {
     private Object mSign;
-    private DialogGetListener mDialogGetListener;
-    private RestRequest<T> mRestRequest;
+    private OnDialogGetListener mOnDialogGetListener;
+    private Request<T> mRequest;
     private OnIsRequestListener<T> mOnIsRequestListener;
     private RxInformationModel<T> mRxInformationModel;
 
 
     private Func1<RxInformationModel<T>, Boolean> mBooleanFunc1;
-    private OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> mOnObserverEventListener;
+    private OnObserverEventListener<Request<T>, RxInformationModel<T>> mOnObserverEventListener;
     private Action1<RxInformationModel<T>> mRxInformationModelAction1;
 
-    public RxInformationPoolModel(@NonNull OnIsRequestListener<T> onIsRequestListener, DialogGetListener dialogGetListener, String anUnknownErrorHint) {
+    public RxInformationPoolModel(@NonNull OnIsRequestListener<T> onIsRequestListener, OnDialogGetListener onDialogGetListener, String anUnknownErrorHint) {
         mOnIsRequestListener = onIsRequestListener;
-        mDialogGetListener = dialogGetListener;
+        mOnDialogGetListener = onDialogGetListener;
         mRxInformationModel = new RxInformationModel<>();
         initOnObserverEventListener();
         initBooleanFunc1();
@@ -65,9 +65,9 @@ public class RxInformationPoolModel<T> {
         mRxInformationModelAction1 = new Action1<RxInformationModel<T>>() {
             @Override
             public void call(RxInformationModel<T> tRxInformationModel) {
-                Logger.e(mRestRequest.url() + "：轮询运行完毕");
+                Logger.e(mRequest.url() + "：轮询运行完毕");
 
-                Dialog dialog = null == mDialogGetListener ? null : mDialogGetListener.getDialog();
+                Dialog dialog = null == mOnDialogGetListener ? null : mOnDialogGetListener.getDialog();
                 if (null != dialog && dialog.isShowing()) {
                     dialog.dismiss();
                 }
@@ -120,7 +120,7 @@ public class RxInformationPoolModel<T> {
                         }
                     }
                 } else {
-                    Logger.e(mRestRequest.url() + "：取消轮询请求线程");
+                    Logger.e(mRequest.url() + "：取消轮询请求线程");
                 }
             }
         };
@@ -138,7 +138,7 @@ public class RxInformationPoolModel<T> {
                     tRxInformationModel = new RxInformationModel<>();
                     tRxInformationModel.setStop(true);
                 }
-                Logger.e(mRestRequest.url() + "：轮询运行拦截>>拦截状态：" + tRxInformationModel.isStop());
+                Logger.e(mRequest.url() + "：轮询运行拦截>>拦截状态：" + tRxInformationModel.isStop());
                 return tRxInformationModel.isStop();
             }
         };
@@ -148,26 +148,26 @@ public class RxInformationPoolModel<T> {
      * 内部实现轮询操作处理
      */
     private void initOnObserverEventListener() {
-        mOnObserverEventListener = new OnObserverEventListener<RestRequest<T>, RxInformationModel<T>>() {
+        mOnObserverEventListener = new OnObserverEventListener<Request<T>, RxInformationModel<T>>() {
             @Override
-            public RxInformationModel<T> onObserverEvent(RestRequest<T> restRequest) {
-                mRestRequest = restRequest;
+            public RxInformationModel<T> onObserverEvent(Request<T> Request) {
+                mRequest = Request;
                 initTransitionModel();
-                if (null != mDialogGetListener) {
+                if (null != mOnDialogGetListener) {
                     //对话框放到主线程去运行
                     AndroidSchedulers.mainThread().createWorker().schedule(new Action0() {
                         @Override
                         public void call() {
-                            Dialog dialog = mDialogGetListener.getDialog();
+                            Dialog dialog = mOnDialogGetListener.getDialog();
                             if (null != dialog) {
                                 dialog.show();
                             }
                         }
                     });
                 }
-                if (null != mRestRequest) {
-                    Logger.e(mRestRequest.url() + "：轮询运行开始");
-                    Response<T> response = NoHttp.startRequestSync(mRestRequest);
+                if (null != mRequest) {
+                    Logger.e(mRequest.url() + "：轮询运行开始");
+                    Response<T> response = NoHttp.startRequestSync(mRequest);
                     //正确
                     if (response.isSucceed() || response.isFromCache()) {
                         mRxInformationModel.setData(response.get());
@@ -212,7 +212,7 @@ public class RxInformationPoolModel<T> {
      *
      * @return 可观察者事件对象
      */
-    public OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> getOnObserverEventListener() {
+    public OnObserverEventListener<Request<T>, RxInformationModel<T>> getOnObserverEventListener() {
         return mOnObserverEventListener;
     }
 
@@ -221,7 +221,7 @@ public class RxInformationPoolModel<T> {
      *
      * @param onObserverEventListener 可观察者事件对象
      */
-    public void setOnObserverEventListener(OnObserverEventListener<RestRequest<T>, RxInformationModel<T>> onObserverEventListener) {
+    public void setOnObserverEventListener(OnObserverEventListener<Request<T>, RxInformationModel<T>> onObserverEventListener) {
         mOnObserverEventListener = onObserverEventListener;
     }
 
@@ -267,8 +267,8 @@ public class RxInformationPoolModel<T> {
      * 取消请求
      */
     public void cancel() {
-        if (null != mRestRequest) {
-            mRestRequest.cancel();
+        if (null != mRequest) {
+            mRequest.cancel();
         }
         setRxPollStopState(true);
     }

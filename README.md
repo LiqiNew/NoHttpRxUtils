@@ -1,6 +1,11 @@
 [中文版文档](https://github.com/LiqiNew/NoHttpRxUtils/blob/master/README_CHINESE.md) <br><br>
 [![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E6%9D%8E%E5%A5%87-orange.svg)](https://github.com/LiqiNew)
+**---- v.2.0.5 New in version ----**
+* **Compatible to NoHttp-v.1.1.11**
+* **Repair BUG**Fix bug that download file is not available because the file name was not passed in at the time of download
+* **NohttpDownloadUtils** File download tool object added (getDownloadRequestsUrl() Get the path method corresponding to the download request What value)
+
 ### Because NoHttpRxUtils through the RxJava face NoHttp network framework for a series of bundle.First of all against RxJava and NoHttp network framework to do a brief introduction
 # What is the RxJava framework?
 RxJava is a responsive programming design frame.<br>
@@ -67,12 +72,12 @@ repositories {
 **2：The project directory build.gradle relies on the NoHttpRxUtils framework**<br>
 * RxJava-1 project depends on
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.1.3.6'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.5'
 ```
 
 * RxJava-2 project depends on
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.2.0.1'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.6'
 ```
 NoHttpRxUtils use method
 -----

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 
 
@@ -16,7 +16,7 @@ import com.liqi.nohttputils.interfa.OnIsRequestListener;
  * 个人QQ:543945827
  * Created by LiQi on 2016/12/30.
  */
-public abstract class BaseActivity<T> extends AppCompatActivity implements DialogGetListener, OnIsRequestListener<T> {
+public abstract class BaseActivity<T> extends AppCompatActivity implements OnDialogGetListener, OnIsRequestListener<T> {
     protected ProgressDialog mDialog;
 
     @Override

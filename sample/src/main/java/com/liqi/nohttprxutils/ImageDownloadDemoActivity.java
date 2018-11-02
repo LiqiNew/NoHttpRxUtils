@@ -36,8 +36,8 @@ public class ImageDownloadDemoActivity extends BaseActivity<Bitmap> implements V
         //开始请求
         RxNoHttpUtils.rxNohttpRequest()
                 .get()
-                .url(StaticHttpUrl.IMAGE_URL)
-                .setDialogGetListener(this)
+                .url(StaticHttpUrl.IMAGE_GET)
+                .setOnDialogGetListener(this)
                 .setSign(this)
                 .builder(Bitmap.class, this)
                 .requestRxNoHttp();

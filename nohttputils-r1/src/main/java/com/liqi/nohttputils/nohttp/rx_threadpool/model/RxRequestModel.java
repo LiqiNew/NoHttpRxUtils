@@ -2,12 +2,12 @@ package com.liqi.nohttputils.nohttp.rx_threadpool.model;
 
 import android.support.annotation.NonNull;
 
-import com.liqi.nohttputils.interfa.DialogGetListener;
+import com.liqi.nohttputils.interfa.OnDialogGetListener;
 import com.liqi.nohttputils.interfa.OnIsRequestListener;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.Request;
 
 
 /**
@@ -16,8 +16,8 @@ import com.yanzhenjie.nohttp.rest.RestRequest;
  */
 
 public class RxRequestModel<T> extends BaseRxRequestModel<T> {
-    private DialogGetListener mDialogGetListener;
-    private RestRequest<T> mRestRequest;
+    private OnDialogGetListener mOnDialogGetListener;
+    private Request<T> mRequest;
     private OnIsRequestListener<T> mOnIsRequestListener;
     private Object mSign;
     //未知错误提示语
@@ -27,8 +27,8 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
 
     }
 
-    public RxRequestModel(@NonNull RestRequest<T> restRequest, @NonNull OnIsRequestListener<T> onIsRequestListener) {
-        mRestRequest = restRequest;
+    public RxRequestModel(@NonNull Request<T> Request, @NonNull OnIsRequestListener<T> onIsRequestListener) {
+        mRequest = Request;
         mOnIsRequestListener = onIsRequestListener;
     }
 
@@ -44,7 +44,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
      * 释放当前对象内存
      */
     public void clear() {
-        mDialogGetListener = null;
+        mOnDialogGetListener = null;
         mOnIsRequestListener = null;
         mSign = null;
     }
@@ -54,7 +54,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
      */
     public void clearAll() {
         clear();
-        mRestRequest = null;
+        mRequest = null;
     }
 
     /**
@@ -64,7 +64,7 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
      * @return
      */
     public boolean isCancel(@NonNull Object sign) {
-        if (null != mRestRequest) {
+        if (null != mRequest) {
             if (mSign == sign) {
                 return true;
             }
@@ -77,18 +77,18 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
     }
 
     public void cancel() {
-        if (null != mRestRequest) {
-            mRestRequest.cancel();
+        if (null != mRequest) {
+            mRequest.cancel();
             setRunOff(true);
         }
     }
 
-    public DialogGetListener getDialogGetListener() {
-        return mDialogGetListener;
+    public OnDialogGetListener getOnDialogGetListener() {
+        return mOnDialogGetListener;
     }
 
-    public RxRequestModel setDialogGetListener(DialogGetListener dialogGetListener) {
-        mDialogGetListener = dialogGetListener;
+    public RxRequestModel setOnDialogGetListener(OnDialogGetListener onDialogGetListener) {
+        mOnDialogGetListener = onDialogGetListener;
         return this;
     }
 
@@ -98,14 +98,14 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
 
     @Override
     protected T run() {
-        if (null != mRestRequest) {
-            Logger.e(mRestRequest.url() + "线程运行>>>");
-            Response<T> response = NoHttp.startRequestSync(mRestRequest);
+        if (null != mRequest) {
+            Logger.e(mRequest.url() + "线程运行>>>");
+            Response<T> response = NoHttp.startRequestSync(mRequest);
             if (response.isSucceed() || response.isFromCache()) {
                 if (!isRunOff()) {
                     return response.get();
                 } else {
-                    setThrowable(new Exception(mRestRequest.url() + "　-->撤销请求"));
+                    setThrowable(new Exception(mRequest.url() + "　-->撤销请求"));
                 }
             } else {
                 setThrowable(response.getException());
@@ -113,6 +113,6 @@ public class RxRequestModel<T> extends BaseRxRequestModel<T> {
         } else {
             setThrowable(new NullPointerException());
         }
-        return (T) mRestRequest.url();
+        return (T) mRequest.url();
     }
 }
