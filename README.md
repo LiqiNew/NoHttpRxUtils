@@ -1,7 +1,7 @@
 [中文版文档](https://github.com/LiqiNew/NoHttpRxUtils/blob/master/README_CHINESE.md) <br><br>
 [![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E6%9D%8E%E5%A5%87-orange.svg)](https://github.com/LiqiNew)
-<br>**---- v.2.0.6 New in version ----**
+<br>**---- v.2.0.7 New in version ----**
 * **Compatible to NoHttp-v.1.1.11**
 * **Repair BUG**Fix bug that download file is not available because the file name was not passed in at the time of download
 * **NohttpDownloadUtils** File download tool object added (getDownloadRequestsUrl() Get the path method corresponding to the download request What value)
@@ -77,7 +77,7 @@ compile 'com.github.liqinew:nohttprxutils:v.2.0.5'
 
 * RxJava-2 project depends on
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.2.0.6'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.7'
 ```
 NoHttpRxUtils use method
 -----
