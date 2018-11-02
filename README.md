@@ -77,7 +77,7 @@ compile 'com.github.liqinew:nohttprxutils:v.2.0.5'
 
 * RxJava-2 project depends on
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.2.0.6'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.7'
 ```
 NoHttpRxUtils use method
 -----
