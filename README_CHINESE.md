@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/liqinew/nohttprxutils.svg)](https://jitpack.io/#liqinew/nohttprxutils)
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E6%9D%8E%E5%A5%87-orange.svg)](https://github.com/LiqiNew)
-<br>**---- v.2.0.6版本新增功能 ----**
+<br>**---- v.2.0.7版本新增功能 ----**
 * **兼容到NoHttp-v.1.1.11**
 * **修复BUG**修复因为下载时未传入文件名称而导致下载文件不可用的BUG
 * **NohttpDownloadUtils** 文件下载工具对象新增(getDownloadRequestsUrl()获取下载请求What值对应的路径方法)
@@ -77,7 +77,7 @@ compile 'com.github.liqinew:nohttprxutils:v.2.0.5'
 
 * 使用RxJava-2的项目请依赖
 ```gradle
-compile 'com.github.liqinew:nohttprxutils:v.2.0.6'
+compile 'com.github.liqinew:nohttprxutils:v.2.0.7'
 ```
 
 NoHttpRxUtils使用简介
